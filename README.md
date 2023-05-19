@@ -1,6 +1,6 @@
 # typst-chords
 
-A chord diargram generator for string instruments.
+Library to write song lyrics with chord diagrams on typst. This lib uses [typst-canvas](https://github.com/johannes-wolf/typst-canvas) for generate the diagrams.
 
 ## Functions
 
@@ -21,7 +21,7 @@ With `typst-chords` you can to use 2 functions `set-graph-chords` and `set-singl
 - `font`: Text font name, default: "Linux Libertine" (optional)
 
 
-The returned function `set-graph-chords` has the following parameters:
+The returned function from `set-graph-chords` has the following parameters:
 
 ```
 // Generates a chord diagram
@@ -83,7 +83,7 @@ Example:
 
 The chord without diagram is used to write the chord over a word. All parameters of `set-single-chords` are the same of `text` of `typst`.
 
-The returned function `set-single-chords` has the following parameters:
+The returned function from `set-single-chords` has the following parameters:
 
 ```typst
 #chord(
@@ -108,6 +108,9 @@ In a #chord[one-][A7]horse open #chord[sleigh,][D7] hey!
 ## Usage
 
 `typst-chords` uses [typst-canvas](https://github.com/johannes-wolf/typst-canvas) to generate the chord diagrams.
+We need to to download `typst-canvas` and `typst-chords`.
+
+Steps:
 
     $ mkdir my_lyrics && cd my_lyrics
     $ git clone https://github.com/johannes-wolf/typst-canvas
