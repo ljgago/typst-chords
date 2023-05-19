@@ -1,6 +1,6 @@
 # typst-chords
 
-Library to write song lyrics with chord diagrams on typst. This lib uses [typst-canvas](https://github.com/johannes-wolf/typst-canvas) for generate the diagrams.
+A library to write song lyrics with chord diagrams in Typst. This library uses [typst-canvas](https://github.com/johannes-wolf/typst-canvas) to generate the diagrams.
 
 ## Functions
 
