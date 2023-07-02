@@ -8,7 +8,7 @@ With `typst-chords` you can to use 2 functions `set-graph-chords` and `set-singl
 
 `set-graph-chords` function:
 
-```typst
+```js
 // Chord with diagram
 // Return a function with these settings
 #let guitar-chord = set-graph-chords(
