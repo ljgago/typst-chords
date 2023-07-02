@@ -22,7 +22,7 @@ With `typst-chords` you can to use 2 functions `set-graph-chords` and `set-singl
 
 The returned function from `set-graph-chords` has the following parameters:
 
-```
+```js
 // Generates a chord diagram
 #guitar-chord(
   frets: number,
@@ -38,7 +38,7 @@ The returned function from `set-graph-chords` has the following parameters:
 - `fret-number`: shows the fret position, default: none, `Optional`
 - `capos`: adds one o many capos on the graph, default: (), `Optional`
 
-  ```
+  ```js
     // array(array) or array(dictionary)
     ((
       fret: number,
@@ -57,7 +57,7 @@ The returned function from `set-graph-chords` has the following parameters:
 
 Example:
 
-```
+```js
 // Guitar B chord
 #guitar-chord(
   capos: ((fret: 2, start: 1, end: 5),), // capos: ((2, 1, 5),)
@@ -70,7 +70,7 @@ Example:
 
 `set-single-chords` function:
 
-```typst
+```js
 // Single chord (without diagram)
 // Return a function with these settings
 #let chord = set-single-chords(
@@ -84,22 +84,24 @@ The chord without diagram is used to write the chord over a word. All parameters
 
 The returned function from `set-single-chords` has the following parameters:
 
-```typst
+```js
 #chord(
   body,
-  chord-name
+  chord-name,
+  body-char-pos
 )
 ```
 
 - `body`: is the word or words where the chord goes, `Required`
 - `chord-name`: displays the chord name over the selected words in the body, `Required`
+- `body-char-pos`: positions the chord over a specific character in the body, `[]` or `[0]`: chord centered above the body, `[number]`: chord above character in body, `Required`
 
 Example:
 
-```typst
-#chord[Jingle][G] bells, jingle bells, jingle #chord[all][C] the #chord[way!][G] \
-#chord[Oh][C] what fun it #chord[is][G] to ride \
-In a #chord[one-][A7]horse open #chord[sleigh,][D7] hey!
+```js
+#chord[Jingle][G][2] bells, jingle bells, jingle #chord[all][C][2] the #chord[way!][G][2] \
+#chord[Oh][C][] what fun it #chord[is][G][] to ride \
+In a #chord[one-horse][A7][2] open #chord[sleigh,][D7][3] hey!
 ```
 
 ![img](./examples/single-chords.png)
@@ -120,7 +122,7 @@ Open `lyric.typ` with your favorite editor and import the file `#import "typst-c
 
 ## Examples:
 
-```typst
+```js
 #let guitar-chord = set-graph-chords()
 
 // Guitar Cm chord
@@ -132,7 +134,7 @@ Open `lyric.typ` with your favorite editor and import the file `#import "typst-c
 )[Cm]
 ```
 
-```typst
+```js
 #let ukulele-chord = set-graph-chords(strings: 4)
 
 // Ukulele C chord
