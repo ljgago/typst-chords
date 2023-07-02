@@ -109,13 +109,42 @@
 }
 
 #let set-single-chords(..text-style) = {
-  return (body, chord-name) => {
+  return (body, chord-name, body-char-pos) => {
     box(
-      canvas({
-        import "../typst-canvas/draw.typ": *
-        content((0, 18pt), text(..text-style)[#chord-name], anchor: "center")
-        content((0, 0), body)
+      style(body-styles => {
+        canvas({
+          import "../typst-canvas/draw.typ": *
+
+          let word = body.fields().values().at(0)
+          let word-char-pos = body-char-pos.fields().values().at(0)
+          let sum = 0pt
+          let total = 0pt
+          let offset = 0pt
+          let anchor = "center"
+
+          if type(word-char-pos) != "array" and int(word-char-pos) != 0 {
+            // computes the width of the word until the (word-char-pos - 1) index
+            for i in range(int(word-char-pos) - 1) {
+              sum += measure([#word.at(i)], body-styles).width
+            }
+            total = measure(body, body-styles).width
+
+            // gets the offset to center the first character of the chord
+            // with the selected character of the word
+            let chord-char = chord-name.fields().values().at(0).at(0)
+
+            let chord-char-width = measure(text(..text-style)[#chord-char], body-styles).width
+            let word-char-width = measure([#word.at(int(word-char-pos) - 1)], body-styles).width
+
+            offset = (chord-char-width - word-char-width) / 2
+            anchor = "left"
+          }
+
+          content((sum - (total / 2) - offset, 18pt), text(..text-style)[#chord-name], anchor: anchor)
+          content((0pt, 0pt), body)
+        })
       })
     )
   }
 }
+

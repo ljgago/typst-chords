@@ -41,22 +41,21 @@
 #set align(left)
 #set text(14pt)
 
-
 #smallcaps[[Verse]] \
-#chord[Dashing][G] through the snow, in a one-horse open #chord[sleigh,][C] \
-#chord[O'er][Am] the fields we #chord[go,][D7] laughing all the #chord[way.][G] \
-#chord[Bells][G] on bob-tails ring, making spirits #chord[bright,][C] \
-What #chord[fun][Am] it is to #chord[ride][D] and sing a #chord[sleighing][D7] song #chord[tonight.][G] #chord[Oh!][D7]
+#chord[Dashing][G][2] through the snow, in a one-horse open #chord[sleigh,][C][3] \
+#chord[O'er][Am][2] the fields we #chord[go,][D7][] laughing all the #chord[way.][G][] \
+#chord[Bells][G][2] on bob-tails ring, making spirits #chord[bright,][C][3] \
+What #chord[fun][Am][2] it is to #chord[ride][D][2] and sing a #chord[sleighing][D7][3] song #chord[tonight.][G][3] #chord[Oh!][D7][]
 
 \
 
 #smallcaps[[Chorus]] \
-#chord[Jingle][G] bells, jingle bells, jingle #chord[all][C] the #chord[way!][G] \
-#chord[Oh][C] what fun it #chord[is][G] to ride \
-In a #chord[one-][A7]horse open #chord[sleigh,][D7] hey! \
-#chord[Jingle][G] bells, jingle bells, jingle #chord[all][C] the #chord[way!][G] \
-#chord[Oh][C] what fun it #chord[is][G] to ride \
-In a #chord[one-][D7]horse open #chord[sleigh][G]
+#chord[Jingle][G][2] bells, jingle bells, jingle #chord[all][C][] the #chord[way!][G][] \
+#chord[Oh][C][] what fun it #chord[is][G][] to ride \
+In a #chord[one-horse][A7][2] open #chord[sleigh,][D7][3] hey! \
+#chord[Jingle][G][2] bells, jingle bells, jingle #chord[all][C][] the #chord[way!][G][] \
+#chord[Oh][C][] what fun it #chord[is][G][] to ride \
+In a #chord[one-horse][D7][2] open #chord[sleigh][G][3]
 
 \
 
