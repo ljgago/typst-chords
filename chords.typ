@@ -69,16 +69,14 @@
 
         // Draws a capo list
         let draw-capos(size, points) = {
-          fill(none)
+          fill(black)
           stroke(black + 3.3pt)
 
           for (fret, start, end) in points {
             line(
               ((size - start) * 5pt, 2.5pt - fret * 5pt),
               ((size - end) * 5pt, 2.5pt - fret * 5pt),
-              mark-end: "o",
-              mark-begin: "o",
-              mark-size: 0.001
+              mark: (start: "o", end: "o", size: 0.08, fill: black, stroke: black)
             )
           }
         }
