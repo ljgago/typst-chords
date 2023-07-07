@@ -26,7 +26,7 @@
         let draw-grid(row, col, number) = {
           // Show or hide guitar nut
           if number == none or number == 1 {
-            rect((0pt, 0pt), (col * step, 1.5pt), fill: black)
+            rect((0pt, -0.1pt), (col * step, 1.2pt), fill: black)
           }
 
           rect((0pt, 0pt), (col * step, -row * step))
