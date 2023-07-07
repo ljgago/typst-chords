@@ -13,94 +13,94 @@
       canvas({
         import "../typst-canvas/draw.typ": *
 
+        let step = 5pt
+        stroke(black + 0.5pt)
+
         let mute(col) = {
-          let offset = 5pt * col
+          let offset = col * step
           line((offset - 1.5pt, 2.5pt), (offset + 1.5pt, 5.5pt))
           line((offset - 1.5pt, 5.5pt), (offset + 1.5pt, 2.5pt))
         }
 
-        // Draws the grid
+        // draws the grid
         let draw-grid(row, col, number) = {
-          let step = 5pt
-          let limit = 0.26pt
-
           // Show or hide guitar nut
           if number == none or number == 1 {
-            stroke(black + 2pt)
-            line((-limit, 0.4pt), (step * (col - 1) + limit, 0.4pt))
+            rect((0pt, 0pt), (col * step, 1.5pt), fill: black)
           }
 
-          content((-5pt, -2.5pt), text(8pt)[#number])
-          stroke(black + 0.5pt)
+          rect((0pt, 0pt), (col * step, -row * step))
 
-          let i = 0
+          let i = 1
           while i < col {
             let x = i * step
-            line((x, 0pt), (x, -5pt * (row - 1)))
+            line((x, 0pt), (x, -row * step ))
             i += 1
           }
 
-          let i = 0
+          let i = 1
           while i < row {
             let y = i * step
-            line((-0.2pt, -y), (step * (col - 1) + 0.2pt, -y))
+            line((0pt, -y), (col * step, -y))
             i += 1
           }
         }
 
-        // Draws notes: (x) for mute, (0) for air notes and (number) for finger notes
-        let draw-notes(points) = {
-          for (row, col) in points.zip((0, 1, 2, 3, 4, 5, 6, 7, 8, 9)) {
+        // draws notes: (x) for mute, (0) for air notes and (number) for finger notes
+        let draw-notes(size, points) = {
+          for (row, col) in points.zip(range(size)) {
             if row == "x" {
-              fill(none)
-              stroke(black + 0.5pt)
               mute(col)
             } else if row == 0 {
-              fill(none)
-              stroke(black + 0.5pt)
-              circle((5pt * col, 4pt), radius: 0.06)
+              circle((col * step, 4pt), radius: 0.06, stroke: black + 0.5pt, fill: none)
             } else if type(row) == "integer" {
-              fill(black)
-              stroke(none)
-              circle((5pt * col, 2.5pt - 5pt * row), radius: 0.06)
+              circle((col * step, step / 2 - row * step), radius: 0.06, stroke: none, fill: black)
             }
           }
         }
 
-        // Draws a capo list
+        // draw a capo list
         let draw-capos(size, points) = {
-          fill(black)
-          stroke(black + 3.3pt)
-
           for (fret, start, end) in points {
+            if start > size {
+              start = size
+            }
+            if end > size {
+              end = size
+            }
+
             line(
-              ((size - start) * 5pt, 2.5pt - fret * 5pt),
-              ((size - end) * 5pt, 2.5pt - fret * 5pt),
-              mark: (start: "o", end: "o", size: 0.08, fill: black, stroke: black)
+              ((size - start) * step, step / 2 - fret * step),
+              ((size - end) * step, step / 2 - fret * step),
+              stroke: (paint: black, thickness: 3.4pt, cap: "round")
             )
           }
         }
 
-        // Draw finger numbers
-        let draw-fingers(points) = {
-          for (finger, col) in points.zip((0, 1, 2, 3, 4, 5)) {
+        // draws the finger numbers
+        let draw-fingers(size, points) = {
+          for (finger, col) in points.zip(range(size)) {
             if type(finger) == "integer" and finger > 0 and finger < 6 {
-              content((5pt * col, -(frets * 5pt + 3pt)), text(6pt)[#finger])
+              content((col * step, -(frets * step + 3pt)), text(6pt)[#finger])
             }
           }
         }
 
-        draw-grid(frets + 1, strings, fret-number)
-        draw-notes(notes)
+        draw-grid(frets, strings - 1, fret-number)
+        draw-notes(strings, notes)
         draw-capos(strings, capos)
-        draw-fingers(fingers)
+        draw-fingers(strings, fingers)
+
+        // shows the fret number
+        content((-3pt, -2.4pt), anchor: "right", text(8pt)[#fret-number])
 
         let space = 14pt
         if fingers.len() == 0 {
           space = 10pt
         }
 
-        content((2.5pt * (strings - 1), -(frets * 5pt + space)), text(12pt, font: font)[#chord-name])
+        // shows the chord name
+        content((step / 2 * (strings - 1), -(frets * step + space)), text(12pt, font: font)[#chord-name])
       })
     )
   }
@@ -113,26 +113,51 @@
         canvas({
           import "../typst-canvas/draw.typ": *
 
-          let word = body.fields().values().at(0)
-          let word-char-pos = body-char-pos.fields().values().at(0)
           let sum = 0pt
           let total = 0pt
           let offset = 0pt
           let anchor = "center"
 
-          if type(word-char-pos) != "array" and int(word-char-pos) != 0 {
-            // computes the width of the word until the (word-char-pos - 1) index
-            for i in range(int(word-char-pos) - 1) {
-              sum += measure([#word.at(i)], body-styles).width
+          let content-to-array(content) = {
+            if content.has("text") {
+              return content.at("text").clusters()
+            }
+            if content.has("double") {
+              return (content,)
+            }
+            if content.has("children") {
+              for item in content.at("children") {
+                content-to-array(item)
+              }
+            }
+            if content.has("body") {
+              content-to-array(content.at("body"))
+            }
+            if content.has("base") {
+              content-to-array(content.at("base"))
+            }
+            if content.has("equation") {
+              content-to-array(content.at("equation"))
+            }
+          }
+
+          let body-array = content-to-array(body)
+
+          // computes the width of the word until the pos index
+          if body-char-pos.has("text") and int(body-char-pos.at("text")) != 0 {
+            let pos = int(body-char-pos.at("text")) - 1
+
+            for i in range(pos) {
+              sum += measure([#body-array.at(i)], body-styles).width
             }
             total = measure(body, body-styles).width
 
             // gets the offset to center the first character of the chord
             // with the selected character of the word
-            let chord-char = chord-name.fields().values().at(0).at(0)
+            let chord-char = content-to-array(chord-name).at(0)
 
             let chord-char-width = measure(text(..text-style)[#chord-char], body-styles).width
-            let word-char-width = measure([#word.at(int(word-char-pos) - 1)], body-styles).width
+            let word-char-width = measure([#body-array.at(pos)], body-styles).width
 
             offset = (chord-char-width - word-char-width) / 2
             anchor = "left"
