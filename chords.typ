@@ -1,6 +1,6 @@
-#import "../typst-canvas/canvas.typ": canvas
+#import "@preview/cetz:0.0.1"
 
-#let set-graph-chords(strings: 6, font: "Linux Libertine") = {
+#let new-graph-chords(strings: 6, font: "Linux Libertine") = {
   return (
     frets: 5,
     fret-number: none,
@@ -10,8 +10,8 @@
     chord-name
   ) => {
     box(
-      canvas({
-        import "../typst-canvas/draw.typ": *
+      cetz.canvas({
+        import cetz.draw: circle, content, line, rect, stroke
 
         let step = 5pt
         stroke(black + 0.5pt)
@@ -52,9 +52,19 @@
             if row == "x" {
               mute(col)
             } else if row == 0 {
-              circle((col * step, 4pt), radius: 0.06, stroke: black + 0.5pt, fill: none)
+              circle(
+                (col * step, 4pt),
+                radius: 0.06,
+                stroke: black + 0.5pt,
+                fill: none
+              )
             } else if type(row) == "integer" {
-              circle((col * step, step / 2 - row * step), radius: 0.06, stroke: none, fill: black)
+              circle(
+                (col * step, step / 2 - row * step),
+                radius: 0.06,
+                stroke: none,
+                fill: black
+              )
             }
           }
         }
@@ -92,11 +102,11 @@
         draw-fingers(strings, fingers)
 
         // shows the fret number
-        content((-3pt, -2.4pt), anchor: "right", text(8pt)[#fret-number])
+        content((-3pt, -2.25pt), anchor: "right", text(8pt)[#fret-number])
 
         let space = 14pt
         if fingers.len() == 0 {
-          space = 10pt
+          space = 9pt
         }
 
         // shows the chord name
@@ -106,15 +116,13 @@
   }
 }
 
-#let set-single-chords(..text-style) = {
+#let new-single-chords(..text-style) = {
   return (body, chord-name, body-char-pos) => {
     box(
       style(body-styles => {
-        canvas({
-          import "../typst-canvas/draw.typ": *
+        cetz.canvas({
+          import cetz.draw: content
 
-          let sum = 0pt
-          let total = 0pt
           let offset = 0pt
           let anchor = "center"
 
@@ -145,29 +153,31 @@
 
           // computes the width of the word until the pos index
           if body-char-pos.has("text") and int(body-char-pos.at("text")) != 0 {
+          let body-chars-offset = 0pt
             let pos = int(body-char-pos.at("text")) - 1
 
             for i in range(pos) {
-              sum += measure([#body-array.at(i)], body-styles).width
+              body-chars-offset += measure([#body-array.at(i)], body-styles).width
             }
-            total = measure(body, body-styles).width
+            let body-width = measure(body, body-styles).width
 
-            // gets the offset to center the first character of the chord
-            // with the selected character of the word
-            let chord-char = content-to-array(chord-name).at(0)
-
-            let chord-char-width = measure(text(..text-style)[#chord-char], body-styles).width
-            let word-char-width = measure([#body-array.at(pos)], body-styles).width
-
-            offset = (chord-char-width - word-char-width) / 2
             anchor = "left"
+
+            // gets the char-offset to center the first character of the chord
+            // with the selected character of the body
+            let chord-char = content-to-array(chord-name).at(0)
+            let chord-char-width = measure(text(..text-style)[#chord-char], body-styles).width
+            let body-char-width = measure([#body-array.at(pos)], body-styles).width
+            let char-offset = (chord-char-width - body-char-width) / 2
+
+            // final offset
+            offset = body-chars-offset - (body-width / 2) - char-offset
           }
 
-          content((sum - (total / 2) - offset, 18pt), text(..text-style)[#chord-name], anchor: anchor)
+          content((offset, 16pt), text(..text-style)[#chord-name], anchor: anchor)
           content((0pt, 0pt), body)
         })
       })
     )
   }
 }
-

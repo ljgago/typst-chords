@@ -1,7 +1,8 @@
-#import "../chords.typ": *
+#import "../lib.typ": *
 
-#let chord = set-single-chords(style: "italic", weight: "semibold")
+#let chord = new-single-chords(style: "italic", weight: "semibold")
 
+#set page(width: 275pt, height: 130pt)
 #set text(14pt)
 
 #chord[Jingle][G][2] bells, jingle bells, jingle #chord[all][C][] the #chord[way!][G][2] \

@@ -1,4 +1,4 @@
-#import "../chords.typ": *
+#import "../lib.typ": *
 
 #set align(center)
 #set page(
@@ -19,8 +19,8 @@
   })
 )
 
-#let gchord = set-graph-chords()
-#let chord = set-single-chords(style: "italic", weight: "semibold")
+#let gchord = new-graph-chords()
+#let chord = new-single-chords(style: "italic", weight: "semibold")
 
 = Jingle Bells / #text(weight: "regular")[_Christmas Song_]
 
