@@ -1,4 +1,4 @@
-# typst-chords
+# typst-chordx
 
 A library to write song lyrics with chord diagrams in Typst. This library uses [cetz](https://github.com/johannes-wolf/typst-canvas) (aka typst-canvas) to generate the diagrams.
 
@@ -14,7 +14,7 @@ A library to write song lyrics with chord diagrams in Typst. This library uses [
 
 ## Usage
 
-`typst-chords` has two implementations, one using [cetz](https://github.com/johannes-wolf/typst-canvas) and another using native functions.
+`chordx` has two implementations, one using [cetz](https://github.com/johannes-wolf/typst-canvas) and another using native functions.
 
 The native functions work in the same way as the main implementation, in a future it will replace to main implementation, for now you can use both.
 
@@ -30,10 +30,10 @@ The native functions work in the same way as the main implementation, in a futur
 
 ### Typst Packages
 
-Typst added an experimental package repository and you can import `typst-chords` as follows:
+Typst added an experimental package repository and you can import `chordx` as follows:
 
 ```js
-#import "@preview/chords:0.1.0": *
+#import "@preview/chordx:0.1.0": *
 ```
 
 ### Local Packages
@@ -45,18 +45,18 @@ You can read the documentation about typst [local-packages](https://github.com/t
 In Linux you can do:
 
 ```sh
-$ git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/local/chords-0.1.0
+$ git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/local/chordx-0.1.0
 ```
 
 And import the lib in your file:
 
 ```js
-#import "@local/chords:0.1.0": *
+#import "@local/chordx:0.1.0": *
 ```
 
 ## Documentation
 
-In `typst-chords` you can to use 2 functions `new-graph-chords` and `new-single-chords`. These functions returns other functions (a closure) with a preset setting.
+Width `chordx` you can use 2 functions `new-graph-chords` and `new-single-chords`. These functions returns other functions (a closure) with a preset setting.
 
 ### Function: `new-graph-chords`
 
@@ -110,7 +110,7 @@ The returned function from `new-graph-chords` has the following parameters:
 Examples:
 
 ```js
-#import "@preview/chords:0.1.0": *
+#import "@preview/chordx:0.1.0": *
 
 #let guitar-chord = new-graph-chords()
 #let ukulele-chord = new-graph-chords(strings: 4)
@@ -171,7 +171,7 @@ The returned function from `new-single-chords` has the following parameters:
 Examples:
 
 ```js
-#import "@preview/chords:0.1.0": *
+#import "@preview/chordx:0.1.0": *
 
 #let chord = new-single-chords(style: "italic", weight: "semibold")
 

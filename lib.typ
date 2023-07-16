@@ -1,2 +1,2 @@
-#import "chords.typ": *
-#import "chords-native.typ": *
+#import "chordx.typ": *
+#import "chordx-native.typ": *
