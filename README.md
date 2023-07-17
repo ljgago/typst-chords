@@ -56,7 +56,7 @@ And import the lib in your file:
 
 ## Documentation
 
-Width `chordx` you can use 2 functions `new-graph-chords` and `new-single-chords`. These functions returns other functions (a closure) with a preset setting.
+With `chordx` you can use 2 functions `new-graph-chords` and `new-single-chords`. These functions returns other functions (a closure) with a preset setting.
 
 ### Function: `new-graph-chords`
 
