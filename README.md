@@ -1,6 +1,6 @@
-# typst-chordx
+# chordx
 
-A library to write song lyrics with chord diagrams in Typst. This library uses [cetz](https://github.com/johannes-wolf/typst-canvas) (aka typst-canvas) to generate the diagrams.
+A library to write song lyrics with chord diagrams in Typst. This library uses [CeTZ](https://github.com/johannes-wolf/typst-canvas) (aka typst-canvas) to generate the diagrams.
 
 **Table of Contents**
 
@@ -14,9 +14,9 @@ A library to write song lyrics with chord diagrams in Typst. This library uses [
 
 ## Usage
 
-`chordx` has two implementations, one using [cetz](https://github.com/johannes-wolf/typst-canvas) and another using native functions.
+`chordx` has two implementations, one using [CeTZ](https://github.com/johannes-wolf/typst-canvas) and another using native functions.
 
-The native functions work in the same way as the main implementation, in a future it will replace to main implementation, for now you can use both.
+The native functions work the same way as the main implementation, in a future it will replace the main implementation, for now you can use both.
 
 ```js
 // Using main implementation
