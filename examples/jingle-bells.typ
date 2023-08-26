@@ -19,24 +19,24 @@
   })
 )
 
-#let gchord = new-graph-chords()
+#let gchord = new-chart-chords(style: "round", scale: 1.16666666)
 #let chord = new-single-chords(style: "italic", weight: "semibold")
 
 = Jingle Bells / #text(weight: "regular")[_Christmas Song_]
 
-#v(30pt)
-#gchord(fingers: (2, 1, 0, 0, 0, 3), (3, 2, 0, 0, 0, 3))[G]
+#v(2em)
+#gchord(tabs: "32ooo3", fingers: "21ooo3")[G]
 #h(1fr)
-#gchord(fingers: (0, 3, 2, 0, 1, 0), ("x", 3, 2, 0, 1, 0))[C]
+#gchord(tabs: "x32o1o", fingers: "o32o1o")[C]
 #h(1fr)
-#gchord(fingers: (0, 0, 2, 3, 1, 0), ("x", 0, 2, 2, 1, 0))[Am]
+#gchord(tabs: "xo221o", fingers: "oo231o")[Am]
 #h(1fr)
-#gchord(fingers: (0, 0, 0, 2, 1, 3), ("x", "x", 0, 2, 1, 2))[D7]
+#gchord(tabs: "xxo212", fingers: "ooo213")[D7]
 #h(1fr)
-#gchord(fingers: (0, 0, 0, 1, 3, 2), ("x", "x", 0, 2, 3, 2))[D]
+#gchord(tabs: "xxo232", fingers: "ooo132")[D]
 #h(1fr)
-#gchord(fingers: (0, 0, 1, 0, 2, 0), ("x", 0, 2, 0, 2, 0))[A7]
-#v(30pt)
+#gchord(tabs: "xo2o2o", fingers: "oo1o2o")[A7]
+#v(1em)
 
 #set align(left)
 #set text(14pt)
@@ -64,8 +64,6 @@ A day or two ago, I thought I'd take a ride \
 And soon Miss Fanny Bright was seated by my side \
 The horse was lean and lank, misfortune seemed his lot \
 We ran into a drifted bank and there we got upsot. Oh!
-
-#pagebreak()
 
 #smallcaps[[Chorus]] \
 Jingle bells, jingle bells, jingle all the way! \
