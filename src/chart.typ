@@ -1,9 +1,6 @@
 #import "./utils.typ": parse-input-string, top-border-normal, top-border-round
-#let style-typ = style // name change
 
-//
-// Draws the nut
-//
+// Draws a horizontal border that indicates the starting of the fretboard
 #let draw-nut(self) = {
   let size = (
     width: self.grid.width,
@@ -19,9 +16,7 @@
   }
 }
 
-//
-// Draws the grid
-//
+// Draws a grid with a width = (length of tabs) and height = (number of frets)
 #let draw-grid(self) = {
   let radius = (bottom: 1pt * self.scale, top: 1pt * self.scale)
   place(
@@ -58,10 +53,7 @@
   }
 }
 
-
-//
-// Draws tabs
-//
+// Draws the tabs over the grid
 #let draw-tabs(self) = {
   for (tab, col) in self.tabs.zip(range(self.tabs.len())) {
     if type(tab) == "string" and lower(tab) == "x" {
@@ -103,14 +95,12 @@
   }
 }
 
-//
-// Draw a capo list
+// Draws a capo list
 //
 // capo = (fret, start, end)
 // fret: fret position
-// start: lowest starting note
-// end: highest ending note
-//
+// start: lowest starting string
+// end: highest ending string
 #let draw-capos(self) = {
   let size = self.tabs.len()
   for (fret, start, end, ..) in self.capos {
@@ -131,9 +121,7 @@
   }
 }
 
-//
-// Draws the finger numbers
-//
+// Draws the finger numbers below the grid
 #let draw-fingers(self) = {
   let size = self.tabs.len()
   for (finger, col) in self.fingers.zip(range(size)) {
@@ -147,9 +135,7 @@
   }
 }
 
-//
-// Draws the fret start number
-//
+// Draws the fret start number that indicates the starting position of the fretboard
 #let draw-fret-number(self) = {
   place(left + top,
     dx: -3pt * self.scale,
@@ -158,9 +144,7 @@
   )
 }
 
-//
-// Draws the chord name
-//
+// Draws the chord name below the grid and finger numbers
 #let draw-name(self) = {
   let vertical-gap-name = 14pt * self.scale
   if self.fingers.len() == 0 {
@@ -173,11 +157,9 @@
   )
 }
 
-//
-// Render
-//
+// Render the chart
 #let render(self) = {
-  style-typ(styles => {
+  style(styles => {
     let fret-number-size = measure(text(8pt * self.scale)[#self.fret-number], styles)
     let chord-name-size = measure(text(12pt * self.scale)[#self.name], styles)
 
@@ -231,12 +213,12 @@
 
 /// Return a new function with default parameters to generate chart chords for stringed instruments.
 ///
-/// - frets (integer): Presets a fret numbers (rows of the grid). *Optional*.
+/// - frets (integer): Presets the number of frets (rows of the grid). *Optional*.
 /// - scale (integer, float): Presets the scale. *Optional*.
 /// - style (string): Sets the chart style. *Optional*.
 ///  - ```js "normal```: chart with right angles.
 ///  - ```js "round```: chart with round angles.
-/// - font (string): Text font name. *Optional*.
+/// - font (string): Sets the name of the text font. *Optional*.
 /// -> function
 #let new-chart-chords(
   frets: 5,
@@ -270,9 +252,9 @@
   ///  #parbreak() With ```js "|"``` you can add capos:
   ///  #parbreak() Example: ```js "115|312"``` $\u{2261}$ ```js "1,1,5|3,1,2"``` $=>$ ```js "fret,start,end|fret,start,end"```
   ///
-  /// - frets (integer): Number of frets (rows of the chart grid). *Optional*.
+  /// - frets (integer): Sets the number of frets (rows of the chart grid). *Optional*.
   /// - fret-number (integer): Shows the fret number that indicates the starting position of the fretboard. *Optional*.
-  /// - scale (integer): Set the scale. *Optional*.
+  /// - scale (integer): Sets the scale. *Optional*.
   /// - name (string, content): Shows the chord name. *Required*.
   /// -> content
   let chart-chord(

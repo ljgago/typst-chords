@@ -1,6 +1,6 @@
 #import "./utils.typ": parse-input-string, top-border-normal, top-border-round
-#let style-typ = style // name change
 
+// A dictionary with the key names for the white-keys and their indices
 #let white-keys-dict = (
   "C1": 0,
   "D1": 1,
@@ -21,6 +21,7 @@
   "E3": 16, "F3b": 16,
 )
 
+// A dictionary with the key names for the black-keys and their indices
 #let black-keys-dict = (
   "C1#": 1,  "D1b": 1,
   "D1#": 2,  "E1b": 2,
@@ -36,16 +37,19 @@
   "D3#": 16, "E3b": 16,
 )
 
+// Returns the indices of a key array of white-keys-dict or black-keys-dict
 #let keys-to-array-index(dict, key-array) = {
   key-array
     .map(k => dict.at(k, default: none))
     .filter(k => k != none)
 }
 
+// Remove the number of the key name (C1# -> C#)
 #let normalize-key-name(key) = {
   return key.replace(regex("\d+"), "").replace(regex("b$"), "\u{266D}")
 }
 
+// Gets the indices min and max of the layout
 #let piano-limits-from-layout(layout) = {
   return if layout == "C" {
     (min: 0, max: 9)
@@ -58,6 +62,7 @@
   }
 }
 
+// Returns the white-keys amount in the layout
 #let white-keys-amount-from-layout(layout) = {
   return if layout == "C" {
     10
@@ -68,6 +73,7 @@
   }
 }
 
+// Returns the black-keys amount in the layout
 #let black-keys-index-from-layout(layout) = {
   return if layout in ("C", "2C") {
     ( left: (1, 4, 8, 11), mid: (5, 12), right: (2, 6, 9, 13) )
@@ -76,14 +82,7 @@
   }
 }
 
-
-//
-// Functions to render
-//
-
-//
 // Draws the piano
-//
 #let draw-piano(self) = {
   // draws the white-keys
   for i in range(self.white-keys.amount) {
@@ -145,9 +144,7 @@
   }
 }
 
-//
 // Draws border top
-//
 #let draw-top-border(self) = {
   let size = (
     width: self.piano.width,
@@ -161,9 +158,7 @@
   }
 }
 
-//
-// Draws tabs
-//
+// Draws tabs or dots over the piano
 #let draw-tabs(self) = {
   // draws tabs on white-keys chord
   for i in self.tabs.white-keys-index {
@@ -203,9 +198,7 @@
   }
 }
 
-//
-// Draws notes
-//
+// Draws pressed note names
 #let draw-key-notes(self) = {
   let gap-note = 1.8pt * self.scale
 
@@ -254,20 +247,16 @@
   }
 }
 
-//
-// Draws the chord name
-//
+// Draws the chord name below the piano
 #let draw-name(self) = {
   let x = self.piano.width / 2
   let y = self.piano.height + self.vertical-gap-name
   place(dx: x, dy: y, place(center + horizon, text(12pt * self.scale)[#self.name]))
 }
 
-//
-// Render
-//
+// Render the piano
 #let render(self) = {
-  style-typ(styles => {
+  style(styles => {
     let chord-name-size = measure(text(12pt * self.scale)[#self.name], styles)
     let note-name-size = measure(text(6pt * self.scale)[#self.keys], styles)
 
@@ -298,7 +287,7 @@
 
 /// Return a new function with default parameters to generate piano chords.
 ///
-/// - layout (string): Preset of layout and piano size, ```js "C"```, ```js "2C"```, ```js "F"```, ```js "2F"```. *Optional*.
+/// - layout (string): Presets the layout and size of the piano, ```js "C"```, ```js "2C"```, ```js "F"```, ```js "2F"```. *Optional*.
 ///  - ```js "C"```: the piano layout starts from key *C1* to *E2* (17 keys).
 ///  - ```js "2C"```: the piano layout starts from key *C1* to *B2* (24 keys, two octaves).
 ///  - ```js "F"```: the piano layout starts from key *F1* to *B2* (19 keys).
@@ -308,7 +297,7 @@
 /// - style (string): Sets the piano style. *Optional*.
 ///  - ```js "normal```: piano with right angles.
 ///  - ```js "round```: piano with round angles.
-/// - font (string): Text font name. *Optional*.
+/// - font (string): Sets the name of the text font. *Optional*.
 /// -> function
 #let new-piano-chords(
   layout: "C",
@@ -319,10 +308,10 @@
 ) = {
   /// Is the returned function by *new-piano-chords*.
   ///
-  /// - keys (string): Keys chord notes from *C1* to *E3*. *Optional*.
+  /// - keys (string): Keys chord notes from *C1* to *E3* (Depends on your layout). *Optional*.
   /// #parbreak() Example: ```js "C1, E1b, G1"``` - (Cm chord)
-  /// - color (color): the pressed key color. *Optional*.
-  /// - layout (string): Preset of layout and piano size, ```js "C"```, ```js "2C"```, ```js "F"```, ```js "2F"```. *Optional*.
+  /// - color (color): Sets the pressed key color. *Optional*.
+  /// - layout (string): Sets the layout and size of the piano, ```js "C"```, ```js "2C"```, ```js "F"```, ```js "2F"```. *Optional*.
   ///  - ```js "C"```: the piano layout starts from key *C1* to *E2* (17 keys).
   ///  - ```js "2C"```: the piano layout starts from key *C1* to *B2* (24 keys, two octaves).
   ///  - ```js "F"```: the piano layout starts from key *F1* to *B2* (19 keys).

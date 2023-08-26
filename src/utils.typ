@@ -1,4 +1,3 @@
-
 // Gets the string from a content data
 #let parse-content(content) = {
   if content.has("text") {
