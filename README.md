@@ -1,177 +1,122 @@
 # chordx
 
-A library to write song lyrics with chord diagrams in Typst. This library uses [CeTZ](https://github.com/johannes-wolf/typst-canvas) (aka typst-canvas) to generate the diagrams.
+A package to write song lyrics with chord diagrams in Typst.
 
 **Table of Contents**
 
+- [Introduction](#introduction)
 - [Usage](#usage)
   - [Typst Packages](#typst-packages)
   - [Local Packages](#local-packages)
 - [Documentation](#documentation)
-  - [Function: new-graph-chords](#function-new-graph-chords)
-  - [Function: new-single-chords](#function-new-single-chords)
+- [Examples](#examples)
+  - [Chart Chords](#chart-chords)
+  - [Piano Chords](#piano-chords)
+  - [Single Chords](#single-chords)
 - [License](#license)
+
+## Introduction
+
+With `chordx` you can easily generate song lyrics with chords for writing songbooks.
+
+`chordx` generates chord charts for stringed instruments (e.g. guitar, ukulele, etc.), piano chords (with diferent piano layouts) and single chords that are chords without charts used to write the chords over a word to write songbooks.
 
 ## Usage
 
-`chordx` has two implementations, one using [CeTZ](https://github.com/johannes-wolf/typst-canvas) and another using native functions.
+`chordx` exports 3 functions that return others with default settings:
 
-The native functions work the same way as the main implementation, in a future it will replace the main implementation, for now you can use both.
-
-```js
-// Using main implementation
-#let graph-chord = new-graph-chords()
-#let single-chord = new-single-chords(style: "italic", weight: "semibold")
-
-// Using native implementation
-#let graph-chord = new-graph-chords-native()
-#let single-chord = new-single-chords-native(style: "italic", weight: "semibold")
-```
+- `new-chart-chords`: used to generate chart chords for stringed instruments.
+- `new-piano-chords`: used to generate piano chords.
+- `new-single-chords`: used to show the chord name over a word.
 
 ### Typst Packages
 
 Typst added an experimental package repository and you can import `chordx` as follows:
 
 ```js
-#import "@preview/chordx:0.1.0": *
+#import "@preview/chordx:0.2.0": *
 ```
 
 ### Local Packages
 
-If the package hasn't been released yet, or if you just want to use it from this repository, you can use `local-packages`
+If the package hasn't been released yet, or if you just want to use it from this repository, you can use _*local-packages*_.
 
-You can read the documentation about typst [local-packages](https://github.com/typst/packages#local-packages) and learn about the path folders used in differents operating systems (Linux / MacOS / Windows).
+You can read the documentation about typst [local-packages]("https://github.com/typst/packages#local-packages") and learn about the path folders used in differents operating systems (Linux / MacOS / Windows).
 
 In Linux you can do:
 
 ```sh
-$ git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/local/chordx-0.1.0
+$ git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/local/chordx/0.2.0
 ```
 
-And import the lib in your file:
+And import the package in your file:
 
 ```js
-#import "@local/chordx:0.1.0": *
+#import "@local/chordx:0.2.0": *
 ```
 
 ## Documentation
 
-With `chordx` you can use 2 functions `new-graph-chords` and `new-single-chords`. These functions returns other functions (a closure) with a preset setting.
+Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation that describes the functions and parameters used in this package. (_Generated with [tidy](https://github.com/Mc-Zen/tidy)_)
 
-### Function: `new-graph-chords`
 
-```js
-// Chord with diagram
-// Return a function with these settings
-#let guitar-chord = new-graph-chords(
-  strings: number,
-  font: string,
-)
-```
 
-- `strings`: number of strings of the instrument (columns of the grid), default: 6, `Optional`
-- `font`: text font name, default: "Linux Libertine", `Optional`
+## Examples:
 
-The returned function from `new-graph-chords` has the following parameters:
+### Chart Chords
 
 ```js
-// Generates a chord diagram
-#guitar-chord(
-  frets: number,
-  fret-number: number or none,
-  capos: array(array) or array(dictionary),
-  fingers: array,
-  notes,
-  chord-name
-)
-```
+#import "@preview/chordx:0.2.0": *
 
-- `frets`: number of frets (rows of the grid), default: 5, `Optional`
-- `fret-number`: shows the fret position, default: none, `Optional`
-- `capos`: adds one o many capos on the graph, default: (), `Optional`
+#let chart-chord = new-chart-chords(scale: 1.5)
+#let chart-chord-round = new-chart-chords(style: "round", scale: 1.5)
 
-  ```js
-    // array(array) or array(dictionary)
-    ((
-      fret: number,
-      start: number,  // the first string
-      end: number     // the last string
-    ),)
-  ```
+// Style "normal"
+#chart-chord(tabs: "x32o1o", fingers: "n32n1n")[C]
+#chart-chord(tabs: "ooo3", fingers: "ooo3")[C]
 
-  - `fret`: number of the fret position relative to grid, `Required`
-  - `start`: number of the first string, `Required`
-  - `end`: number of the last string, `Required`
-
-- `fingers`: shows the finger numbers, default: (), (0: without finger, number: one finger), `Optional`
-- `notes`: shows the notes on the graph ("x": mute note, "n": without note, 0: air note, number: one note), `Required`
-- `chord-name`: shows the chord name, `Required`
-
-Examples:
-
-```js
-#import "@preview/chordx:0.1.0": *
-
-#let guitar-chord = new-graph-chords()
-#let ukulele-chord = new-graph-chords(strings: 4)
-
-// Guitar B chord
-#guitar-chord(
-  capos: ((fret: 2, start: 1, end: 5),), // capos: ((2, 1, 5),)
-  fingers: (0, 1, 2, 3, 4, 1),
-  ("x", "n", 4, 4, 4, "n")
-)[B]
-
-// Ukulele B chord
-#ukulele-chord(
-  capos: ((2, 1, 2),), // capos: ((fret: 2, start: 1, end: 2),)
-  fingers: (3, 2, 1, 1),
-  (4, 3, "n", "n")
-)[B]
+// Style "round"
+#chart-chord-round(tabs: "xn332n", fingers: "o13421", fret-number: 3, capos: "115")[Cm]
+#chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313")[Cm]
 ```
 
 <h3 align="center">
-  <a href="examples/graph-chords.typ">
+  <a href="examples/chart-chords.typ">
     <img
       alt="Graph Chord"
-      src="examples/graph-chords.svg"
-      style="max-width: 100%; width: 200pt; padding: 10px 20px; box-shadow: 1pt 1pt 10pt 0pt #AAAAAA; border-radius: 8pt; box-sizing: border-box; background: white"
+      src="examples/chart-chords.svg"
+      style="max-width: 100%; width: 450pt; padding: 10px 20px; box-shadow: 1pt 1pt 10pt 0pt #AAAAAA; border-radius: 8pt; box-sizing: border-box; background: white"
     >
   </a>
 </h3>
 
-### Function: `new-single-chords`
+
+### Piano Chords
 
 ```js
-// A single chord (without diagram)
-// Return a function with these settings
-#let chord = new-single-chords(
-  style: "italic",
-  weight: "semibold",
-  ...
-)
+#import "@preview/chordx:0.2.0": *
+
+#let piano-chord = new-piano-chords(scale: 1.5)
+#let piano-chord-round = new-piano-chords(scale: 1.5, style: "round")
+
+#piano-chord(layout: "F", keys: "B1, D2#, F2#", color: blue)[B]
+#piano-chord-round(layout: "F", keys: "B1, D2#, F2#", color: red)[B]
 ```
 
-The chord without diagram is used to write the chord over a word. All parameters of `new-single-chords` are the same of `text` of `typst`.
+<h3 align="center">
+  <a href="examples/piano-chords.typ">
+    <img
+      alt="Graph Chord"
+      src="examples/piano-chords.svg"
+      style="max-width: 100%; width: 450pt; padding: 10px 20px; box-shadow: 1pt 1pt 10pt 0pt #AAAAAA; border-radius: 8pt; box-sizing: border-box; background: white"
+    >
+  </a>
+</h3>
 
-The returned function from `new-single-chords` has the following parameters:
-
-```js
-#chord(
-  body,
-  chord-name,
-  body-char-pos
-)
-```
-
-- `body`: is the word or words where the chord goes, `Required`
-- `chord-name`: displays the chord name over the selected words in the body, `Required`
-- `body-char-pos`: positions the chord over a specific character in the body, `[]` or `[0]`: chord centered above the body, `[number]`: chord above character in body, `Required`
-
-Examples:
+### Single Chords
 
 ```js
-#import "@preview/chordx:0.1.0": *
+#import "@preview/chordx:0.2.0": *
 
 #let chord = new-single-chords(style: "italic", weight: "semibold")
 
@@ -185,11 +130,10 @@ In a #chord[one-horse][A7][2] open #chord[sleigh,][D7][3] hey!
     <img
       alt="Single Chord"
       src="examples/single-chords.svg"
-      style="max-width: 100%; width: 400pt; padding: 10px 20px; box-shadow: 1pt 1pt 10pt 0pt #AAAAAA; border-radius: 8pt; box-sizing: border-box; background: white"
+      style="max-width: 100%; width: 450pt; padding: 10px 20px; box-shadow: 1pt 1pt 10pt 0pt #AAAAAA; border-radius: 8pt; box-sizing: border-box; background: white"
     >
   </a>
 </h2>
 
 ## License
-
 [MIT License](./LICENSE)
