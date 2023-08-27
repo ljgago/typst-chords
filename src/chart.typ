@@ -146,13 +146,9 @@
 
 // Draws the chord name below the grid and finger numbers
 #let draw-name(self) = {
-  let vertical-gap-name = 14pt * self.scale
-  if self.fingers.len() == 0 {
-    vertical-gap-name = 9pt * self.scale
-  }
   place(
     dx: self.grid.width / 2,
-    dy: self.grid.height + vertical-gap-name,
+    dy: self.grid.height + self.vertical-gap-name,
     place(center + horizon, text(12pt * self.scale)[#self.name])
   )
 }
@@ -169,11 +165,6 @@
       0pt
     }
 
-    let vertical-gap-name = 14pt * self.scale
-    if self.fingers.len() == 0 {
-      vertical-gap-name = 9pt * self.scale
-    }
-
     let graph = (
       width: self.tabs.len() * self.step,
       height: self.frets * self.step
@@ -181,14 +172,14 @@
 
     let chart = (
       width: graph.width + fret-number-size.width + self.step / 2,
-      height: graph.height + chord-name-size.height / 2 + vertical-gap-name - tabs-height
+      height: graph.height + chord-name-size.height / 2 + self.vertical-gap-name - tabs-height
     )
 
     let canvas = (
       width: calc.max(graph.width / 2, chord-name-size.width / 2) + calc.max(chart.width / 2 + fret-number-size.width, chord-name-size.width / 2),
       height: chart.height,
       dx: calc.max((chord-name-size.width - graph.width) / 2 + self.step / 2, fret-number-size.width + self.step / 2),
-      dy: -(graph.height + chord-name-size.height / 2 + vertical-gap-name),
+      dy: -(graph.height + chord-name-size.height / 2 + self.vertical-gap-name),
     )
 
     box(
@@ -287,6 +278,7 @@
       scale: scale,
       step: step,
       stroke: black + 0.5pt * scale,
+      vertical-gap-name: vertical-gap-name,
       grid: (
         width: (tabs.len() - 1) * step,
         height: frets * step,
