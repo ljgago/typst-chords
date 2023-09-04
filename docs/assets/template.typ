@@ -15,10 +15,9 @@
 ) = {
   // Set the document's basic properties.
   set document(author: authors, title: title)
-  // set page(numbering: "1 / 1", number-align: center)
   set text(font: "Linux Libertine", lang: "en")
-
   set heading(numbering: numbering("1.", 1))
+
   show heading.where(): it => {
     if it.level in (1, 2, 3) {
       block(it, above: 1.2em, below: 1.2em)
@@ -27,7 +26,6 @@
     }
   }
 
-  // show link: set text(fill: purple.darken(30%))
   show link: set text(fill: rgb("#1e8f6f"))
 
   v(4em)
@@ -67,6 +65,11 @@
     numbering: "1 / 1",
     header: locate(loc => {
       let i = counter(page).at(loc).first()
+
+      if i in (1, 2) {
+        return
+      }
+
       if calc.odd(i) {
         h(1fr) + text(0.95em, smallcaps(title))
       } else {
