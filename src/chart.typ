@@ -204,12 +204,12 @@
 
 /// Return a new function with default parameters to generate chart chords for stringed instruments.
 ///
-/// - frets (integer): Presets the number of frets (rows of the grid). *Optional*.
-/// - scale (integer, float): Presets the scale. *Optional*.
-/// - style (string): Sets the chart style. *Optional*.
+/// - frets (int): Presets the number of frets (rows of the grid). *Optional*.
+/// - scale (int, float): Presets the scale. *Optional*.
+/// - style (str): Sets the chart style. *Optional*.
 ///  - ```js "normal```: chart with right angles.
 ///  - ```js "round```: chart with round angles.
-/// - font (string): Sets the name of the text font. *Optional*.
+/// - font (str): Sets the name of the text font. *Optional*.
 /// -> function
 #let new-chart-chords(
   frets: 5,
@@ -219,7 +219,7 @@
 ) = {
   /// Is the returned function by *new-chart-chords*.
   ///
-  /// - tabs (string): Shows the tabs on the chart. *Optional*.
+  /// - tabs (str): Shows the tabs on the chart. *Optional*.
   ///  - *x*: mute note.
   ///  - *o*: air note.
   ///  - *n*: without note.
@@ -230,12 +230,12 @@
   ///  - ```js "x32o1o"``` - (6 strings - C Guitar chord).
   ///  - ```js "ooo3"``` - (4 strings - C Ukulele chord).
   ///
-  /// - fingers (string): Shows the finger numbers. *Optional*.
+  /// - fingers (str): Shows the finger numbers. *Optional*.
   ///  - *n*, *x*, *o*: without finger,
   ///  - *number*: one finger
   ///  #parbreak() Example: ```js "n32n1n"``` - (Fingers for guitar chord: C)
   ///
-  /// - capos (string): Adds one or many capos on the chart. *Optional*.
+  /// - capos (str): Adds one or many capos on the chart. *Optional*.
   ///  - 1#super[st] digit -- *fret*: fret position.
   ///  - 2#super[nd] digit -- *start*: lowest starting string.
   ///  - 3#super[rd] digit -- *end*: highest ending string.
@@ -243,10 +243,10 @@
   ///  #parbreak() With ```js "|"``` you can add capos:
   ///  #parbreak() Example: ```js "115|312"``` $\u{2261}$ ```js "1,1,5|3,1,2"``` $=>$ ```js "fret,start,end|fret,start,end"```
   ///
-  /// - frets (integer): Sets the number of frets (rows of the chart grid). *Optional*.
-  /// - fret-number (integer): Shows the fret number that indicates the starting position of the fretboard. *Optional*.
-  /// - scale (integer): Sets the scale. *Optional*.
-  /// - name (string, content): Shows the chord name. *Required*.
+  /// - frets (int): Sets the number of frets (rows of the chart grid). *Optional*.
+  /// - fret-number (int): Shows the fret number that indicates the starting position of the fretboard. *Optional*.
+  /// - scale (int): Sets the scale. *Optional*.
+  /// - name (str, content): Shows the chord name. *Required*.
   /// -> content
   let chart-chord(
     tabs: "",
@@ -257,6 +257,15 @@
     scale: scale,
     name
   ) = {
+    assert.eq(type(tabs), str)
+    assert.eq(type(fingers), str)
+    assert.eq(type(capos), str)
+    assert.eq(type(frets), int)
+    assert(type(fret-number) == int or fret-number == none, message: "type of `fret-number` must to be `int` or `none`")
+    assert(type(scale) in (int, float), message: "type of `scale` must to be a `int` or `float`")
+    assert(type(name) in (str, content), message: "type of `name` must to be `str` or `content`")
+    assert(style in ("normal", "round"), message: "`style` must to be \"normal\" or \"round\"")
+
     let tabs = parse-input-string(tabs)
     let fingers = parse-input-string(fingers)
     let capos = parse-input-string(capos)

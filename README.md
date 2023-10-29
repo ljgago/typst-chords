@@ -96,8 +96,8 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 #let piano-chord = new-piano-chords(scale: 1.5)
 #let piano-chord-round = new-piano-chords(scale: 1.5, style: "round")
 
-#piano-chord(layout: "F", keys: "B1, D2#, F2#", color: blue)[B]
-#piano-chord-round(layout: "F", keys: "B1, D2#, F2#", color: red)[B]
+#piano-chord(layout: "F", keys: "B1, D2#, F2#", fill: blue)[B]
+#piano-chord-round(layout: "F", keys: "B1, D2#, F2#", fill: red)[B]
 ```
 
 <h3 align="center">

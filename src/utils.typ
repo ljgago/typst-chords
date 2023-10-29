@@ -1,24 +1,24 @@
 // Gets the string from a content data
-#let parse-content(content) = {
-  if content.has("text") {
-    return content.at("text").codepoints()
+#let parse-content(content-data) = {
+  if content-data.has("text") {
+    return content-data.at("text").codepoints()
   }
-  if content.has("double") {
-    return (content,)
+  if content-data.has("double") {
+    return (content-data,)
   }
-  if content.has("children") {
-    for item in content.at("children") {
+  if content-data.has("children") {
+    for item in content-data.at("children") {
       parse-content(item)
     }
   }
-  if content.has("body") {
-    parse-content(content.at("body"))
+  if content-data.has("body") {
+    parse-content(content-data.at("body"))
   }
-  if content.has("base") {
-    parse-content(content.at("base"))
+  if content-data.has("base") {
+    parse-content(content-data.at("base"))
   }
-  if content.has("equation") {
-    parse-content(content.at("equation"))
+  if content-data.has("equation") {
+    parse-content(content-data.at("equation"))
   }
 }
 

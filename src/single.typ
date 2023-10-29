@@ -17,9 +17,9 @@
     name,
     position
   ) = {
-    assert.eq(type(body), "content")
-    assert.eq(type(name), "content")
-    assert.eq(type(position), "content")
+    assert.eq(type(body), content)
+    assert.eq(type(name), content)
+    assert.eq(type(position), content)
 
     style(styles => {
       let horizontal-offset = 0pt
