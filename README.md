@@ -81,9 +81,9 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 <h3 align="center">
   <a href="examples/chart-chords.typ">
     <img
-      alt="Graph Chord"
+      alt="Chart Chord"
       src="examples/chart-chords.svg"
-      style="max-width: 100%; width: 450pt; padding: 10px 20px; box-shadow: 1pt 1pt 10pt 0pt #AAAAAA; border-radius: 8pt; box-sizing: border-box; background: white"
+      style="max-width: 100%; width: 450pt;"
     >
   </a>
 </h3>
@@ -103,9 +103,9 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 <h3 align="center">
   <a href="examples/piano-chords.typ">
     <img
-      alt="Graph Chord"
+      alt="Piano Chord"
       src="examples/piano-chords.svg"
-      style="max-width: 100%; width: 450pt; padding: 10px 20px; box-shadow: 1pt 1pt 10pt 0pt #AAAAAA; border-radius: 8pt; box-sizing: border-box; background: white"
+      style="max-width: 100%; width: 450pt;"
     >
   </a>
 </h3>
@@ -127,7 +127,7 @@ In a #chord[one-horse][A7][2] open #chord[sleigh,][D7][3] hey!
     <img
       alt="Single Chord"
       src="examples/single-chords.svg"
-      style="max-width: 100%; width: 450pt; padding: 10px 20px; box-shadow: 1pt 1pt 10pt 0pt #AAAAAA; border-radius: 8pt; box-sizing: border-box; background: white"
+      style="max-width: 100%; width: 450pt;"
     >
   </a>
 </h2>
