@@ -2,8 +2,8 @@
 
 #set page(width: auto, height: auto, margin: 0pt)
 
-#let piano-chord = new-piano-chords(layout: "F", scale: 1.5)
-#let piano-chord-round = new-piano-chords(layout: "F", scale: 1.5, style: "round")
+#let piano-chord = new-piano-chords(layout: "F", size: 18pt)
+#let piano-chord-round = new-piano-chords(layout: "F", size: 1.5em, style: "round")
 
 #rect(
   stroke: none,

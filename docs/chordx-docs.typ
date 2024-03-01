@@ -1,4 +1,4 @@
-#import "@preview/tidy:0.1.0"
+#import "@preview/tidy:0.2.0"
 #import "assets/template.typ": design, custom
 #show link: underline
 
@@ -8,7 +8,7 @@
   authors: (
     "Leonardo Javier Gago",
   ),
-  date: "August 25, 2023",
+  date: "March 1, 2024",
   version: toml("../typst.toml").package.version,
   url: "https://github.com/ljgago/typst-chords"
 )
@@ -39,16 +39,16 @@
 ==== Example:
 
 ```typ-lang
-#import "@preview/chordx:0.2.0": *
+#import "@preview/chordx:0.3.0": *
 
-#let chart-chord = new-chart-chords(scale: 1.5)
-#let chart-chord-round = new-chart-chords(style: "round", scale: 1.5)
+#let chart-chord = new-chart-chords(size: 18pt)
+#let chart-chord-round = new-chart-chords(style: "round", size: 18pt)
 
 #chart-chord(tabs: "x32o1o", fingers: "n32n1n")[C]
 #h(2em)
 #chart-chord(tabs: "ooo3", fingers: "ooo3")[C]
 #h(4em)
-#chart-chord-round(tabs: "xn332n", fingers: "o13421", fret-number: 3, capos: "115")[Cm]
+#chart-chord-round(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115")[Cm]
 #h(2em)
 #chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313")[Cm]
 ```
@@ -56,15 +56,15 @@
 #{
   import "../src/chart.typ": new-chart-chords
 
-  let chart-chord = new-chart-chords(scale: 1.5)
-  let chart-chord-round = new-chart-chords(style: "round", scale: 1.5)
+  let chart-chord = new-chart-chords(size: 18pt)
+  let chart-chord-round = new-chart-chords(style: "round", size: 18pt)
 
   v(1em)
   chart-chord(tabs: "x32o1o", fingers: "n32n1n")[C]
   h(2em)
   chart-chord(tabs: "ooo3", fingers: "ooo3")[C]
   h(4em)
-  chart-chord-round(tabs: "xn332n", fingers: "o13421", fret-number: 3, capos: "115")[Cm]
+  chart-chord-round(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115")[Cm]
   h(2em)
   chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313")[Cm]
   v(2em)
@@ -80,10 +80,10 @@
 ==== Example:
 
 ```typ-lang
-#import "@preview/chordx:0.2.0": *
+#import "@preview/chordx:0.3.0": *
 
-#let piano-chord = new-piano-chords(layout: "F", scale: 1.5)
-#let piano-chord-round = new-piano-chords(layout: "F", scale: 1.5, style: "round")
+#let piano-chord = new-piano-chords(layout: "F", size: 18pt)
+#let piano-chord-round = new-piano-chords(layout: "F", size: 18pt, style: "round")
 
 #piano-chord(keys: "B1, D2#, F2#", fill: blue)[B]
 #h(4em)
@@ -93,8 +93,8 @@
 #{
   import "../src/piano.typ": new-piano-chords
 
-  let piano-chord = new-piano-chords(layout: "F", scale: 1.5)
-  let piano-chord-round = new-piano-chords(layout: "F", scale: 1.5, style: "round")
+  let piano-chord = new-piano-chords(layout: "F", size: 18pt)
+  let piano-chord-round = new-piano-chords(layout: "F", size: 18pt, style: "round")
 
   v(1em)
   piano-chord(keys: "B1, D2#, F2#", fill: blue)[B]
@@ -113,7 +113,7 @@
 ==== Example:
 
 ```typ-lang
-#import "@preview/chordx:0.2.0": *
+#import "@preview/chordx:0.3.0": *
 
 #let chord = new-single-chords(style: "italic", weight: "semibold")
 

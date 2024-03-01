@@ -1,3 +1,14 @@
+// Gets the relative scale from a size of length type
+#let size-to-scale(size, default) = {
+  let length-type = repr(size).match(regex("pt|mm|cm|in|em")).text
+
+  if length-type == "em" {
+    size.em
+  } else {
+    size / default
+  }
+}
+
 // Gets the string from a content data
 #let parse-content(content-data) = {
   if content-data.has("text") {
