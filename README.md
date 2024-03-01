@@ -13,6 +13,7 @@ A package to write song lyrics with chord diagrams in Typst.
   - [Chart Chords](#chart-chords)
   - [Piano Chords](#piano-chords)
   - [Single Chords](#single-chords)
+- [Changelog](#changelog)
 - [License](#license)
 
 ## Introduction
@@ -34,7 +35,7 @@ With `chordx` you can easily generate song lyrics with chords for writing songbo
 Typst added an experimental package repository and you can import `chordx` as follows:
 
 ```typ
-#import "@preview/chordx:0.2.0": *
+#import "@preview/chordx:0.3.0": *
 ```
 
 ### Local Packages
@@ -46,13 +47,13 @@ You can read the documentation about typst [local-packages](https://github.com/t
 In Linux you can do:
 
 ```sh
-git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/local/chordx/0.2.0
+git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/local/chordx/0.3.0
 ```
 
 And import the package in your file:
 
 ```typ
-#import "@local/chordx:0.2.0": *
+#import "@local/chordx:0.3.0": *
 ```
 
 ## Documentation
@@ -64,17 +65,17 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ### Chart Chords
 
 ```typ
-#import "@preview/chordx:0.2.0": *
+#import "@preview/chordx:0.3.0": *
 
-#let chart-chord = new-chart-chords(scale: 1.5)
-#let chart-chord-round = new-chart-chords(style: "round", scale: 1.5)
+#let chart-chord = new-chart-chords(size: 18pt)
+#let chart-chord-round = new-chart-chords(style: "round", size: 1.5em)
 
 // Style "normal"
 #chart-chord(tabs: "x32o1o", fingers: "n32n1n")[C]
 #chart-chord(tabs: "ooo3", fingers: "ooo3")[C]
 
 // Style "round"
-#chart-chord-round(tabs: "xn332n", fingers: "o13421", fret-number: 3, capos: "115")[Cm]
+#chart-chord-round(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115")[Cm]
 #chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313")[Cm]
 ```
 
@@ -91,13 +92,13 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ### Piano Chords
 
 ```typ
-#import "@preview/chordx:0.2.0": *
+#import "@preview/chordx:0.3.0": *
 
-#let piano-chord = new-piano-chords(scale: 1.5)
-#let piano-chord-round = new-piano-chords(scale: 1.5, style: "round")
+#let piano-chord = new-piano-chords(layout: "F", size: 18pt)
+#let piano-chord-round = new-piano-chords(layout: "F", size: 1.5em, style: "round")
 
-#piano-chord(layout: "F", keys: "B1, D2#, F2#", color: blue)[B]
-#piano-chord-round(layout: "F", keys: "B1, D2#, F2#", color: red)[B]
+#piano-chord(keys: "B1, D2#, F2#", fill: blue)[B]
+#piano-chord-round(keys: "B1, D2#, F2#", fill: red)[B]
 ```
 
 <h3 align="center">
@@ -113,7 +114,7 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ### Single Chords
 
 ```typ
-#import "@preview/chordx:0.2.0": *
+#import "@preview/chordx:0.3.0": *
 
 #let chord = new-single-chords(style: "italic", weight: "semibold")
 
@@ -131,6 +132,10 @@ In a #chord[one-horse][A7][2] open #chord[sleigh,][D7][3] hey!
     >
   </a>
 </h2>
+
+## Changelog
+
+You can read the latest changes in [CHANGELOG.md](./CHANGELOG.md)
 
 ## License
 [MIT License](./LICENSE)

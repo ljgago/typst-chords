@@ -19,7 +19,7 @@
   })
 )
 
-#let gchord = new-chart-chords(style: "round", scale: 1.16666666)
+#let gchord = new-chart-chords(style: "round", size: 14pt)
 #let chord = new-single-chords(style: "italic", weight: "semibold")
 
 = Jingle Bells / #text(weight: "regular")[_Christmas Song_]

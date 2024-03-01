@@ -1,4 +1,4 @@
-#import "./utils.typ": parse-input-string, top-border-normal, top-border-round
+#import "./utils.typ": size-to-scale, parse-input-string, top-border-normal, top-border-round
 
 // A dictionary with the key names for the white-keys and their indices
 #let white-keys-dict = (
@@ -87,7 +87,7 @@
   // draws the white-keys
   for i in range(self.white-keys.amount) {
     let key-pressed = i + self.limit.min
-    let fill-color = if key-pressed in self.tabs.white-keys-index {self.color} else {white}
+    let fill-color = if key-pressed in self.tabs.white-keys-index {self.fill} else {white}
     let x = i * self.white-keys.width
 
     let radius-style = if self.style == "normal" {
@@ -117,7 +117,7 @@
   // draw the black-keys
   for i in range(self.white-keys.amount) {
     let key-pressed = i + self.limit.min
-    let fill-color = if key-pressed in self.tabs.black-keys-index {self.color} else {black}
+    let fill-color = if key-pressed in self.tabs.black-keys-index {self.fill} else {black}
     let base = i * self.white-keys.width - self.black-keys.width / 2
     let x = 0pt
 
@@ -292,49 +292,50 @@
 ///  - ```js "2C"```: the piano layout starts from key *C1* to *B2* (24 keys, two octaves).
 ///  - ```js "F"```: the piano layout starts from key *F1* to *B2* (19 keys).
 ///  - ```js "2F"```: the piano layout stars from key *F1* to *E3* (24 keys, two octaves).
-/// - scale (integer, float): Presets the scale. *Optional*.
-/// - color (color): Presets the pressed key color. *Optional*.
+/// - fill (color): Presets the fill color of the pressed key. *Optional*.
 /// - style (string): Sets the piano style. *Optional*.
 ///  - ```js "normal```: piano with right angles.
 ///  - ```js "round```: piano with round angles.
+/// - size (length): Presets the size. The default value is set to the chord name's font size. *Optional*.
 /// - font (string): Sets the name of the text font. *Optional*.
 /// -> function
 #let new-piano-chords(
   layout: "C",
-  scale: 1,
-  color: gray,
+  fill: gray,
   style: "normal",
+  size: 12pt,
   font: "Linux Libertine"
 ) = {
   /// Is the returned function by *new-piano-chords*.
   ///
   /// - keys (string): Keys chord notes from *C1* to *E3* (Depends on your layout). *Optional*.
-  /// #parbreak() Example: ```js "C1, E1b, G1"``` - (Cm chord)
-  /// - color (color): Sets the pressed key color. *Optional*.
+  /// #parbreak() Example: ```js "C1, E1b, G1"``` (Cm chord)
+  /// - fill (color): Sets the fill color of the pressed key. *Optional*.
   /// - layout (string): Sets the layout and size of the piano, ```js "C"```, ```js "2C"```, ```js "F"```, ```js "2F"```. *Optional*.
   ///  - ```js "C"```: the piano layout starts from key *C1* to *E2* (17 keys).
   ///  - ```js "2C"```: the piano layout starts from key *C1* to *B2* (24 keys, two octaves).
   ///  - ```js "F"```: the piano layout starts from key *F1* to *B2* (19 keys).
   ///  - ```js "2F"```: the piano layout stars from key *F1* to *E3* (24 keys, two octaves).
-  /// - scale (integer, float): Sets the scale. *Optional*.
+  /// - size (length): Sets the size. The default value is set to the chord name's font size. *Optional*.
   /// - name (string, content): Shows the chord name. *Required*.
   /// -> content
   let piano-chord(
     keys: "",
-    color: color,
+    fill: fill,
     layout: layout,
-    scale: scale,
+    size: size,
     name
   ) = {
-    assert.eq(type(keys), "string")
-    assert.eq(type(color), "color")
-    assert(type(scale) in ("integer", "float"), message: "type of `scale` must to be a \"integer\" or \"float\"")
+    assert.eq(type(keys), str)
+    assert.eq(type(fill), color)
+    assert.eq(type(size), length)
     assert(upper(layout) in ("C", "2C", "F", "2F"), message: "`layout` must to be \"C\", \"2C\", \"F\" or \"2F\"")
     assert(style in ("normal", "round"), message: "`style` must to be \"normal\" or \"round\"")
-    assert(type(name) in ("string", "content"), message: "type of `name` must to be \"string\" or \"content\"")
+    assert(type(name) in (str, content), message: "type of `name` must to be `str` or `content`")
 
     set text(font: font)
 
+    let scale = size-to-scale(size, 12pt)
     let step = 7.5pt
     let layout = upper(layout)
     let white-keys-amount = white-keys-amount-from-layout(layout)
@@ -372,7 +373,7 @@
       scale: scale,
       limit: piano-limits,
       style: style,
-      color: color,
+      fill: fill,
       name: name,
     )
 
