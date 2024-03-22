@@ -35,7 +35,7 @@ With `chordx` you can easily generate song lyrics with chords for writing songbo
 Typst added an experimental package repository and you can import `chordx` as follows:
 
 ```typ
-#import "@preview/chordx:0.3.0": *
+#import "@preview/chordx:0.4.0": *
 ```
 
 ### Local Packages
@@ -53,7 +53,7 @@ git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/l
 And import the package in your file:
 
 ```typ
-#import "@local/chordx:0.3.0": *
+#import "@local/chordx:0.4.0": *
 ```
 
 ## Documentation
@@ -65,7 +65,7 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ### Chart Chords
 
 ```typ
-#import "@preview/chordx:0.3.0": *
+#import "@preview/chordx:0.4.0": *
 
 #let chart-chord = new-chart-chords(size: 18pt)
 #let chart-chord-round = new-chart-chords(style: "round", size: 1.5em)
@@ -92,7 +92,7 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ### Piano Chords
 
 ```typ
-#import "@preview/chordx:0.3.0": *
+#import "@preview/chordx:0.4.0": *
 
 #let piano-chord = new-piano-chords(layout: "F", size: 18pt)
 #let piano-chord-round = new-piano-chords(layout: "F", size: 1.5em, style: "round")
@@ -114,9 +114,14 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ### Single Chords
 
 ```typ
-#import "@preview/chordx:0.3.0": *
+#import "@preview/chordx:0.4.0": *
 
-#let chord = new-single-chords(style: "italic", weight: "semibold")
+#let chord = new-single-chords(
+  font: "PT Sans",
+  size: 12pt,
+  weight: "semibold",
+  background-fill: silver
+)
 
 #chord[Jingle][G][2] bells, jingle bells, jingle #chord[all][C][2] the #chord[way!][G][2] \
 #chord[Oh][C][] what fun it #chord[is][G][] to ride \

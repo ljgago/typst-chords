@@ -1,5 +1,6 @@
 #import "../lib.typ": *
 
+#set document(date: none)
 #set page(width: auto, height: auto, margin: 0pt)
 
 #let chart-chord = new-chart-chords(size: 18pt)

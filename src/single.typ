@@ -2,9 +2,10 @@
 
 /// The single chords are chords without diagram used to show the chord name over a word.
 ///
-/// - ..text-params (auto): Are the same parameters of *text* from the standard library of *typst*. *Required*.
+/// - ..text-params (auto): Are the same parameters of *text* from the standard library of *typst*. *Optional*.
+/// - background-fill (color): Is the background color. *Optional*.
 /// -> function
-#let new-single-chords(..text-params) = {
+#let new-single-chords(..text-params, background-fill: rgb("#ffffff00")) = {
   /// Is the returned function by *new-single-chords*.
   ///
   /// - body (content): Is the word or words where the chord goes. *Required*.
@@ -76,7 +77,12 @@
             anchor + bottom,
             dx: canvas.dx,
             dy: canvas.dy,
-            text(..text-params)[#name]
+            box(
+              fill: background-fill,
+              outset: 3pt,
+              radius: 2pt,
+              text(..text-params)[#name]
+            )
           )
           place(
             anchor + bottom,

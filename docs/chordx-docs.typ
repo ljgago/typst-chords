@@ -1,5 +1,7 @@
 #import "@preview/tidy:0.2.0"
 #import "assets/template.typ": design, custom
+
+#set document(date: none)
 #show link: underline
 
 #show: design.with(
@@ -39,7 +41,7 @@
 ==== Example:
 
 ```typ-lang
-#import "@preview/chordx:0.3.0": *
+#import "@preview/chordx:0.4.0": *
 
 #let chart-chord = new-chart-chords(size: 18pt)
 #let chart-chord-round = new-chart-chords(style: "round", size: 18pt)
@@ -80,7 +82,7 @@
 ==== Example:
 
 ```typ-lang
-#import "@preview/chordx:0.3.0": *
+#import "@preview/chordx:0.4.0": *
 
 #let piano-chord = new-piano-chords(layout: "F", size: 18pt)
 #let piano-chord-round = new-piano-chords(layout: "F", size: 18pt, style: "round")
@@ -113,9 +115,14 @@
 ==== Example:
 
 ```typ-lang
-#import "@preview/chordx:0.3.0": *
+#import "@preview/chordx:0.4.0": *
 
-#let chord = new-single-chords(style: "italic", weight: "semibold")
+#let chord = new-single-chords(
+  font: "PT Sans",
+  size: 10pt,
+  weight: "semibold",
+  background-fill: silver
+)
 
 #chord[Jingle][G][2] bells, jingle bells, jingle #chord[all][C][2] the #chord[way!][G][2] \
 #chord[Oh][C][] what fun it #chord[is][G][] to ride \
@@ -125,10 +132,15 @@ In a #chord[one-horse][A7][2] open #chord[sleigh,][D7][3] hey!
 #{
   import "../src/single.typ": new-single-chords
 
-  let chord = new-single-chords(style: "italic", weight: "semibold")
+  let chord = new-single-chords(
+    font: "PT Sans",
+    size: 10pt,
+    weight: "semibold",
+    background-fill: silver
+  )
 
   [
-    #chord[Jingle][G][2] bells, jingle bells, jingle #chord[all][C][1] the #chord[way!][G][2] \
+    #chord[Jingle][G][2] bells, jingle bells, jingle #chord[all][C][2] the #chord[way!][G][2] \
     #chord[Oh][C][] what fun it #chord[is][G][] to ride \
     In a #chord[one-horse][A7][2] open #chord[sleigh,][D7][3] hey!
   ]

@@ -1,5 +1,6 @@
 #import "../lib.typ": *
 
+#set document(date: none)
 #set align(center)
 #set page(
   margin: (top: 2.5cm, bottom: 2.5cm),
@@ -20,7 +21,12 @@
 )
 
 #let gchord = new-chart-chords(style: "round", size: 14pt)
-#let chord = new-single-chords(style: "italic", weight: "semibold")
+#let chord = new-single-chords(
+  font: "PT Sans",
+  size: 12pt,
+  weight: "semibold",
+  background-fill: silver
+)
 
 = Jingle Bells / #text(weight: "regular")[_Christmas Song_]
 

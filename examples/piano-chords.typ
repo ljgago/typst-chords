@@ -1,5 +1,6 @@
 #import "../lib.typ": *
 
+#set document(date: none)
 #set page(width: auto, height: auto, margin: 0pt)
 
 #let piano-chord = new-piano-chords(layout: "F", size: 18pt)
