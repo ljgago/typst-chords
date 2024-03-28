@@ -10,6 +10,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - New background color in single chords.
 
+### Changed
+
+- Replaced `new-chart-chords`, `new-piano-chords` and `new-single-chords` functions by `chart-chord`, `piano-chord` and `single-chord` removing the closure functions. To use the [with](https://typst.app/docs/reference/foundations/function/#definitions-with) property for preset the arguments.
+
 ## [v0.3.0](https://github.com/ljgago/typst-chords/compare/v0.2.0...v0.3.0) - 2024-03-01
 
 ### Changed

@@ -4,7 +4,7 @@
 #set page(width: auto, height: auto, margin: 0pt)
 #set text(14pt)
 
-#let chord = new-single-chords(
+#let chord = single-chord.with(
   font: "PT Sans",
   size: 12pt,
   weight: "semibold",

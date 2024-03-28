@@ -6,3 +6,4 @@ authors = ["Leonardo Gago <https://github.com/ljgago>"]
 license = "MIT"
 description = "A package to write song lyrics with chord diagrams in Typst."
 repository = "https://github.com/ljgago/typst-chords"
+keywords = ["chord", "chords", "guitar", "lyrics", "music", "piano", "song", "strings", "tab"]

@@ -43,8 +43,8 @@
 ```typ-lang
 #import "@preview/chordx:0.4.0": *
 
-#let chart-chord = new-chart-chords(size: 18pt)
-#let chart-chord-round = new-chart-chords(style: "round", size: 18pt)
+#let chart-chord = chart-chord.with(size: 18pt)
+#let chart-chord-round = chart-chord.with(style: "round", size: 18pt)
 
 #chart-chord(tabs: "x32o1o", fingers: "n32n1n")[C]
 #h(2em)
@@ -56,10 +56,10 @@
 ```
 
 #{
-  import "../src/chart.typ": new-chart-chords
+  import "../src/chart.typ": chart-chord
 
-  let chart-chord = new-chart-chords(size: 18pt)
-  let chart-chord-round = new-chart-chords(style: "round", size: 18pt)
+  let chart-chord = chart-chord.with(size: 18pt)
+  let chart-chord-round = chart-chord.with(style: "round", size: 18pt)
 
   v(1em)
   chart-chord(tabs: "x32o1o", fingers: "n32n1n")[C]
@@ -71,6 +71,8 @@
   chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313")[Cm]
   v(2em)
 }
+
+#pagebreak()
 
 == Piano Chords
 
@@ -84,26 +86,28 @@
 ```typ-lang
 #import "@preview/chordx:0.4.0": *
 
-#let piano-chord = new-piano-chords(layout: "F", size: 18pt)
-#let piano-chord-round = new-piano-chords(layout: "F", size: 18pt, style: "round")
+#let piano-chord-normal = piano-chord.with(layout: "F", size: 18pt)
+#let piano-chord-round = piano-chord.with(layout: "F", size: 18pt, style: "round")
 
-#piano-chord(keys: "B1, D2#, F2#", fill: blue)[B]
+#piano-chord-normal(keys: "B1, D2#, F2#", fill: blue)[B]
 #h(4em)
 #piano-chord-round(keys: "B1, D2#, F2#", fill: red)[B]
 ```
 
 #{
-  import "../src/piano.typ": new-piano-chords
+  import "../src/piano.typ": piano-chord
 
-  let piano-chord = new-piano-chords(layout: "F", size: 18pt)
-  let piano-chord-round = new-piano-chords(layout: "F", size: 18pt, style: "round")
+  let piano-chord-normal = piano-chord.with(layout: "F", size: 16pt)
+  let piano-chord-round = piano-chord.with(layout: "F", size: 18pt, style: "round")
 
   v(1em)
-  piano-chord(keys: "B1, D2#, F2#", fill: blue)[B]
+  piano-chord-normal(keys: "B1, D2#, F2#", fill: blue)[B]
   h(4em)
   piano-chord-round(keys: "B1, D2#, F2#", fill: red)[B]
   v(2em)
 }
+
+#pagebreak()
 
 == Single Chords
 
@@ -117,7 +121,7 @@
 ```typ-lang
 #import "@preview/chordx:0.4.0": *
 
-#let chord = new-single-chords(
+#let chord = single-chord.with(
   font: "PT Sans",
   size: 10pt,
   weight: "semibold",
@@ -130,9 +134,9 @@ In a #chord[one-horse][A7][2] open #chord[sleigh,][D7][3] hey!
 ```
 
 #{
-  import "../src/single.typ": new-single-chords
+  import "../src/single.typ": single-chord
 
-  let chord = new-single-chords(
+  let chord = single-chord.with(
     font: "PT Sans",
     size: 10pt,
     weight: "semibold",

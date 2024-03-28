@@ -255,10 +255,9 @@
 }
 
 // Render the piano
-#let render(self) = {
-  style(styles => {
-    let chord-name-size = measure(text(12pt * self.scale)[#self.name], styles)
-    let note-name-size = measure(text(6pt * self.scale)[#self.keys], styles)
+#let render(self) = context {
+    let chord-name-size = measure(text(12pt * self.scale)[#self.name])
+    let note-name-size = measure(text(6pt * self.scale)[#self.keys])
 
     let canvas = (
       width: calc.max(self.piano.width, chord-name-size.width),
@@ -282,7 +281,7 @@
         }
       )
     )
-  })
+  }
 }
 
 /// Return a new function with default parameters to generate piano chords.
@@ -299,85 +298,80 @@
 /// - size (length): Presets the size. The default value is set to the chord name's font size. *Optional*.
 /// - font (string): Sets the name of the text font. *Optional*.
 /// -> function
-#let new-piano-chords(
+
+/// Generates a piano chord.
+///
+/// - keys (string): Keys chord notes from *C1* to *E3* (Depends on your layout). *Optional*.
+/// #parbreak() Example: ```js "C1, E1b, G1"``` (Cm chord)
+/// - layout (string): Sets the layout and size of the piano, ```js "C"```, ```js "2C"```, ```js "F"```, ```js "2F"```. *Optional*.
+///  - ```js "C"```: the piano layout starts from key *C1* to *E2* (17 keys).
+///  - ```js "2C"```: the piano layout starts from key *C1* to *B2* (24 keys, two octaves).
+///  - ```js "F"```: the piano layout starts from key *F1* to *B2* (19 keys).
+///  - ```js "2F"```: the piano layout stars from key *F1* to *E3* (24 keys, two octaves).
+/// - fill (color): Sets the fill color of the pressed key. *Optional*.
+/// - font (string): Sets the name of the text font. *Optional*.
+/// - size (length): Sets the size. The default value is set to the chord name's font size. *Optional*.
+/// - name (string, content): Shows the chord name. *Required*.
+/// -> content
+#let piano-chord(
+  keys: "",
   layout: "C",
   fill: gray,
-  style: "normal",
   size: 12pt,
-  font: "Linux Libertine"
+  style: "normal",
+  font: "Linux Libertine",
+  name
 ) = {
-  /// Is the returned function by *new-piano-chords*.
-  ///
-  /// - keys (string): Keys chord notes from *C1* to *E3* (Depends on your layout). *Optional*.
-  /// #parbreak() Example: ```js "C1, E1b, G1"``` (Cm chord)
-  /// - fill (color): Sets the fill color of the pressed key. *Optional*.
-  /// - layout (string): Sets the layout and size of the piano, ```js "C"```, ```js "2C"```, ```js "F"```, ```js "2F"```. *Optional*.
-  ///  - ```js "C"```: the piano layout starts from key *C1* to *E2* (17 keys).
-  ///  - ```js "2C"```: the piano layout starts from key *C1* to *B2* (24 keys, two octaves).
-  ///  - ```js "F"```: the piano layout starts from key *F1* to *B2* (19 keys).
-  ///  - ```js "2F"```: the piano layout stars from key *F1* to *E3* (24 keys, two octaves).
-  /// - size (length): Sets the size. The default value is set to the chord name's font size. *Optional*.
-  /// - name (string, content): Shows the chord name. *Required*.
-  /// -> content
-  let piano-chord(
-    keys: "",
+  assert.eq(type(keys), str)
+  assert.eq(type(fill), color)
+  assert.eq(type(size), length)
+  assert(upper(layout) in ("C", "2C", "F", "2F"), message: "`layout` must to be \"C\", \"2C\", \"F\" or \"2F\"")
+  assert(style in ("normal", "round"), message: "`style` must to be \"normal\" or \"round\"")
+  assert(type(name) in (str, content), message: "type of `name` must to be `str` or `content`")
+
+  set text(font: font)
+
+  let scale = size-to-scale(size, 12pt)
+  let step = 7.5pt
+  let layout = upper(layout)
+  let white-keys-amount = white-keys-amount-from-layout(layout)
+  let black-keys-index = black-keys-index-from-layout(layout)
+  let piano-limits = piano-limits-from-layout(layout)
+  let keys = parse-input-string(keys)
+
+  let self = (
+    white-keys: (
+      width: step * scale,
+      height: 25pt * scale,
+      amount: white-keys-amount,
+    ),
+    black-keys: (
+      width: (step / 3) * scale * 2,
+      height: 17pt * scale,
+      shift: 1pt * scale,             // small shifting of the black-keys
+      left: black-keys-index.left,    // black-keys index with left shift
+      mid: black-keys-index.mid,      // black-keys index without shift
+      right: black-keys-index.right,  // black-keys index with right shift
+    ),
+    piano: (
+      width: white-keys-amount * step * scale,
+      height: 25pt * scale
+    ),
+    tabs: (
+      white-keys-index: keys-to-array-index(white-keys-dict, keys),
+      black-keys-index: keys-to-array-index(black-keys-dict, keys)
+    ),
+    round: 1pt * scale,
+    stroke: black + 0.5pt * scale,
+    vertical-gap-name: 14pt * scale,
+    top-border-height: 1.1pt * scale,
+    keys: keys,
+    scale: scale,
+    limit: piano-limits,
+    style: style,
     fill: fill,
-    layout: layout,
-    size: size,
-    name
-  ) = {
-    assert.eq(type(keys), str)
-    assert.eq(type(fill), color)
-    assert.eq(type(size), length)
-    assert(upper(layout) in ("C", "2C", "F", "2F"), message: "`layout` must to be \"C\", \"2C\", \"F\" or \"2F\"")
-    assert(style in ("normal", "round"), message: "`style` must to be \"normal\" or \"round\"")
-    assert(type(name) in (str, content), message: "type of `name` must to be `str` or `content`")
+    name: name,
+  )
 
-    set text(font: font)
-
-    let scale = size-to-scale(size, 12pt)
-    let step = 7.5pt
-    let layout = upper(layout)
-    let white-keys-amount = white-keys-amount-from-layout(layout)
-    let black-keys-index = black-keys-index-from-layout(layout)
-    let piano-limits = piano-limits-from-layout(layout)
-    let keys = parse-input-string(keys)
-
-    let self = (
-      white-keys: (
-        width: step * scale,
-        height: 25pt * scale,
-        amount: white-keys-amount,
-      ),
-      black-keys: (
-        width: (step / 3) * scale * 2,
-        height: 17pt * scale,
-        shift: 1pt * scale,             // small shifting of the black-keys
-        left: black-keys-index.left,    // black-keys index with left shift
-        mid: black-keys-index.mid,      // black-keys index without shift
-        right: black-keys-index.right,  // black-keys index with right shift
-      ),
-      piano: (
-        width: white-keys-amount * step * scale,
-        height: 25pt * scale
-      ),
-      tabs: (
-        white-keys-index: keys-to-array-index(white-keys-dict, keys),
-        black-keys-index: keys-to-array-index(black-keys-dict, keys)
-      ),
-      round: 1pt * scale,
-      stroke: black + 0.5pt * scale,
-      vertical-gap-name: 14pt * scale,
-      top-border-height: 1.1pt * scale,
-      keys: keys,
-      scale: scale,
-      limit: piano-limits,
-      style: style,
-      fill: fill,
-      name: name,
-    )
-
-    render(self)
-  }
-  return piano-chord
+  render(self)
 }

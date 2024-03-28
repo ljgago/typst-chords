@@ -20,8 +20,8 @@
   })
 )
 
-#let gchord = new-chart-chords(style: "round", size: 14pt)
-#let chord = new-single-chords(
+#let gchord = chart-chord.with(style: "round", size: 14pt)
+#let chord = single-chord.with(
   font: "PT Sans",
   size: 12pt,
   weight: "semibold",
