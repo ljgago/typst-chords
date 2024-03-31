@@ -258,7 +258,7 @@
 #let render(self) = {
   style(styles => {
     let chord-name-size = measure(text(12pt * self.scale)[#self.name], styles)
-    let note-name-size = measure(text(6pt * self.scale)[#self.keys], styles)
+    let note-name-size = measure(text(6pt * self.scale)[#self.name], styles)
 
     let canvas = (
       width: calc.max(self.piano.width, chord-name-size.width),
