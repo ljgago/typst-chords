@@ -67,16 +67,16 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ```typ
 #import "@preview/chordx:0.4.0": *
 
-#let chart-chord-normal = chart-chord.with(size: 18pt)
-#let chart-chord-round = chart-chord.with(style: "round", size: 1.5em)
+#let chart-chord-rect = chart-chord.with(size: 18pt)
+#let chart-chord-rounded = chart-chord.with(style: "rounded", size: 1.5em)
 
-// Style "normal"
-#chart-chord-normal(tabs: "x32o1o", fingers: "n32n1n")[C]
-#chart-chord-normal(tabs: "ooo3", fingers: "ooo3")[C]
+// Style "rect"
+#chart-chord-rect(tabs: "x32o1o", fingers: "n32n1n")[C]
+#chart-chord-rect(tabs: "ooo3", fingers: "ooo3")[C]
 
-// Style "round"
-#chart-chord-round(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115")[Cm]
-#chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313")[Cm]
+// Style "rounded"
+#chart-chord-rounded(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115")[Cm]
+#chart-chord-rounded(tabs: "onnn", fingers: "n111", capos: "313")[Cm]
 ```
 
 <h3 align="center">
@@ -94,10 +94,10 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ```typ
 #import "@preview/chordx:0.4.0": *
 
-#let piano-chord-normal = new-piano-chords(layout: "F", size: 18pt)
-#let piano-chord-round = new-piano-chords(layout: "F", size: 1.5em, style: "round")
+#let piano-chord-rect = new-piano-chords(layout: "F", size: 18pt)
+#let piano-chord-rounded = new-piano-chords(layout: "F", size: 1.5em, style: "rounded")
 
-#piano-chord-normal(keys: "B1, D2#, F2#", fill: blue)[B]
+#piano-chord-rect(keys: "B1, D2#, F2#", fill: blue)[B]
 #piano-chord-round(keys: "B1, D2#, F2#", fill: red)[B]
 ```
 
@@ -120,7 +120,7 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
   font: "PT Sans",
   size: 12pt,
   weight: "semibold",
-  background-fill: silver
+  background: silver
 )
 
 #chord[Jingle][G][2] bells, jingle bells, jingle #chord[all][C][2] the #chord[way!][G][2] \

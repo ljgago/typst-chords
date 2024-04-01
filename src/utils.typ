@@ -62,8 +62,8 @@
   }
 }
 
-// Draws a border with right angles
-#let top-border-normal(size, stroke, scale) = {
+// Draws a border with rect angles
+#let top-border-rect(size, stroke, scale) = {
   place(
     dy: -size.height,
     rect(
@@ -75,8 +75,8 @@
   )
 }
 
-// Draws a border with round angles
-#let top-border-round(size, stroke, scale) = {
+// Draws a border with rounded angles
+#let top-border-rounded(size, stroke, scale) = {
   let bezier-radius = 0.5519150244935105707435627pt * scale
   let radius = 1pt * scale
 
@@ -94,5 +94,17 @@
       ((radius, 0pt), (bezier-radius, 0pt)),
       ((0pt, radius), (0pt, -bezier-radius)),
     )
+  )
+}
+
+#let total-bounds(b1, b2) = {
+  let dx = calc.min(b1.dx, b2.dx)
+  let dy = calc.min(b1.dy, b2.dy)
+
+  return (
+    dx: dx,
+    dy: dy,
+    width: calc.max(b1.dx + b1.width, b2.dx + b2.width) - dx,
+    height: calc.max(b1.dy + b1.height, b2.dy + b2.height) - dy
   )
 }

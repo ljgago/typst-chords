@@ -20,12 +20,12 @@
   })
 )
 
-#let gchord = chart-chord.with(style: "round", size: 14pt)
+#let gchord = chart-chord.with(style: "rounded", size: 14pt)
 #let chord = single-chord.with(
   font: "PT Sans",
   size: 12pt,
   weight: "semibold",
-  background-fill: silver
+  background: silver
 )
 
 = Jingle Bells / #text(weight: "regular")[_Christmas Song_]

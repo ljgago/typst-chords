@@ -43,32 +43,32 @@
 ```typ-lang
 #import "@preview/chordx:0.4.0": *
 
-#let chart-chord = chart-chord.with(size: 18pt)
-#let chart-chord-round = chart-chord.with(style: "round", size: 18pt)
+#let chart-chord-rect = chart-chord.with(size: 18pt)
+#let chart-chord-rounded = chart-chord.with(style: "rounded", size: 18pt)
 
-#chart-chord(tabs: "x32o1o", fingers: "n32n1n")[C]
+#chart-chord-rect(tabs: "x32o1o", fingers: "n32n1n")[C]
 #h(2em)
-#chart-chord(tabs: "ooo3", fingers: "ooo3")[C]
+#chart-chord-rect(tabs: "ooo3", fingers: "ooo3")[C]
 #h(4em)
-#chart-chord-round(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115")[Cm]
+#chart-chord-rounded(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115")[Cm]
 #h(2em)
-#chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313")[Cm]
+#chart-chord-rounded(tabs: "onnn", fingers: "n111", capos: "313")[Cm]
 ```
 
 #{
   import "../src/chart.typ": chart-chord
 
-  let chart-chord = chart-chord.with(size: 18pt)
-  let chart-chord-round = chart-chord.with(style: "round", size: 18pt)
+  let chart-chord-rect = chart-chord.with(size: 18pt)
+  let chart-chord-rounded = chart-chord.with(style: "rounded", size: 18pt)
 
   v(1em)
-  chart-chord(tabs: "x32o1o", fingers: "n32n1n")[C]
+  chart-chord-rect(tabs: "x32o1o", fingers: "n32n1n")[C]
   h(2em)
-  chart-chord(tabs: "ooo3", fingers: "ooo3")[C]
+  chart-chord-rect(tabs: "ooo3", fingers: "ooo3")[C]
   h(4em)
-  chart-chord-round(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115")[Cm]
+  chart-chord-rounded(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115")[Cm]
   h(2em)
-  chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313")[Cm]
+  chart-chord-rounded(tabs: "onnn", fingers: "n111", capos: "313")[Cm]
   v(2em)
 }
 
@@ -86,24 +86,24 @@
 ```typ-lang
 #import "@preview/chordx:0.4.0": *
 
-#let piano-chord-normal = piano-chord.with(layout: "F", size: 18pt)
-#let piano-chord-round = piano-chord.with(layout: "F", size: 18pt, style: "round")
+#let piano-chord-rect = piano-chord.with(layout: "F", size: 18pt)
+#let piano-chord-rounded = piano-chord.with(layout: "F", size: 18pt, style: "rounded")
 
-#piano-chord-normal(keys: "B1, D2#, F2#", fill: blue)[B]
+#piano-chord-rect(keys: "B1, D2#, F2#", fill: blue)[B]
 #h(4em)
-#piano-chord-round(keys: "B1, D2#, F2#", fill: red)[B]
+#piano-chord-rounded(keys: "B1, D2#, F2#", fill: red)[B]
 ```
 
 #{
   import "../src/piano.typ": piano-chord
 
-  let piano-chord-normal = piano-chord.with(layout: "F", size: 16pt)
-  let piano-chord-round = piano-chord.with(layout: "F", size: 18pt, style: "round")
+  let piano-chord-rect = piano-chord.with(layout: "F", size: 18pt)
+  let piano-chord-rounded = piano-chord.with(layout: "F", size: 18pt, style: "rounded")
 
   v(1em)
-  piano-chord-normal(keys: "B1, D2#, F2#", fill: blue)[B]
+  piano-chord-rect(keys: "B1, D2#, F2#", fill: blue)[B]
   h(4em)
-  piano-chord-round(keys: "B1, D2#, F2#", fill: red)[B]
+  piano-chord-rounded(keys: "B1, D2#, F2#", fill: red)[B]
   v(2em)
 }
 
@@ -125,7 +125,7 @@
   font: "PT Sans",
   size: 10pt,
   weight: "semibold",
-  background-fill: silver
+  background: silver
 )
 
 #chord[Jingle][G][2] bells, jingle bells, jingle #chord[all][C][2] the #chord[way!][G][2] \
@@ -140,7 +140,7 @@ In a #chord[one-horse][A7][2] open #chord[sleigh,][D7][3] hey!
     font: "PT Sans",
     size: 10pt,
     weight: "semibold",
-    background-fill: silver
+    background: silver
   )
 
   [

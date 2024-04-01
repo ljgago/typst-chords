@@ -8,7 +8,7 @@
   font: "PT Sans",
   size: 12pt,
   weight: "semibold",
-  background-fill: silver
+  background: silver
 )
 
 #rect(
