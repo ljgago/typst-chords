@@ -256,8 +256,8 @@
 
 // Render the piano
 #let render(self) = context {
-    let chord-name-size = measure(text(12pt * self.scale)[#self.name])
-    let note-name-size = measure(text(6pt * self.scale)[#self.keys])
+    let chord-name-size = measure(text(12pt * self.scale)[#self.name], styles)
+    let note-name-size = measure(text(6pt * self.scale)[#self.name], styles)
 
     let canvas = (
       width: calc.max(self.piano.width, chord-name-size.width),
