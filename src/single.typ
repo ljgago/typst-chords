@@ -1,24 +1,22 @@
-#import "./utils.typ": parse-content, has-number
+#import "./utils.typ": parse-content, has-number, size-to-scale
 
 /// The single chord a chord without diagram used to show the chord name over a word.
 ///
-/// - ..text-arguments (auto): Are the same arguments of *text* from the standard library of *typst*. *Optional*.
+/// - ..text-params (auto): Embeds the native *text* parameters from the standard library of *typst*. *Optional*.
 ///
-/// - background (color): Is the background color. *Optional*.
+/// - background (color): Sets the background color of the chord. *Optional*.
 ///
 /// - body (content): Is the word or words where the chord goes. *Required*.
 ///
 /// - name (content): Displays the chord name over the selected words in the body. *Required*.
 ///
-/// - position (content): Positions the chord over a specific character in the body. *Required*.
-///
-///  - ```typ []```: chord name centered over the body.
-///
-///  - ```typ [number]```: the chord name starts over a specific body character. (First position ```js [1]```)
+/// - position (content): Positions the chord on a specific body character. *Required*.
+///  - ```typ []```: chord name centered on the body.
+///  - ```typ [number]```: the chord name starts on a specific body character. (First position ```typ [1]```)
 ///
 /// -> content
 #let single-chord(
-  ..text-arguments,
+  ..text-params,
   background: rgb(0, 0, 0, 0),
   body,
   name,
@@ -29,11 +27,20 @@
   assert.eq(type(name), content)
   assert.eq(type(position), content)
 
+  let scale = 1
+
+  if "size" in text-params.named().keys() {
+    let (size,) = text-params.named()
+    scale = size-to-scale(size, 12pt)
+  }
+
   let horizontal-offset = 0pt
   let vertical-offset = 1.2em
   let anchor = center
-  let body-size = measure(body)
-  let name-size = measure(text(..text-arguments)[#name])
+
+  let size = (:)
+  size.body = measure(body)
+  size.name = measure(text(..text-params)[#name])
   let body-array = parse-content(body)
 
   if position.has("text") {
@@ -52,7 +59,7 @@
     // gets the char-offset to center the first character of
     // the chord with the selected character of the body
     let chord-char = parse-content(name).at(0)
-    let chord-char-width = measure(text(..text-arguments)[#chord-char]).width
+    let chord-char-width = measure(text(..text-params)[#chord-char]).width
     let body-char-width = measure([#body-array.at(pos)]).width
     let char-offset = (chord-char-width - body-char-width) / 2
 
@@ -61,38 +68,40 @@
     anchor = left
   }
 
-  let canvas = (
+  size.canvas = (
     width: 0pt,
-    height: body-size.height + name-size.height + 0.8em,
+    height: size.body.height + size.name.height + 0.8em,
     dx: horizontal-offset,
     dy: -vertical-offset
   )
 
-  canvas.width = if horizontal-offset > 0pt and name-size.width + horizontal-offset >= body-size.width {
-    name-size.width + horizontal-offset
-  } else if horizontal-offset <= 0pt and name-size.width >= body-size.width {
-    name-size.width
-  } else {
-    body-size.width
+  size.canvas.width = {
+    if horizontal-offset > 0pt and size.name.width + horizontal-offset >= size.body.width {
+      size.name.width + horizontal-offset
+    } else if horizontal-offset <= 0pt and size.name.width >= size.body.width {
+      size.name.width
+    } else {
+      size.body.width
+    }
   }
 
   box(
-    width: canvas.width,
-    height: canvas.height, {
+    width: size.canvas.width,
+    height: size.canvas.height, {
       place(
         anchor + bottom,
-        dx: canvas.dx,
-        dy: canvas.dy,
-        box(
+        dx: size.canvas.dx,
+        dy: size.canvas.dy,
+        highlight(
           fill: background,
-          outset: 3pt,
-          radius: 2pt,
-          text(..text-arguments)[#name]
+          extent: 2pt * scale,
+          radius: 2pt * scale,
+          text(..text-params)[#name]
         )
       )
       place(
         anchor + bottom,
-        box(..body-size, body)
+        box(..size.body, body)
       )
     }
   )

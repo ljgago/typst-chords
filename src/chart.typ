@@ -1,4 +1,4 @@
-#import "./utils.typ": size-to-scale, parse-input-string, top-border-rect, top-border-rounded, total-bounds
+#import "./utils.typ": size-to-scale, parse-input-string, top-border-sharp, top-border-round, total-bounds, set-default-arguments
 
 // Draws a horizontal border that indicates the starting of the fretboard
 #let draw-nut(self) = {
@@ -9,10 +9,10 @@
 
   let elements = {
     if self.fret in (none, 1) {
-      if self.style == "normal" {
-        top-border-rect(size, self.stroke, self.scale)
+      if self.design == "sharp" {
+        top-border-sharp(size, self.stroke, self.scale)
       } else {
-        top-border-rounded(size, self.stroke, self.scale)
+        top-border-round(size, self.stroke, self.scale)
       }
     }
   }
@@ -37,7 +37,7 @@
       rect(
         width: self.grid.width,
         height: self.grid.height,
-        radius: if self.style == "normal" {0pt} else {radius},
+        radius: if self.design == "sharp" {0pt} else {radius},
         stroke: self.stroke
       )
     )
@@ -123,9 +123,9 @@
 
   return (
     bounds: (
-      dx: 0pt,
+      dx: radius,
       dy: -(4pt * self.scale + radius),
-      width: self.grid.width,
+      width: self.grid.width + radius,
       height: 2 * radius
     ),
     elements: elements
@@ -180,7 +180,7 @@
       if type(finger) == int and finger > 0 and finger < 6 {
         place(
           left + top,
-          dx: col * self.step - 1.3pt * self.scale,
+          dx: col * self.step - 1.5pt * self.scale,
           dy: self.grid.height + 1.5pt * self.scale,
           text(6pt * self.scale)[#finger])
       }
@@ -214,6 +214,10 @@
   let dy = self.step / 2 - 0.2pt * self.scale
   let size = measure(text(8pt * self.scale)[#self.fret])
 
+  if size.width == 0pt {
+    dx = 0pt
+  }
+
   let elements = {
     place(left + top,
       dx: dx,
@@ -235,8 +239,8 @@
 
 // Draws the chord name below the grid and finger numbers
 #let draw-name(self) = {
-  let vertical-gap = {
-    if self.position == "bottom" and self.fingers.len() == 0 {
+  let vertical-offset = {
+    if self.position == "top" and self.fingers.len() == 0 {
       5pt * self.scale
     } else {
       10pt * self.scale
@@ -245,12 +249,13 @@
 
   let anchor = top
   let dx = self.grid.width / 2
-  let dy = self.grid.height + vertical-gap
+  let dy = self.grid.height + vertical-offset
 
-  if self.position == "top" {
-    dy = -vertical-gap
+  if self.position == "bottom" {
+    dy = -vertical-offset
     anchor = bottom
   }
+
 
   let elements = {
     place(
@@ -261,7 +266,7 @@
         fill: self.background,
         outset: 2pt * self.scale,
         radius: 2pt * self.scale,
-        text(12pt * self.scale)[#self.name]
+        text(size: 12pt * self.scale, ..self.text-params)[#self.name]
       )
     )
   }
@@ -274,9 +279,12 @@
     height: self.frets-amount * self.step
   )
 
-  dx = (self.grid.width - size.name.width) / 2
+  size.name.width += 1pt * self.scale
 
-  if self.position == "top" {
+  dx = (self.grid.width - size.name.width) / 2
+  // dx = (self.grid.width - size.name.width + 4pt * self.scale) / 2
+
+  if self.position == "bottom" {
     dy -= size.name.height
   }
 
@@ -333,7 +341,9 @@
 
 /// Generates a chart chord for stringed instruments.
 ///
-/// - tabs (string): Shows the tabs on the chart. *Optional*.
+/// - ..text-params (auto): Embeds the native *text* parameters from the standard library of *typst*. *Optional*.
+///
+/// - tabs (str): Shows the tabs on the chart. *Optional*.
 ///  - *x*: mute note.
 ///  - *o*: air note.
 ///  - *n*: without note.
@@ -344,12 +354,12 @@
 ///  - ```js "x32o1o"``` - (6 strings - C Guitar chord).
 ///  - ```js "ooo3"``` - (4 strings - C Ukulele chord).
 ///
-/// - fingers (string): Shows the finger numbers. *Optional*.
+/// - fingers (str): Shows the finger numbers. *Optional*.
 ///  - *n*, *x*, *o*: without finger,
 ///  - *number*: one finger
 ///  #parbreak() Example: ```js "n32n1n"``` - (Fingers for guitar chord: C)
 ///
-/// - capos (string): Adds one or many capos on the chart. *Optional*.
+/// - capos (str): Adds one or many capos on the chart. *Optional*.
 ///  - 1#super[st] digit -- *fret*: fret position.
 ///  - 2#super[nd] digit -- *start*: lowest starting string.
 ///  - 3#super[rd] digit -- *end*: highest ending string.
@@ -357,37 +367,32 @@
 ///  #parbreak() With ```js "|"``` you can add capos:
 ///  #parbreak() Example: ```js "115|312"``` $\u{2261}$ ```js "1,1,5|3,1,2"``` $=>$ ```js "fret,start,end|fret,start,end"```
 ///
-/// - fret (integer): Shows the fret number that indicates the starting position of the fretboard. *Optional*.
+/// - fret (int): Shows the fret number that indicates the starting position of the fretboard. *Optional*.
 ///
-/// - frets-amount (integer): Sets the frets amount (the grid rows). *Optional*.
+/// - frets-amount (int): Sets the frets amount (the grid rows). *Optional*.
 ///
-/// - size (length): Sets the chart size. The default value is set to the chord name's font size. *Optional*.
+/// - design (str): Sets the chart design. *Optional*.
+///  - ```js "sharp"```: chart with sharp corners.
+///  - ```js "round"```: chart with round corners.
 ///
-/// - style (string): Sets the chart style. *Optional*.
-///  - ```js "rect"```: chart with rect angles.
-///  - ```js "rounded"```: chart with rounded angles.
-///
-/// - position (string): Sets the chord name position. *Optional*.
-///  - ```js "bottom"```: chord name in the bottom position.
-///  - ```js "top"```: chord name in the top position.
-///
-/// - font (string): Sets the name of the text font. *Optional*.
+/// - position (str): Sets the chord chart position. *Optional*.
+///  - ```js "top"```: chord chart in top position.
+///  - ```js "bottom"```: chord chart in bottom position.
 ///
 /// - background (color): Sets the background color of the chord name. *Optional*.
 ///
-/// - name (string, content): Shows the chord name. *Required*.
+/// - name (str, content): Shows the chord name. *Required*.
 ///
 /// -> content
 #let chart-chord(
+  ..text-params,
   tabs: "",
   fingers: "",
   capos: "",
   fret: none,
   frets-amount: 5,
-  size: 12pt,
-  style: "rect",
-  position: "bottom",
-  font: "Linux Libertine",
+  design: "sharp",
+  position: "top",
   background: rgb(0, 0, 0, 0),
   name
 ) = {
@@ -395,11 +400,10 @@
   assert.eq(type(fingers), str)
   assert.eq(type(capos), str)
   assert.eq(type(frets-amount), int)
-  assert.eq(type(size), length)
   assert.eq(type(background), color)
   assert(type(fret) == int or fret == none, message: "type of 'fret' must to be 'int' or 'none'")
   assert(type(name) in (str, content), message: "type of 'name' must to be 'str' or 'content'")
-  assert(style in ("rect", "rounded"), message: "'style' must to be '\"rect\"' or '\"rounded\"'")
+  assert(design in ("sharp", "round"), message: "'design' must to be '\"sharp\"' or '\"round\"'")
   assert(position in ("bottom", "top"), message: "'position' must to be '\"bottom\"' or '\"top\"'")
 
   let tabs = parse-input-string(tabs)
@@ -409,11 +413,13 @@
     capos = (capos,)
   }
 
+  let (size, font, ..text-params) = set-default-arguments(text-params.named())
+
+  set text(font: font)
+
   let scale = size-to-scale(size, 12pt)
   let step = 5pt * scale
   let stroke = black + 0.5pt * scale
-
-  set text(font: font)
 
   let self = (
     grid: (
@@ -425,14 +431,15 @@
     scale: scale,
     step: step,
     stroke: black + 0.5pt * scale,
-    position: position,
-    background: background,
-    style: style,
+    text-params: text-params,
     tabs: tabs,
     fingers: fingers,
     capos: capos,
-    frets-amount: frets-amount,
     fret: fret,
+    frets-amount: frets-amount,
+    design: design,
+    position: position,
+    background: background,
     name: name,
   )
 

@@ -1,4 +1,4 @@
-#import "./utils.typ": size-to-scale, parse-input-string, top-border-rect, top-border-rounded, total-bounds
+#import "./utils.typ": size-to-scale, parse-input-string, top-border-sharp, top-border-round, total-bounds, set-default-arguments
 
 // A dictionary with the key names for the white-keys and their indices
 #let white-keys-dict = (
@@ -91,7 +91,7 @@
       let fill-color = if key-pressed in self.tabs.white-keys-index { self.fill } else { white }
       let dx = i * self.white-keys.width
 
-      let radius-style = if self.style == "normal" {
+      let radius-design = if self.design == "sharp" {
         0pt
       } else {
         if i == 0 {
@@ -108,7 +108,7 @@
         rect(
           width: self.white-keys.width,
           height: self.white-keys.height,
-          radius: radius-style,
+          radius: radius-design,
           stroke: self.stroke,
           fill: fill-color
         )
@@ -137,7 +137,7 @@
         rect(
           width: self.black-keys.width,
           height: self.black-keys.height,
-          radius: if self.style == "normal" {0pt} else {(bottom: self.round)},
+          radius: if self.design == "sharp" {0pt} else {(bottom: self.round)},
           stroke: self.stroke,
           fill: fill-color
         )
@@ -164,10 +164,10 @@
   )
 
   let elements = {
-    if self.style == "rect" {
-      top-border-rect(size, self.stroke, self.scale)
+    if self.design == "sharp" {
+      top-border-sharp(size, self.stroke, self.scale)
     } else {
-      top-border-rounded(size, self.stroke, self.scale)
+      top-border-round(size, self.stroke, self.scale)
     }
   }
 
@@ -236,7 +236,7 @@
 
 // Draws pressed note names
 #let draw-key-notes(self) = {
-  let gap-note = 1.8pt * self.scale
+  let note-offset = 1.8pt * self.scale
 
   let elements = {
     // white-keys
@@ -250,7 +250,7 @@
       }
 
       let dx = (i - self.limit.min + 0.5) * self.white-keys.width
-      let dy = self.piano.height + gap-note
+      let dy = self.piano.height + note-offset
 
       place(dx: dx, dy: dy, place(center + top, text(6pt * self.scale)[#key-name]),
       )
@@ -267,7 +267,7 @@
       }
 
       let dx = 0pt
-      let dy = -(self.top-border-height + gap-note)
+      let dy = -(self.top-border-height + note-offset)
       let base = (i - self.limit.min) * self.white-keys.width
 
       if i in self.black-keys.left {
@@ -290,13 +290,13 @@
   size.key = measure(text(6pt * self.scale)[~])
   size.total = (
     width: self.piano.width,
-    height: self.piano.height + (gap-note + size.key.height) * 2 + border
+    height: self.piano.height + (note-offset + size.key.height) * 2 + border
   )
 
   return (
     bounds: (
       dx: 0pt,
-      dy: -(gap-note + size.key.height + border),
+      dy: -(note-offset + size.key.height + border),
       width: size.total.width,
       height: size.total.height
     ),
@@ -308,16 +308,16 @@
 #let draw-name(self) = {
   let size = (:)
   size.name = measure(text(12pt * self.scale)[#self.name])
-  let vertical-gap = 10pt * self.scale
+  let vertical-offset = 10pt * self.scale
 
   let dx = self.piano.width / 2
-  let dy = self.piano.height + vertical-gap
+  let dy = self.piano.height + vertical-offset
   let anchor = top
 
-  if self.position == "top" {
+  if self.position == "bottom" {
     let border = 1.2pt * self.scale
     dx = self.piano.width / 2
-    dy = -(vertical-gap + border)
+    dy = -(vertical-offset + border)
     anchor = bottom
   }
 
@@ -330,12 +330,12 @@
         fill: self.background,
         outset: 2pt * self.scale,
         radius: 2pt * self.scale,
-        text(12pt * self.scale)[#self.name]
+        text(size: 12pt * self.scale, ..self.text-params)[#self.name]
       )
     )
   }
 
-  if self.position == "top" {
+  if self.position == "bottom" {
     dy -= size.name.height
   }
 
@@ -392,10 +392,12 @@
 
 /// Generates a piano chord.
 ///
-/// - keys (string): Keys chord notes from *C1* to *E3* (Depends on your layout). *Optional*.
+/// - ..text-params (auto): Embeds the native *text* parameters from the standard library of *typst*. *Optional*.
+///
+/// - keys (str): Keys chord notes from *C1* to *E3* (Depends on your layout). *Optional*.
 /// #parbreak() Example: ```js "C1, E1b, G1"``` (Cm chord)
 ///
-/// - layout (string): Sets the layout and size of the piano, ```js "C"```, ```js "2C"```, ```js "F"```, ```js "2F"```. *Optional*.
+/// - layout (str): Sets the layout and size of the piano, ```js "C"```, ```js "2C"```, ```js "F"```, ```js "2F"```. *Optional*.
 ///  - ```js "C"```: the piano layout starts from key *C1* to *E2* (17 keys).
 ///  - ```js "2C"```: the piano layout starts from key *C1* to *B2* (24 keys, two octaves).
 ///  - ```js "F"```: the piano layout starts from key *F1* to *B2* (19 keys).
@@ -403,40 +405,38 @@
 ///
 /// - fill (color): Sets the fill color of the pressed key. *Optional*.
 ///
-/// - size (length): Sets the size. The default value is set to the chord name's font size. *Optional*.
+/// - design (str): Sets the piano design. *Optional*.
+///  - ```js "sharp```: piano with sharp corners.
+///  - ```js "round```: piano with round corners.
 ///
-/// - style (string): Sets the piano style. *Optional*.
-///  - ```js "rect```: piano with rect angles.
-///  - ```js "rounded```: piano with rounded angles.
-///
-/// - position (string): Sets the chord name position. *Optional*.
-///  - ```js "bottom"```: chord name in the bottom position.
-///  - ```js "top"```: chord name in the top position.
-///
-/// - font (string): Sets the name of the text font. *Optional*.
+/// - position (str): Sets the chord chart position. *Optional*.
+///  - ```js "top"```: chord chart in top position.
+///  - ```js "bottom"```: chord chart in bottom position.
 ///
 /// - background (color): Sets the background color of the chord name. *Optional*.
 ///
-/// - name (string, content): Shows the chord name. *Required*.
+/// - name (str, content): Shows the chord name. *Required*.
 ///
 /// -> content
 #let piano-chord(
+  ..text-params,
   keys: "",
   layout: "C",
   fill: gray,
-  size: 12pt,
-  style: "rect",
-  position: "bottom",
-  font: "Linux Libertine",
+  design: "sharp",
+  position: "top",
   background: rgb(0, 0, 0, 0),
   name
 ) = {
   assert.eq(type(keys), str)
   assert.eq(type(fill), color)
-  assert.eq(type(size), length)
+  assert.eq(type(background), color)
   assert(upper(layout) in ("C", "2C", "F", "2F"), message: "`layout` must to be \"C\", \"2C\", \"F\" or \"2F\"")
-  assert(style in ("rect", "rounded"), message: "`style` must to be \"rect\" or \"rounded\"")
+  assert(design in ("sharp", "round"), message: "`design` must to be \"sharp\" or \"round\"")
+  assert(position in ("bottom", "top"), message: "'position' must to be '\"bottom\"' or '\"top\"'")
   assert(type(name) in (str, content), message: "type of `name` must to be `str` or `content`")
+
+  let (size, font, ..text-params) = set-default-arguments(text-params.named())
 
   set text(font: font)
 
@@ -470,16 +470,17 @@
       white-keys-index: keys-to-array-index(white-keys-dict, keys),
       black-keys-index: keys-to-array-index(black-keys-dict, keys)
     ),
-    position: position,
-    background: background,
+    text-params: text-params,
     round: 1pt * scale,
     stroke: black + 0.5pt * scale,
     top-border-height: 1.1pt * scale,
     keys: keys,
-    scale: scale,
     limit: piano-limits,
-    style: style,
     fill: fill,
+    scale: scale,
+    design: design,
+    position: position,
+    background: background,
     name: name,
   )
 

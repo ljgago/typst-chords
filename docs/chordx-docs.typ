@@ -1,4 +1,4 @@
-#import "@preview/tidy:0.2.0"
+#import "@preview/tidy:0.3.0"
 #import "assets/template.typ": design, custom
 
 #set document(date: none)
@@ -10,7 +10,7 @@
   authors: (
     "Leonardo Javier Gago",
   ),
-  date: "March 1, 2024",
+  date: "June 30, 2024",
   version: toml("../typst.toml").package.version,
   url: "https://github.com/ljgago/typst-chords"
 )
@@ -43,32 +43,40 @@
 ```typ-lang
 #import "@preview/chordx:0.4.0": *
 
-#let chart-chord-rect = chart-chord.with(size: 18pt)
-#let chart-chord-rounded = chart-chord.with(style: "rounded", size: 18pt)
+#let chart-chord-sharp = chart-chord.with(size: 18pt)
+#let chart-chord-round = chart-chord.with(size: 18pt, design: "round")
 
-#chart-chord-rect(tabs: "x32o1o", fingers: "n32n1n")[C]
-#h(2em)
-#chart-chord-rect(tabs: "ooo3", fingers: "ooo3")[C]
-#h(4em)
-#chart-chord-rounded(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115")[Cm]
-#h(2em)
-#chart-chord-rounded(tabs: "onnn", fingers: "n111", capos: "313")[Cm]
+// Design "sharp"
+#chart-chord-sharp(tabs: "x32o1o", fingers: "n32n1n")[C]
+#chart-chord-sharp(tabs: "ooo3", fingers: "ooo3")[C]
+
+// Desigh "round" with position "bottom"
+#chart-chord-round(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115", position: "bottom")[Cm]
+#chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313", position: "bottom")[Cm]
+
+// Design "round" with background color in chord name
+#chart-chord-round(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115", background: silver)[Cm]
+#chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313", background: silver)[Cm]
 ```
 
 #{
   import "../src/chart.typ": chart-chord
 
-  let chart-chord-rect = chart-chord.with(size: 18pt)
-  let chart-chord-rounded = chart-chord.with(style: "rounded", size: 18pt)
+  let chart-chord-sharp = chart-chord.with(size: 18pt)
+  let chart-chord-round = chart-chord.with(size: 18pt, design: "round")
 
   v(1em)
-  chart-chord-rect(tabs: "x32o1o", fingers: "n32n1n")[C]
+  chart-chord-sharp(tabs: "x32o1o", fingers: "n32n1n")[C]
   h(2em)
-  chart-chord-rect(tabs: "ooo3", fingers: "ooo3")[C]
-  h(4em)
-  chart-chord-rounded(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115")[Cm]
+  chart-chord-sharp(tabs: "ooo3", fingers: "ooo3")[C]
+  h(1fr)
+  chart-chord-round(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115", position: "bottom")[Cm]
   h(2em)
-  chart-chord-rounded(tabs: "onnn", fingers: "n111", capos: "313")[Cm]
+  chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313", position: "bottom")[Cm]
+  h(1fr)
+  chart-chord-round(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115", background: silver)[Cm]
+  h(2em)
+  chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313", background: silver)[Cm]
   v(2em)
 }
 
@@ -86,24 +94,28 @@
 ```typ-lang
 #import "@preview/chordx:0.4.0": *
 
-#let piano-chord-rect = piano-chord.with(layout: "F", size: 18pt)
-#let piano-chord-rounded = piano-chord.with(layout: "F", size: 18pt, style: "rounded")
+#let piano-chord-sharp = piano-chord.with(layout: "F", size: 18pt)
+#let piano-chord-round = piano-chord.with(layout: "F", size: 18pt, design: "round")
 
-#piano-chord-rect(keys: "B1, D2#, F2#", fill: blue)[B]
-#h(4em)
-#piano-chord-rounded(keys: "B1, D2#, F2#", fill: red)[B]
+#piano-chord-sharp(keys: "B1, D2#, F2#", fill: blue)[B]
+#piano-chord-round(keys: "B1, D2#, F2#", fill: yellow, position: "top")[B]
+#piano-chord-round(keys: "B1, D2#, F2#", fill: red, background: silver)[B]
 ```
 
 #{
   import "../src/piano.typ": piano-chord
 
-  let piano-chord-rect = piano-chord.with(layout: "F", size: 18pt)
-  let piano-chord-rounded = piano-chord.with(layout: "F", size: 18pt, style: "rounded")
+  set align(center)
+
+  let piano-chord-sharp = piano-chord.with(layout: "F", size: 18pt)
+  let piano-chord-round = piano-chord.with(layout: "F", size: 18pt, design: "round")
 
   v(1em)
-  piano-chord-rect(keys: "B1, D2#, F2#", fill: blue)[B]
-  h(4em)
-  piano-chord-rounded(keys: "B1, D2#, F2#", fill: red)[B]
+  piano-chord-sharp(keys: "B1, D2#, F2#", fill: blue)[B]
+  h(1fr)
+  piano-chord-round(keys: "B1, D2#, F2#", fill: yellow, position: "bottom")[B]
+  h(1fr)
+  piano-chord-round(keys: "B1, D2#, F2#", fill: red, background: silver)[B]
   v(2em)
 }
 

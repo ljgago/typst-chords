@@ -8,11 +8,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-- New background color in single chords.
+- New `background` color in `chart-chord`, `piano-chord` and `single-chord`.
+- New `..text-params` in `chart-chord`, `piano-chord` and `single-chord`. It embeds the native *text* parameters from the standard library of *typst*. *Optional*.
 
 ### Changed
 
-- Replaced `new-chart-chords`, `new-piano-chords` and `new-single-chords` functions by `chart-chord`, `piano-chord` and `single-chord` removing the closure functions. To use the [with](https://typst.app/docs/reference/foundations/function/#definitions-with) property for preset the arguments.
+- BREAKING CHANGE. Replaced `new-chart-chords`, `new-piano-chords` and `new-single-chords` functions by `chart-chord`, `piano-chord` and `single-chord` removing the closure functions. To use the [with](https://typst.app/docs/reference/foundations/function/#definitions-with) property for preset the parameters.
+- BREAKING CHANGE. Replaced `style` by `design` to avoid name collision with the native text parameters. Values of `design` are `sharp` and `round`
+- Refactored the render and the objects of graph, now each object calculates its own relative position.
 
 ## [v0.3.0](https://github.com/ljgago/typst-chords/compare/v0.2.0...v0.3.0) - 2024-03-01
 
