@@ -47,7 +47,7 @@ You can read the documentation about typst [local-packages](https://github.com/t
 In Linux you can do:
 
 ```sh
-git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/local/chordx/0.3.0
+git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/local/chordx/0.4.0
 ```
 
 And import the package in your file:
