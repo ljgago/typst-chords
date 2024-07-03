@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [v0.4.0](https://github.com/ljgago/typst-chords/compare/v0.3.0...v0.4.0) - [In Pogress]
+## [v0.4.0](https://github.com/ljgago/typst-chords/compare/v0.3.0...v0.4.0) - 2024-06-30
 
 ### Added
 
@@ -15,7 +15,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - BREAKING CHANGE. Replaced `new-chart-chords`, `new-piano-chords` and `new-single-chords` functions by `chart-chord`, `piano-chord` and `single-chord` removing the closure functions. To use the [with](https://typst.app/docs/reference/foundations/function/#definitions-with) property for preset the parameters.
 - BREAKING CHANGE. Replaced `style` by `design` to avoid name collision with the native text parameters. Values of `design` are `sharp` and `round`
-- Refactored the render and the objects of graph, now each object calculates its own relative position.
+- Refactored the render and the graphic objects, now each object calculates its own relative position.
+- Replaced the styles-measure syntax by the new context-measure added in Typst v0.11.0.
 
 ## [v0.3.0](https://github.com/ljgago/typst-chords/compare/v0.2.0...v0.3.0) - 2024-03-01
 
