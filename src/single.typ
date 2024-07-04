@@ -92,9 +92,9 @@
         anchor + bottom,
         dx: size.canvas.dx,
         dy: size.canvas.dy,
-        highlight(
+        box(
           fill: background,
-          extent: 2pt * scale,
+          outset: (x: 2pt * scale, y: 3pt * scale),
           radius: 2pt * scale,
           text(..text-params)[#name]
         )
