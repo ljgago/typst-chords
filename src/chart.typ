@@ -31,6 +31,7 @@
 // Draws a grid with a width = (length of tabs) and height = (number of frets)
 #let draw-grid(self) = {
   let radius = (bottom: 1pt * self.scale, top: 1pt * self.scale)
+  let gap = 3pt * self.scale
 
   let elements = {
     place(
@@ -69,9 +70,9 @@
 
   return (
     bounds: (
-      dx: 0pt,
+      dx: -gap,
       dy: 0pt,
-      width: self.grid.width,
+      width: self.grid.width + gap * 2,
       height: self.grid.height
     ),
     elements: elements
@@ -123,9 +124,9 @@
 
   return (
     bounds: (
-      dx: radius,
+      dx: 0pt,
       dy: -(4pt * self.scale + radius),
-      width: self.grid.width + radius,
+      width: self.grid.width,
       height: 2 * radius
     ),
     elements: elements
@@ -282,7 +283,6 @@
   size.name.width += 1pt * self.scale
 
   dx = (self.grid.width - size.name.width) / 2
-  // dx = (self.grid.width - size.name.width + 4pt * self.scale) / 2
 
   if self.position == "bottom" {
     dy -= size.name.height
