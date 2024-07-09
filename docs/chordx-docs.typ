@@ -97,9 +97,9 @@
 #let piano-chord-sharp = piano-chord.with(layout: "F", size: 18pt)
 #let piano-chord-round = piano-chord.with(layout: "F", size: 18pt, design: "round")
 
-#piano-chord-sharp(keys: "B1, D2#, F2#", fill: blue)[B]
-#piano-chord-round(keys: "B1, D2#, F2#", fill: yellow, position: "top")[B]
-#piano-chord-round(keys: "B1, D2#, F2#", fill: red, background: silver)[B]
+#piano-chord-sharp(keys: "B1, D2#, F2#", fill-key: blue)[B]
+#piano-chord-round(keys: "B1, D2#, F2#", fill-key: yellow, position: "top")[B]
+#piano-chord-round(keys: "B1, D2#, F2#", fill-key: red, background: silver)[B]
 ```
 
 #{
@@ -111,11 +111,11 @@
   let piano-chord-round = piano-chord.with(layout: "F", size: 18pt, design: "round")
 
   v(1em)
-  piano-chord-sharp(keys: "B1, D2#, F2#", fill: blue)[B]
+  piano-chord-sharp(keys: "B1, D2#, F2#", fill-key: blue)[B]
   h(1fr)
-  piano-chord-round(keys: "B1, D2#, F2#", fill: yellow, position: "bottom")[B]
+  piano-chord-round(keys: "B1, D2#, F2#", fill-key: yellow, position: "bottom")[B]
   h(1fr)
-  piano-chord-round(keys: "B1, D2#, F2#", fill: red, background: silver)[B]
+  piano-chord-round(keys: "B1, D2#, F2#", fill-key: red, background: silver)[B]
   v(2em)
 }
 

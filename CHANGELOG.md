@@ -10,13 +10,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 - New `background` color in `chart-chord`, `piano-chord` and `single-chord`.
 - New `..text-params` in `chart-chord`, `piano-chord` and `single-chord`. It embeds the native *text* parameters from the standard library of *typst*. *Optional*.
+- New `position` parameter, now the chart can be below or above of the chord name.
 
 ### Changed
 
-- BREAKING CHANGE. Replaced `new-chart-chords`, `new-piano-chords` and `new-single-chords` functions by `chart-chord`, `piano-chord` and `single-chord` removing the closure functions. To use the [with](https://typst.app/docs/reference/foundations/function/#definitions-with) property for preset the parameters.
-- BREAKING CHANGE. Replaced `style` by `design` to avoid name collision with the native text parameters. Values of `design` are `sharp` and `round`
+- Renamed `new-chart-chords`, `new-piano-chords` and `new-single-chords` functions by `chart-chord`, `piano-chord` and `single-chord` removing the closure functions. Use the [with](https://typst.app/docs/reference/foundations/function/#definitions-with) property for preset the parameters.
+- Renamed `style` parameter by `design` to avoid name collision with the native text parameters. The possible values of `design` are `"sharp"` and `"round"`
+- Renamed `fill` parameter by `fill-key` to avoid name collision with the native text parameters.
 - Refactored the render and the graphic objects, now each object calculates its own relative position.
-- Replaced the styles-measure syntax by the new context-measure added in Typst v0.11.0.
+- Replaced the `styles-measure` syntax by the new [context-measure](https://typst.app/docs/reference/context/) added in Typst v0.11.0.
+
+### Removed
+
+- Removed `size` as a specific parameter. `size` is included in the native *text* parameters in `..text-params`.
 
 ## [v0.3.0](https://github.com/ljgago/typst-chords/compare/v0.2.0...v0.3.0) - 2024-03-01
 
