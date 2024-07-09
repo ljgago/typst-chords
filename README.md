@@ -24,18 +24,18 @@ With `chordx` you can easily generate song lyrics with chords for writing songbo
 
 ## Usage
 
-`chordx` exports 3 functions that return others with default settings:
+`chordx` exports 3 functions to generate diferents types fo charts:
 
-- `new-chart-chords`: used to generate chart chords for stringed instruments.
-- `new-piano-chords`: used to generate piano chords.
-- `new-single-chords`: used to show the chord name over a word.
+- `chart-chord`: used to generate chart chords for stringed instruments.
+- `piano-chord`: used to generate piano chords.
+- `single-chord`: used to show the chord name over a word.
 
 ### Typst Packages
 
 Typst added an experimental package repository and you can import `chordx` as follows:
 
 ```typ
-#import "@preview/chordx:0.3.0": *
+#import "@preview/chordx:0.4.0": *
 ```
 
 ### Local Packages
@@ -47,13 +47,13 @@ You can read the documentation about typst [local-packages](https://github.com/t
 In Linux you can do:
 
 ```sh
-git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/local/chordx/0.3.0
+git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/local/chordx/0.4.0
 ```
 
 And import the package in your file:
 
 ```typ
-#import "@local/chordx:0.3.0": *
+#import "@local/chordx:0.4.0": *
 ```
 
 ## Documentation
@@ -65,18 +65,22 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ### Chart Chords
 
 ```typ
-#import "@preview/chordx:0.3.0": *
+#import "@preview/chordx:0.4.0": *
 
-#let chart-chord = new-chart-chords(size: 18pt)
-#let chart-chord-round = new-chart-chords(style: "round", size: 1.5em)
+#let chart-chord-sharp = chart-chord.with(size: 18pt)
+#let chart-chord-round = chart-chord.with(size: 1.5em, design: "round")
 
-// Style "normal"
-#chart-chord(tabs: "x32o1o", fingers: "n32n1n")[C]
-#chart-chord(tabs: "ooo3", fingers: "ooo3")[C]
+// Design "sharp"
+#chart-chord-sharp(tabs: "x32o1o", fingers: "n32n1n")[C]
+#chart-chord-sharp(tabs: "ooo3", fingers: "ooo3")[C]
 
-// Style "round"
-#chart-chord-round(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115")[Cm]
-#chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313")[Cm]
+// Desigh "round" with position "bottom"
+#chart-chord-round(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115", position: "bottom")[Cm]
+#chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313", position: "bottom")[Cm]
+
+// Design "round" with background color in chord name
+#chart-chord-round(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115", background: silver)[Cm]
+#chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313", background: silver)[Cm]
 ```
 
 <h3 align="center">
@@ -84,7 +88,7 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
     <img
       alt="Chart Chord"
       src="examples/chart-chords.svg"
-      style="max-width: 100%; width: 450pt;"
+      style="max-width: 100%; width: 100%;"
     >
   </a>
 </h3>
@@ -92,12 +96,13 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ### Piano Chords
 
 ```typ
-#import "@preview/chordx:0.3.0": *
+#import "@preview/chordx:0.4.0": *
 
-#let piano-chord = new-piano-chords(layout: "F", size: 18pt)
-#let piano-chord-round = new-piano-chords(layout: "F", size: 1.5em, style: "round")
+#let piano-chord-sharp = piano-chords.with(layout: "F", size: 18pt)
+#let piano-chord-round = piano-chords.with(layout: "F", size: 1.5em, style: "rounded")
 
-#piano-chord(keys: "B1, D2#, F2#", fill: blue)[B]
+#piano-chord-sharp(keys: "B1, D2#, F2#", fill: blue)[B]
+#piano-chord-round(keys: "B1, D2#, F2#", fill: yellow, position: "bottom")[B]
 #piano-chord-round(keys: "B1, D2#, F2#", fill: red)[B]
 ```
 
@@ -106,7 +111,7 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
     <img
       alt="Piano Chord"
       src="examples/piano-chords.svg"
-      style="max-width: 100%; width: 450pt;"
+      style="max-width: 100%; width: 100%;"
     >
   </a>
 </h3>
@@ -114,9 +119,14 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ### Single Chords
 
 ```typ
-#import "@preview/chordx:0.3.0": *
+#import "@preview/chordx:0.4.0": *
 
-#let chord = new-single-chords(style: "italic", weight: "semibold")
+#let chord = single-chord.with(
+  font: "PT Sans",
+  size: 12pt,
+  weight: "semibold",
+  background: silver
+)
 
 #chord[Jingle][G][2] bells, jingle bells, jingle #chord[all][C][2] the #chord[way!][G][2] \
 #chord[Oh][C][] what fun it #chord[is][G][] to ride \

@@ -1,9 +1,15 @@
 #import "../lib.typ": *
 
+#set document(date: none)
 #set page(width: auto, height: auto, margin: 0pt)
 #set text(14pt)
 
-#let chord = new-single-chords(style: "italic", weight: "semibold")
+#let chord = single-chord.with(
+  font: "PT Sans",
+  size: 12pt,
+  weight: "semibold",
+  background: silver
+)
 
 #rect(
   stroke: none,
