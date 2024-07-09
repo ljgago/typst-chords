@@ -4,7 +4,7 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [v0.4.0](https://github.com/ljgago/typst-chords/compare/v0.3.0...v0.4.0) - 2024-06-30
+## [v0.4.0](https://github.com/ljgago/typst-chords/compare/v0.3.0...v0.4.0) - 2024-07-09
 
 ### Added
 

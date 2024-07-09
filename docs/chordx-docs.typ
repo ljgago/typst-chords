@@ -10,7 +10,7 @@
   authors: (
     "Leonardo Javier Gago",
   ),
-  date: "June 30, 2024",
+  date: "July 9, 2024",
   version: toml("../typst.toml").package.version,
   url: "https://github.com/ljgago/typst-chords"
 )
