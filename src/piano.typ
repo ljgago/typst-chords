@@ -88,7 +88,7 @@
   let elements = {
     for i in range(self.white-keys.amount) {
       let key-pressed = i + self.limit.min
-      let fill-color = if key-pressed in self.tabs.white-keys-index { self.fill } else { white }
+      let fill-color = if key-pressed in self.tabs.white-keys-index { self.fill-key } else { white }
       let dx = i * self.white-keys.width
 
       let radius-design = if self.design == "sharp" {
@@ -118,7 +118,7 @@
     // draw the black-keys
     for i in range(self.white-keys.amount) {
       let key-pressed = i + self.limit.min
-      let fill-color = if key-pressed in self.tabs.black-keys-index {self.fill} else {black}
+      let fill-color = if key-pressed in self.tabs.black-keys-index {self.fill-key} else {black}
       let base = i * self.white-keys.width - self.black-keys.width / 2
       let dx = 0pt
 
@@ -403,7 +403,7 @@
 ///  - ```js "F"```: the piano layout starts from key *F1* to *B2* (19 keys).
 ///  - ```js "2F"```: the piano layout stars from key *F1* to *E3* (24 keys, two octaves).
 ///
-/// - fill (color): Sets the fill color of the pressed key. *Optional*.
+/// - fill-key (color): Sets the fill color of the pressed key. *Optional*.
 ///
 /// - design (str): Sets the piano design. *Optional*.
 ///  - ```js "sharp```: piano with sharp corners.
@@ -422,14 +422,14 @@
   ..text-params,
   keys: "",
   layout: "C",
-  fill: gray,
+  fill-key: gray,
   design: "sharp",
   position: "top",
   background: rgb(0, 0, 0, 0),
   name
 ) = {
   assert.eq(type(keys), str)
-  assert.eq(type(fill), color)
+  assert.eq(type(fill-key), color)
   assert.eq(type(background), color)
   assert(upper(layout) in ("C", "2C", "F", "2F"), message: "`layout` must to be \"C\", \"2C\", \"F\" or \"2F\"")
   assert(design in ("sharp", "round"), message: "`design` must to be \"sharp\" or \"round\"")
@@ -476,7 +476,7 @@
     top-border-height: 1.1pt * scale,
     keys: keys,
     limit: piano-limits,
-    fill: fill,
+    fill-key: fill-key,
     scale: scale,
     design: design,
     position: position,
