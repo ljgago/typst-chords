@@ -35,7 +35,7 @@ With `chordx` you can easily generate song lyrics with chords for writing songbo
 Typst added an experimental package repository and you can import `chordx` as follows:
 
 ```typ
-#import "@preview/chordx:0.4.0": *
+#import "@preview/chordx:0.5.0": *
 ```
 
 ### Local Packages
@@ -47,13 +47,13 @@ You can read the documentation about typst [local-packages](https://github.com/t
 In Linux you can do:
 
 ```sh
-git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/local/chordx/0.4.0
+git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/local/chordx/0.5.0
 ```
 
 And import the package in your file:
 
 ```typ
-#import "@local/chordx:0.4.0": *
+#import "@local/chordx:0.5.0": *
 ```
 
 ## Documentation
@@ -65,7 +65,7 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ### Chart Chords
 
 ```typ
-#import "@preview/chordx:0.4.0": *
+#import "@preview/chordx:0.5.0": chart-chord
 
 #let chart-chord-sharp = chart-chord.with(size: 18pt)
 #let chart-chord-round = chart-chord.with(size: 1.5em, design: "round")
@@ -96,7 +96,7 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ### Piano Chords
 
 ```typ
-#import "@preview/chordx:0.4.0": *
+#import "@preview/chordx:0.5.0": piano-chord
 
 #let piano-chord-sharp = piano-chord.with(layout: "F", size: 18pt)
 #let piano-chord-round = piano-chord.with(layout: "F", size: 1.5em, design: "round")
@@ -119,7 +119,7 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ### Single Chords
 
 ```typ
-#import "@preview/chordx:0.4.0": *
+#import "@preview/chordx:0.5.0": single-chord
 
 #let chord = single-chord.with(
   font: "PT Sans",
