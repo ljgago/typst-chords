@@ -111,7 +111,7 @@
 
 #let set-default-arguments(args) = {
   let size = 12pt
-  let font = "Linux Libertine"
+  let font = "Libertinus Serif"
 
   if "size" in args.keys() {
     (size,) = args
