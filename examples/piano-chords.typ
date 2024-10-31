@@ -1,4 +1,4 @@
-#import "../lib.typ": *
+#import "../lib.typ": piano-chord
 
 #set document(date: none)
 #set page(width: auto, height: auto, margin: 0pt)
