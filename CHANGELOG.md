@@ -4,6 +4,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.5.0](https://github.com/ljgago/typst-chords/compare/v0.4.0...v0.5.0) - 2024-10-31
+
+### Changed
+
+- Repaced the default font `Linux Libertine` deprecated in typst v0.12.0 with the new default font `Libertinus Serif`.
+- Replaced `locate` callback function deprecated in typst v0.12.0 with location context in documentation template and examples.
+
 ## [v0.4.0](https://github.com/ljgago/typst-chords/compare/v0.3.0...v0.4.0) - 2024-07-09
 
 ### Added
