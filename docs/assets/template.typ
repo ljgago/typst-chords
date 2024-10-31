@@ -63,21 +63,20 @@
   // Configure page properties.
   set page(
     numbering: "1 / 1",
-    header: locate(loc => {
-      let i = counter(page).at(loc).first()
+    header: context {
+      let i =  here().position().page
 
       if i in (1, 2) {
         return
       }
 
       if calc.odd(i) {
-        h(1fr) + text(0.95em, smallcaps(title))
+        h(1fr) + text(0.95em, smallcaps(emph(title)))
       } else {
-        text(0.95em, smallcaps(title))
+        text(0.95em, smallcaps(emph(title)))
       }
-    }),
+    }
   )
-
   body
 }
 

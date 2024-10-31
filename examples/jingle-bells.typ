@@ -1,23 +1,24 @@
-#import "../lib.typ": *
+#import "../lib.typ": chart-chord, single-chord
+
+#let title = "Jingle Bells"
+#let artist = "Christmas Song"
 
 #set document(date: none)
 #set align(center)
 #set page(
   margin: (top: 2.5cm, bottom: 2.5cm),
   numbering: "1 / 1",
-  header: locate(loc => {
+  header: context {
     set text(11pt)
-    let elems = query(
-      selector(heading).before(loc),
-      loc,
-    )
-    let title = smallcaps[_Jingle Bells_]
-    let artist = smallcaps[_Christmas Song_]
-    if elems != () {
-      let body = elems.last().body
+
+    let pos = here().position()
+    let title = smallcaps(emph(title))
+    let artist = smallcaps(emph(artist))
+
+    if pos.page > 1 {
       title + h(1fr) + artist
     }
-  })
+  }
 )
 
 #let gchord = chart-chord.with(design: "round", size: 14pt)
