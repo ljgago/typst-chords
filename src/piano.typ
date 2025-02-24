@@ -95,11 +95,11 @@
         0pt
       } else {
         if i == 0 {
-          (bottom: self.round, top-left: self.round)
+          (bottom: self.radius, top-left: self.radius)
         } else if i == self.white-keys.amount - 1 {
-          (bottom: self.round, top-right: self.round)
+          (bottom: self.radius, top-right: self.radius)
         } else {
-          (bottom: self.round)
+          (bottom: self.radius)
         }
       }
 
@@ -137,7 +137,7 @@
         rect(
           width: self.black-keys.width,
           height: self.black-keys.height,
-          radius: if self.design == "sharp" {0pt} else {(bottom: self.round)},
+          radius: if self.design == "sharp" {0pt} else {(bottom: self.radius)},
           stroke: self.stroke,
           fill: fill-color
         )
@@ -167,7 +167,7 @@
     if self.design == "sharp" {
       top-border-sharp(size, self.stroke, self.scale)
     } else {
-      top-border-round(size, self.stroke, self.scale)
+      top-border-round(size, self.stroke, self.scale, self.radius)
     }
   }
 
@@ -471,7 +471,7 @@
       black-keys-index: keys-to-array-index(black-keys-dict, keys)
     ),
     text-params: text-params,
-    round: 1pt * scale,
+    radius: 1pt * scale,
     stroke: black + 0.5pt * scale,
     top-border-height: 1.1pt * scale,
     keys: keys,

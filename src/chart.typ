@@ -12,7 +12,7 @@
       if self.design == "sharp" {
         top-border-sharp(size, self.stroke, self.scale)
       } else {
-        top-border-round(size, self.stroke, self.scale)
+        top-border-round(size, self.stroke, self.scale, self.radius)
       }
     }
   }
@@ -30,7 +30,7 @@
 
 // Draws a grid with a width = (length of tabs) and height = (number of frets)
 #let draw-grid(self) = {
-  let radius = (bottom: 1pt * self.scale, top: 1pt * self.scale)
+  let radius = (bottom: self.radius, top: self.radius)
   let gap = 3pt * self.scale
 
   let elements = {
@@ -432,6 +432,7 @@
     step: step,
     stroke: black + 0.5pt * scale,
     text-params: text-params,
+    radius: 1pt * scale,
     tabs: tabs,
     fingers: fingers,
     capos: capos,

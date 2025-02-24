@@ -76,23 +76,27 @@
 }
 
 // Draws a border with round corners
-#let top-border-round(size, stroke, scale) = {
-  let bezier-radius = 0.5519150244935105707435627pt * scale
-  let radius = 1pt * scale
+#let top-border-round(size, stroke, scale, radius) = {
+  // radius
+  let r = radius
+  // Bézier control segment
+  let n = 4 / 3 * r * calc.tan(90deg / 4)
 
   place(
-    path(
+    dy: r - size.height,
+    curve(
       fill: black,
       stroke: stroke,
-      closed: true,
-      ((0pt, -0.2pt * scale), (0pt, bezier-radius)),
-      ((radius, -size.height), (-bezier-radius, 0pt)),
-      ((size.width - radius, -size.height), (-bezier-radius, 0pt)),
-      ((size.width, -0.2pt * scale), (0pt, -bezier-radius)),
-      ((size.width, radius), (0pt, bezier-radius)),
-      ((size.width - radius, 0pt), (bezier-radius, 0pt)),
-      ((radius, 0pt), (bezier-radius, 0pt)),
-      ((0pt, radius), (0pt, -bezier-radius)),
+      curve.move((0pt, 0pt)),
+      curve.cubic((0pt, -n), (r - n, -r), (r, -r), relative: true),
+      curve.line((size.width - r * 2, 0pt), relative: true),
+      curve.cubic((n , 0pt), (r, n), (r, r), relative: true),
+      curve.line((0pt, size.height), relative: true),
+      curve.cubic((0pt, -n), (-n , -r), (-r, -r), relative: true),
+      curve.line((r * 2 - size.width, 0pt), relative: true),
+      curve.cubic((-n, 0pt), (-r, n), (-r, r), relative: true),
+      curve.line((0pt, -size.height), relative: true),
+      curve.close()
     )
   )
 }
