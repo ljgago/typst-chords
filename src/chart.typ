@@ -85,7 +85,7 @@
 
   let elements = {
     for (tab, col) in self.tabs.zip(range(self.tabs.len())) {
-      if type(tab) == "string" and lower(tab) == "x" {
+      if type(tab) == str and lower(tab) == "x" {
         let offset = col * self.step
         place(
           line(
@@ -409,7 +409,7 @@
   let tabs = parse-input-string(tabs)
   let fingers = parse-input-string(fingers)
   let capos = parse-input-string(capos)
-  if capos.len() != 0 and type(capos.first()) != "array" {
+  if capos.len() != 0 and type(capos.first()) != array {
     capos = (capos,)
   }
 
