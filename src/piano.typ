@@ -391,41 +391,47 @@
 }
 
 /// Generates a piano chord.
-///
-/// - ..text-params (auto): Embeds the native *text* parameters from the standard library of *typst*. *Optional*.
-///
-/// - keys (str): Keys chord notes from *C1* to *E3* (Depends on your layout). *Optional*.
-/// #parbreak() Example: ```js "C1, E1b, G1"``` (Cm chord)
-///
-/// - layout (str): Sets the layout and size of the piano, ```js "C"```, ```js "2C"```, ```js "F"```, ```js "2F"```. *Optional*.
-///  - ```js "C"```: the piano layout starts from key *C1* to *E2* (17 keys).
-///  - ```js "2C"```: the piano layout starts from key *C1* to *B2* (24 keys, two octaves).
-///  - ```js "F"```: the piano layout starts from key *F1* to *B2* (19 keys).
-///  - ```js "2F"```: the piano layout stars from key *F1* to *E3* (24 keys, two octaves).
-///
-/// - fill-key (color): Sets the fill color of the pressed key. *Optional*.
-///
-/// - design (str): Sets the piano design. *Optional*.
-///  - ```js "sharp```: piano with sharp corners.
-///  - ```js "round```: piano with round corners.
-///
-/// - position (str): Sets the chord chart position. *Optional*.
-///  - ```js "top"```: chord chart in top position.
-///  - ```js "bottom"```: chord chart in bottom position.
-///
-/// - background (color): Sets the background color of the chord name. *Optional*.
-///
-/// - name (str, content): Shows the chord name. *Required*.
-///
 /// -> content
 #let piano-chord(
+  /// Embeds the native *text* parameters from the standard library of *typst*. *Optional*.
+  /// -> auto
   ..text-params,
+
+  /// Keys chord notes from *C1* to *E3* (Depends on your layout). *Optional*.
+  /// #parbreak() Example: ```js "C1, E1b, G1"``` (Cm chord)
+  /// -> str
   keys: "",
+
+  /// Sets the layout and size of the piano, ```js "C"```, ```js "2C"```, ```js "F"```, ```js "2F"```. *Optional*.
+  ///  - ```js "C"```: the piano layout starts from key *C1* to *E2* (17 keys).
+  ///  - ```js "2C"```: the piano layout starts from key *C1* to *B2* (24 keys, two octaves).
+  ///  - ```js "F"```: the piano layout starts from key *F1* to *B2* (19 keys).
+  ///  - ```js "2F"```: the piano layout stars from key *F1* to *E3* (24 keys, two octaves).
+  /// -> str
   layout: "C",
+
+  /// Sets the fill color of the pressed key. *Optional*.
+  /// -> color
   fill-key: gray,
+
+  /// Sets the piano design. *Optional*.
+  ///  - ```js "sharp```: piano with sharp corners.
+  ///  - ```js "round```: piano with round corners.
+  /// -> str
   design: "sharp",
+
+  /// Sets the chord chart position. *Optional*.
+  ///  - ```js "top"```: chord chart in top position.
+  ///  - ```js "bottom"```: chord chart in bottom position.
+  /// -> str
   position: "top",
+
+  /// Sets the background color of the chord name. *Optional*.
+  /// -> color
   background: rgb(0, 0, 0, 0),
+
+  /// Shows the chord name. *Required*.
+  /// -> str | content
   name
 ) = {
   assert.eq(type(keys), str)

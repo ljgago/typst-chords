@@ -340,60 +340,68 @@
 }
 
 /// Generates a chart chord for stringed instruments.
-///
-/// - ..text-params (auto): Embeds the native *text* parameters from the standard library of *typst*. *Optional*.
-///
-/// - tabs (str): Shows the tabs on the chart. *Optional*.
-///  - *x*: mute note.
-///  - *o*: air note.
-///  - *n*: without note.
-///  - *number*: note position on the fret.
-///
-/// The string length of tabs defines the number of strings on the instrument.
-///  #parbreak() Example:
-///  - ```js "x32o1o"``` - (6 strings - C Guitar chord).
-///  - ```js "ooo3"``` - (4 strings - C Ukulele chord).
-///
-/// - fingers (str): Shows the finger numbers. *Optional*.
-///  - *n*, *x*, *o*: without finger,
-///  - *number*: one finger
-///  #parbreak() Example: ```js "n32n1n"``` - (Fingers for guitar chord: C)
-///
-/// - capos (str): Adds one or many capos on the chart. *Optional*.
-///  - 1#super[st] digit -- *fret*: fret position.
-///  - 2#super[nd] digit -- *start*: lowest starting string.
-///  - 3#super[rd] digit -- *end*: highest ending string.
-///  #parbreak() Example: ```js "115"``` $\u{2261}$ ```js "1,1,5"``` $=>$ ```js "fret,start,end"```
-///  #parbreak() With ```js "|"``` you can add capos:
-///  #parbreak() Example: ```js "115|312"``` $\u{2261}$ ```js "1,1,5|3,1,2"``` $=>$ ```js "fret,start,end|fret,start,end"```
-///
-/// - fret (int): Shows the fret number that indicates the starting position of the fretboard. *Optional*.
-///
-/// - frets-amount (int): Sets the frets amount (the grid rows). *Optional*.
-///
-/// - design (str): Sets the chart design. *Optional*.
-///  - ```js "sharp"```: chart with sharp corners.
-///  - ```js "round"```: chart with round corners.
-///
-/// - position (str): Sets the chord chart position. *Optional*.
-///  - ```js "top"```: chord chart in top position.
-///  - ```js "bottom"```: chord chart in bottom position.
-///
-/// - background (color): Sets the background color of the chord name. *Optional*.
-///
-/// - name (str, content): Shows the chord name. *Required*.
-///
 /// -> content
 #let chart-chord(
+  /// Embeds the native *text* parameters from the standard library of *typst*. *Optional*.
+  /// -> auto
   ..text-params,
+
+  /// Shows the tabs on the chart. *Optional*.
+  ///  - *x*: mute note.
+  ///  - *o*: air note.
+  ///  - *n*: without note.
+  ///  - *number*: note position on the fret.
+  ///
+  /// The string length of tabs defines the number of strings on the instrument.
+  ///  #parbreak() Example:
+  ///  - ```js "x32o1o"``` - (6 strings - C Guitar chord).
+  ///  - ```js "ooo3"``` - (4 strings - C Ukulele chord).
+  /// -> str
   tabs: "",
+
+  /// Shows the finger numbers. *Optional*.
+  ///  - *n*, *x*, *o*: without finger,
+  ///  - *number*: one finger
+  ///  #parbreak() Example: ```js "n32n1n"``` - (Fingers for guitar chord: C)
+  /// -> str
   fingers: "",
+
+  /// Adds one or many capos on the chart. *Optional*.
+  ///  - 1#super[st] digit -- *fret*: fret position.
+  ///  - 2#super[nd] digit -- *start*: lowest starting string.
+  ///  - 3#super[rd] digit -- *end*: highest ending string.
+  ///  #parbreak() Example: ```js "115"``` $\u{2261}$ ```js "1,1,5"``` $=>$ ```js "fret,start,end"```
+  ///  #parbreak() With ```js "|"``` you can add capos:
+  ///  #parbreak() Example: ```js "115|312"``` $\u{2261}$ ```js "1,1,5|3,1,2"``` $=>$ ```js "fret,start,end|fret,start,end"```
+  /// -> str
   capos: "",
+
+  /// Shows the fret number that indicates the starting position of the fretboard. *Optional*.
+  /// -> none | int
   fret: none,
+
+  /// Sets the frets amount (the grid rows). *Optional*.
+  /// -> int
   frets-amount: 5,
+
+  /// Sets the chart design. *Optional*.
+  ///  - ```js "sharp"```: chart with sharp corners.
+  ///  - ```js "round"```: chart with round corners.
+  /// -> str
   design: "sharp",
+
+  /// Sets the chord chart position. *Optional*.
+  ///  - ```js "top"```: chord chart in top position.
+  ///  - ```js "bottom"```: chord chart in bottom position.
+  /// -> str
   position: "top",
+
+  /// Sets the background color of the chord name. *Optional*.
+  /// -> color
   background: rgb(0, 0, 0, 0),
+
+  /// Shows the chord name. *Required*.
+  /// -> str | content
   name
 ) = {
   assert.eq(type(tabs), str)

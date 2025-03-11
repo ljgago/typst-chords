@@ -1,25 +1,28 @@
 #import "./utils.typ": parse-content, has-number, size-to-scale
 
 /// The single chord a chord without diagram used to show the chord name over a word.
-///
-/// - ..text-params (auto): Embeds the native *text* parameters from the standard library of *typst*. *Optional*.
-///
-/// - background (color): Sets the background color of the chord. *Optional*.
-///
-/// - body (content): Is the word or words where the chord goes. *Required*.
-///
-/// - name (content): Displays the chord name over the selected words in the body. *Required*.
-///
-/// - position (content): Positions the chord on a specific body character. *Required*.
-///  - ```typ []```: chord name centered on the body.
-///  - ```typ [number]```: the chord name starts on a specific body character. (First position ```typ [1]```)
-///
 /// -> content
 #let single-chord(
+  /// Embeds the native *text* parameters from the standard library of *typst*. *Optional*.
+  /// -> auto
   ..text-params,
+
+  /// Sets the background color of the chord. *Optional*.
+  /// -> color
   background: rgb(0, 0, 0, 0),
+
+  /// Is the word or words where the chord goes. *Required*.
+  /// -> content
   body,
+
+  /// Displays the chord name over the selected words in the body. *Required*.
+  /// -> content
   name,
+
+  /// Positions the chord on a specific body character. *Required*.
+  ///  - ```typ []```: chord name centered on the body.
+  ///  - ```typ [number]```: the chord name starts on a specific body character. (First position ```typ [1]```)
+  /// -> content
   position
 ) = context {
   assert.eq(type(background), color)
