@@ -88,6 +88,7 @@
     fill: rgb("#24292e"),
     inset: 8pt,
     radius: 5pt,
+    breakable: false,
     text(fill: rgb("#f6f8fa"), it),
   )
   source
