@@ -49,15 +49,12 @@
   if position.has("text") {
     assert(has-number(position.at("text")) == true, message: "the \"position\" must to be a \"content\" with only numbers")
 
-    let body-chars-offset = 0pt
     let pos = int(position.at("text")) - 1
     let min-pos = 0
     let max-pos = body-array.len() - 1
     pos = calc.clamp(pos, min-pos, max-pos)
 
-    for i in range(pos) {
-      body-chars-offset += measure([#body-array.at(i)]).width
-    }
+    let body-chars-offset = measure([#body-array.slice(0, pos).join()]).width
 
     // gets the char-offset to center the first character of
     // the chord with the selected character of the body
