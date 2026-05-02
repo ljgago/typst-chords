@@ -7,6 +7,8 @@
   /// -> auto
   ..text-params,
 
+  offset: 0.4em,
+
   /// Sets the background color of the chord. *Optional*.
   /// -> color
   background: rgb(0, 0, 0, 0),
@@ -38,7 +40,7 @@
   }
 
   let horizontal-offset = 0pt
-  let vertical-offset = 1.2em
+  let vertical-offset = 0.8em + offset
   let anchor = center
 
   let size = (:)
