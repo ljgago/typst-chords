@@ -1,4 +1,4 @@
-#import "@preview/tidy:0.4.2"
+#import "@preview/tidy:0.4.3"
 #import "assets/template.typ": design, custom
 
 #set document(date: none)
@@ -10,7 +10,7 @@
   authors: (
     "Leonardo Javier Gago",
   ),
-  date: "November 17, 2025",
+  date: "May 3, 2026",
   version: toml("../typst.toml").package.version,
   url: "https://github.com/ljgago/typst-chords"
 )
@@ -41,7 +41,7 @@
 ==== Example:
 
 ```typ-lang
-#import "@preview/chordx:0.6.1": chart-chord
+#import "@preview/chordx:0.7.0": chart-chord
 
 #let chart-chord-sharp = chart-chord.with(size: 18pt)
 #let chart-chord-round = chart-chord.with(size: 18pt, design: "round")
@@ -92,7 +92,7 @@
 ==== Example:
 
 ```typ-lang
-#import "@preview/chordx:0.6.1": piano-chord
+#import "@preview/chordx:0.7.0": piano-chord
 
 #let piano-chord-sharp = piano-chord.with(layout: "F", size: 18pt)
 #let piano-chord-round = piano-chord.with(layout: "F", size: 18pt, design: "round")
@@ -131,7 +131,7 @@
 ==== Example:
 
 ```typ-lang
-#import "@preview/chordx:0.6.1": single-chord
+#import "@preview/chordx:0.7.0": single-chord
 
 #let chord = single-chord.with(
   font: "PT Sans",
