@@ -7,6 +7,8 @@
 #let chord = single-chord.with(
   font: "PT Sans",
   size: 12pt,
+  inner-gap: 0.2em,
+  outer-gap: 0.6em,
   weight: "semibold",
   background: silver
 )
