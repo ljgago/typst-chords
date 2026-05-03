@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.7.0](https://github.com/ljgago/typst-chords/compare/v0.6.1...v0.7.0) - 2026-05-03
+
+## Changed
+
+- Added `inner-gap` and `outer-gap` parameters in `single-chord` to adjust the chord name offset.
+
 ## [v0.6.1](https://github.com/ljgago/typst-chords/compare/v0.6.0...v0.6.1) - 2025-11-17
 
 ### Changed
