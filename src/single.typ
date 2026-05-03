@@ -7,7 +7,13 @@
   /// -> auto
   ..text-params,
 
-  offset: 0.4em,
+  /// Sets the inner gap between the bottom word and the chord name. *Optional*.
+  /// -> length
+  inner-gap: 0.2em,
+
+  /// Sets the outer gap between the upper paragraph and the chord name. *Optional*.
+  /// -> length
+  outer-gap: 0.6em,
 
   /// Sets the background color of the chord. *Optional*.
   /// -> color
@@ -27,6 +33,8 @@
   /// -> content
   position
 ) = context {
+  assert.eq(type(inner-gap), length)
+  assert.eq(type(outer-gap), length)
   assert.eq(type(background), color)
   assert.eq(type(body), content)
   assert.eq(type(name), content)
@@ -40,7 +48,7 @@
   }
 
   let horizontal-offset = 0pt
-  let vertical-offset = 0.8em + offset
+  let vertical-offset = 0em
   let anchor = center
 
   let size = (:)
@@ -70,9 +78,13 @@
     anchor = left
   }
 
+  if size.body.height > 0em {
+    vertical-offset = size.body.height + 0.2em + inner-gap
+  }
+
   size.canvas = (
     width: 0pt,
-    height: size.body.height + size.name.height + 0.8em,
+    height: size.body.height + size.name.height + outer-gap + inner-gap,
     dx: horizontal-offset,
     dy: -vertical-offset
   )
