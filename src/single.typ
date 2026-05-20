@@ -101,12 +101,12 @@
     } else if horizontal-offset <= 0pt and size.name.width >= size.body.width + horizontal-preshift {
       size.name.width
     } else {
-      size.body.width
+      size.body.width+horizontal-preshift
     }
   }
 
   box(
-    width: size.canvas.width+horizontal-preshift,
+    width: size.canvas.width,
     height: size.canvas.height, {
       place(
         anchor + bottom,
