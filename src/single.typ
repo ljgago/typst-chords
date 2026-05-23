@@ -29,6 +29,7 @@
 
   /// Positions the chord on a specific body character. *Required*.
   ///  - ```typ []```: chord name centered on the body.
+  ///  - ```typ [0]```: chord placed before the body.
   ///  - ```typ [number]```: the chord name starts on a specific body character. (First position ```typ [1]```)
   /// -> content
   position
@@ -48,6 +49,7 @@
   }
 
   let horizontal-offset = 0pt
+  let horizontal-preshift = 0pt
   let vertical-offset = 0em
   let anchor = center
 
@@ -60,21 +62,25 @@
     assert(has-number(position.at("text")) == true, message: "the \"position\" must to be a \"content\" with only numbers")
 
     let pos = int(position.at("text")) - 1
-    let min-pos = 0
-    let max-pos = body-array.len() - 1
-    pos = calc.clamp(pos, min-pos, max-pos)
-
-    let body-chars-offset = measure([#body-array.slice(0, pos).join()]).width
-
-    // gets the char-offset to center the first character of
-    // the chord with the selected character of the body
     let chord-char = parse-content(name).at(0)
     let chord-char-width = measure(text(..text-params)[#chord-char]).width
-    let body-char-width = measure([#body-array.at(pos)]).width
-    let char-offset = (chord-char-width - body-char-width) / 2
+    if(pos >= 0) {
+      let min-pos = 0
+      let max-pos = body-array.len() - 1
+      pos = calc.clamp(pos, min-pos, max-pos)
 
-    // final horizontal offset
-    horizontal-offset = body-chars-offset - char-offset
+      let body-chars-offset = measure([#body-array.slice(0, pos).join()]).width
+
+      // gets the char-offset to center the first character of
+      // the chord with the selected character of the body
+      let body-char-width = measure([#body-array.at(pos)]).width
+      let char-offset = (chord-char-width - body-char-width) / 2
+
+      // final horizontal offset
+      horizontal-offset = body-chars-offset - char-offset
+    } else {
+      horizontal-preshift = chord-char-width
+    }
     anchor = left
   }
 
@@ -92,10 +98,10 @@
   size.canvas.width = {
     if horizontal-offset > 0pt and size.name.width + horizontal-offset >= size.body.width {
       size.name.width + horizontal-offset
-    } else if horizontal-offset <= 0pt and size.name.width >= size.body.width {
+    } else if horizontal-offset <= 0pt and size.name.width >= size.body.width + horizontal-preshift {
       size.name.width
     } else {
-      size.body.width
+      size.body.width+horizontal-preshift
     }
   }
 
@@ -115,6 +121,7 @@
       )
       place(
         anchor + bottom,
+        dx: horizontal-preshift,
         box(..size.body, body)
       )
     }
