@@ -400,6 +400,16 @@
   /// -> color
   background: rgb(0, 0, 0, 0),
 
+  /// Sets the current transpose. *Optional*.
+  /// This works in conjuntion with `show-transpose`.
+  /// -> int
+  for-transpose: 0,
+
+  /// Shows the transpose defined by `for-transpose`. *Optional*.
+  /// This works in conjuntion with `for-transpose`.
+  /// -> int
+  show-transpose: 0,
+
   /// Shows the chord name. *Required*.
   /// -> str | content
   name
@@ -409,10 +419,16 @@
   assert.eq(type(capos), str)
   assert.eq(type(frets-amount), int)
   assert.eq(type(background), color)
+  assert.eq(type(for-transpose), int)
+  assert.eq(type(show-transpose), int)
   assert(type(fret) == int or fret == none, message: "type of 'fret' must to be 'int' or 'none'")
   assert(type(name) in (str, content), message: "type of 'name' must to be 'str' or 'content'")
   assert(design in ("sharp", "round"), message: "'design' must to be '\"sharp\"' or '\"round\"'")
   assert(position in ("bottom", "top"), message: "'position' must to be '\"bottom\"' or '\"top\"'")
+
+  if for-transpose != show-transpose {
+    return none
+  }
 
   let tabs = parse-input-string(tabs)
   let fingers = parse-input-string(fingers)

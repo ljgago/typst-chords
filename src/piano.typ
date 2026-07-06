@@ -430,6 +430,16 @@
   /// -> color
   background: rgb(0, 0, 0, 0),
 
+  /// Sets the current transpose. *Optional*.
+  /// This works in conjuntion with `show-transpose`.
+  /// -> int
+  for-transpose: 0,
+
+  /// Shows the transpose defined by `for-transpose`. *Optional*.
+  /// This works in conjuntion with `for-transpose`.
+  /// -> int
+  show-transpose: 0,
+
   /// Shows the chord name. *Required*.
   /// -> str | content
   name
@@ -437,10 +447,16 @@
   assert.eq(type(keys), str)
   assert.eq(type(fill-key), color)
   assert.eq(type(background), color)
+  assert.eq(type(for-transpose), int)
+  assert.eq(type(show-transpose), int)
   assert(upper(layout) in ("C", "2C", "F", "2F"), message: "`layout` must to be \"C\", \"2C\", \"F\" or \"2F\"")
   assert(design in ("sharp", "round"), message: "`design` must to be \"sharp\" or \"round\"")
   assert(position in ("bottom", "top"), message: "'position' must to be '\"bottom\"' or '\"top\"'")
   assert(type(name) in (str, content), message: "type of `name` must to be `str` or `content`")
+
+  if for-transpose != show-transpose {
+    return none
+  }
 
   let (size, font, ..text-params) = set-default-arguments(text-params.named())
 
