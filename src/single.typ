@@ -1,4 +1,62 @@
-#import "./utils.typ": parse-content, has-number, size-to-scale
+#import "./utils.typ": has-number, parse-content, size-to-scale
+
+// Note list with sharp and flat accidentals
+#let sharp-notes = ("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B")
+#let flat-notes  = ("C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B")
+
+// A dictionary with the full notes and their indices
+#let full-notes-dict = (
+  "C":  0, "B#": 0,
+  "C#": 1, "Db": 1,
+  "D":  2,
+  "D#": 3, "Eb": 3,
+  "E":  4, "Fb": 4,
+  "F":  5, "E#": 5,
+  "F#": 6, "Gb": 6,
+  "G":  7,
+  "G#": 8, "Ab": 8,
+  "A":  9,
+  "A#": 10, "Bb": 10,
+  "B":  11, "Cb": 11,
+)
+
+// Transposes a chord using custom symbols and accidental preferences
+#let transpose-chord(name, transpose, accidental-prefer, sharp-symbol, flat-symbol) = {
+  let name = parse-content(name).join()
+
+  if transpose == 0 {
+    return name
+  }
+
+  name.replace(
+    regex("([A-G])(#|b|" + sym.sharp + "|" + sym.flat + ")?"),
+    match => {
+      let note = match.captures.at(0)
+      let accidental = match.captures.at(1)
+
+      if accidental == str(sym.sharp) { accidental = "#" }
+      if accidental == str(sym.flat) { accidental = "b" }
+      if accidental == none { accidental = "" }
+
+      let full-note = note + accidental
+
+      if full-note in full-notes-dict {
+        let current = full-notes-dict.at(full-note)
+        let new-value = calc.rem(current + transpose, 12)
+
+        if new-value < 0 { new-value += 12 }
+
+        if accidental-prefer == "sharp" {
+          return sharp-notes.at(new-value).replace("#", sharp-symbol)
+        }
+
+        return flat-notes.at(new-value).replace("b", flat-symbol)
+      }
+
+      return match.text
+    }
+  )
+}
 
 /// The single chord a chord without diagram used to show the chord name over a word.
 /// -> content
@@ -19,6 +77,24 @@
   /// -> color
   background: rgb(0, 0, 0, 0),
 
+  /// Preferred musical accidental. *Optional*.
+  ///  - ```js "sharp```: prefers sharp accidentals.
+  ///  - ```js "flat```: prefers flat accidentals.
+  /// -> str
+  accidental: "sharp",
+
+  /// Sets the sharp symbol. *Optional*.
+  /// str
+  sharp-symbol: "#",
+
+  /// Sets the flat symbol. *Optional*.
+  /// str
+  flat-symbol: "b",
+
+  /// Sets the number of semitones to transpose the chord. *Optional*.
+  /// -> int
+  transpose: 0,
+
   /// Is the word or words where the chord goes. *Required*.
   /// -> content
   body,
@@ -29,14 +105,16 @@
 
   /// Positions the chord on a specific body character. *Required*.
   ///  - ```typ []```: chord name centered on the body.
-  ///  - ```typ [0]```: chord placed before the body.
+  ///  - ```typ [0]```: chord name placed before the body.
   ///  - ```typ [number]```: the chord name starts on a specific body character. (First position ```typ [1]```)
   /// -> content
-  position
+  position,
 ) = context {
   assert.eq(type(inner-gap), length)
   assert.eq(type(outer-gap), length)
   assert.eq(type(background), color)
+  assert(accidental in ("sharp", "flat"), message: "`accidental` must to be \"sharp\" or \"flat\"")
+  assert.eq(type(transpose), int)
   assert.eq(type(body), content)
   assert.eq(type(name), content)
   assert.eq(type(position), content)
@@ -52,6 +130,7 @@
   let horizontal-preshift = 0pt
   let vertical-offset = 0em
   let anchor = center
+  let name = transpose-chord(name, transpose, accidental, sharp-symbol, flat-symbol)
 
   let size = (:)
   size.body = measure(body)
@@ -59,12 +138,15 @@
   let body-array = parse-content(body)
 
   if position.has("text") {
-    assert(has-number(position.at("text")) == true, message: "the \"position\" must to be a \"content\" with only numbers")
+    assert(
+      has-number(position.at("text")) == true,
+      message: "the \"position\" must to be a \"content\" with only numbers",
+    )
 
     let pos = int(position.at("text")) - 1
-    let chord-char = parse-content(name).at(0)
+    let chord-char = name.at(0)
     let chord-char-width = measure(text(..text-params)[#chord-char]).width
-    if(pos >= 0) {
+    if (pos >= 0) {
       let min-pos = 0
       let max-pos = body-array.len() - 1
       pos = calc.clamp(pos, min-pos, max-pos)
@@ -92,7 +174,7 @@
     width: 0pt,
     height: size.body.height + size.name.height + outer-gap + inner-gap,
     dx: horizontal-offset,
-    dy: -vertical-offset
+    dy: -vertical-offset,
   )
 
   size.canvas.width = {
@@ -101,13 +183,14 @@
     } else if horizontal-offset <= 0pt and size.name.width >= size.body.width + horizontal-preshift {
       size.name.width
     } else {
-      size.body.width+horizontal-preshift
+      size.body.width + horizontal-preshift
     }
   }
 
   box(
     width: size.canvas.width,
-    height: size.canvas.height, {
+    height: size.canvas.height,
+    {
       place(
         anchor + bottom,
         dx: size.canvas.dx,
@@ -116,14 +199,14 @@
           fill: background,
           outset: (x: 2pt * scale, y: 3pt * scale),
           radius: 2pt * scale,
-          text(..text-params)[#name]
-        )
+          text(..text-params)[#name],
+        ),
       )
       place(
         anchor + bottom,
         dx: horizontal-preshift,
-        box(..size.body, body)
+        box(..size.body, body),
       )
-    }
+    },
   )
 }
