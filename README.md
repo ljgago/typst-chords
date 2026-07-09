@@ -35,7 +35,7 @@ With `chordx` you can easily generate song lyrics with chords for writing songbo
 Typst added an experimental package repository and you can import `chordx` as follows:
 
 ```typ
-#import "@preview/chordx:0.7.0": *
+#import "@preview/chordx:0.8.0": *
 ```
 
 ### Local Packages
@@ -47,13 +47,13 @@ You can read the documentation about typst [local-packages](https://github.com/t
 In Linux you can do:
 
 ```sh
-git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/local/chordx/0.7.0
+git clone https://github.com/ljgago/typst-chords ~/.local/share/typst/packages/local/chordx/0.8.0
 ```
 
 And import the package in your file:
 
 ```typ
-#import "@local/chordx:0.7.0": *
+#import "@local/chordx:0.8.0": *
 ```
 
 ## Documentation
@@ -65,7 +65,7 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 ### Chart Chords
 
 ```typ
-#import "@preview/chordx:0.7.0": chart-chord
+#import "@preview/chordx:0.8.0": chart-chord
 
 #let chart-chord-sharp = chart-chord.with(size: 18pt)
 #let chart-chord-round = chart-chord.with(size: 1.5em, design: "round")
@@ -93,10 +93,75 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
   </a>
 </h3>
 
+#### Chart Chords with manual transpose
+
+Define different transposed chords and show only the chords with transpose = 2.
+
+```typ
+#import "@preview/chordx:0.8.0": chart-chord
+
+#let transpose = 2
+
+#let chart-chord-sharp-tr0 = chart-chord.with(
+  size: 18pt,
+  for-transpose: 0,
+  show-transpose: transpose,
+)
+#let chart-chord-round-tr0 = chart-chord.with(
+  design: "round",
+  size: 1.5em,
+  for-transpose: 0,
+  show-transpose: transpose,
+)
+
+#let chart-chord-sharp-tr2 = chart-chord.with(
+  size: 18pt,
+  for-transpose: 2,
+  show-transpose: transpose,
+)
+#let chart-chord-round-tr2 = chart-chord.with(
+  design: "round",
+  size: 1.5em,
+  for-transpose: 2,
+  show-transpose: transpose,
+)
+
+// Design "sharp"
+#chart-chord-sharp-tr0(tabs: "x32o1o", fingers: "n32n1n")[C]
+#chart-chord-sharp-tr2(tabs: "xxo232", fingers: "nnn132")[D]
+
+#chart-chord-sharp-tr0(tabs: "ooo3", fingers: "ooo3")[C]
+#chart-chord-sharp-tr2(tabs: "222o", fingers: "123o")[D]
+
+// Desigh "round" with position "bottom"
+#chart-chord-round-tr0(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115", position: "bottom")[Cm]
+#chart-chord-round-tr2(tabs: "xxo231", fingers: "ooo231", position: "bottom")[Dm]
+
+#chart-chord-round-tr0(tabs: "onnn", fingers: "n111", capos: "313", position: "bottom")[Cm]
+#chart-chord-round-tr2(tabs: "221o", fingers: "231n", position: "bottom")[Dm]
+
+// Design "round" with background color in chord name
+#chart-chord-round-tr0(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115", background: silver)[Cm]
+#chart-chord-round-tr2(tabs: "xxo231", fingers: "ooo231", background: silver)[Dm]
+
+#chart-chord-round-tr0(tabs: "onnn", fingers: "n111", capos: "313", background: silver)[Cm]
+#chart-chord-round-tr2(tabs: "221o", fingers: "231n", background: silver)[Dm]
+```
+
+<h3 align="center">
+  <a href="examples/chart-chords-transpose.typ">
+    <img
+      alt="Chart Chord"
+      src="examples/chart-chords-transpose.svg"
+      style="max-width: 100%; width: 100%;"
+    >
+  </a>
+</h3>
+
 ### Piano Chords
 
 ```typ
-#import "@preview/chordx:0.7.0": piano-chord
+#import "@preview/chordx:0.8.0": piano-chord
 
 #let piano-chord-sharp = piano-chord.with(layout: "F", size: 18pt)
 #let piano-chord-round = piano-chord.with(layout: "F", size: 1.5em, design: "round")
@@ -116,10 +181,67 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
   </a>
 </h3>
 
+#### Piano Chords with manual transpose
+
+Define different transposed chords and show only the chords with transpose = 2.
+
+```typ
+#import "@preview/chordx:0.8.0": piano-chord
+
+#let transpose = 2
+
+#let piano-chord-sharp-tr0 = piano-chord.with(
+  layout: "F",
+  size: 18pt,
+  for-transpose: 0,
+  show-transpose: transpose,
+)
+#let piano-chord-round-tr0 = piano-chord.with(
+  layout: "F",
+  size: 1.5em,
+  design: "round",
+  for-transpose: 0,
+  show-transpose: transpose,
+)
+
+#let piano-chord-sharp-tr2 = piano-chord.with(
+  layout: "F",
+  size: 18pt,
+  for-transpose: 2,
+  show-transpose: transpose,
+)
+#let piano-chord-round-tr2 = piano-chord.with(
+  layout: "F",
+  size: 1.5em,
+  design: "round",
+  for-transpose: 2,
+  show-transpose: transpose,
+)
+
+#piano-chord-sharp-tr0(keys: "B1, D2#, F2#", fill-key: blue)[B]
+#piano-chord-sharp-tr2(keys: "C2#, F2, G2#", fill-key: blue)[C\#]
+
+#piano-chord-round-tr0(keys: "B1, D2#, F2#", fill-key: yellow, position: "bottom")[B]
+#piano-chord-round-tr2(keys: "C2#, F2, G2#", fill-key: yellow, position: "bottom")[C\#]
+
+#piano-chord-round-tr0(keys: "B1, D2#, F2#", fill-key: red, background: silver)[B]
+#piano-chord-round-tr2(keys: "C2#, F2, G2#", fill-key: red, background: silver)[C\#]
+```
+
+<h3 align="center">
+  <a href="examples/piano-chords-transpose.typ">
+    <img
+      alt="Piano Chord"
+      src="examples/piano-chords-transpose.svg"
+      style="max-width: 100%; width: 100%;"
+    >
+  </a>
+</h3>
+
 ### Single Chords
 
 ```typ
-#import "@preview/chordx:0.7.0": single-chord
+#import "@preview/chordx:0.8.0": single-chord
 
 #let chord = single-chord.with(
   font: "PT Sans",
@@ -127,7 +249,7 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
   inner-gap: 0.2em,
   outer-gap: 0.6em,
   weight: "semibold",
-  background: silver
+  background: silver,
 )
 
 #chord[Jingle][G][2] bells, jingle bells, jingle #chord[all][C][2] the #chord[way!][G][2] \
@@ -135,7 +257,7 @@ Here [chordx-docs](docs/chordx-docs.pdf) you have the reference documentation th
 In a #chord[one-horse][A7][2] open #chord[sleigh,][D7][3] hey!
 ```
 
-<h2 align="center">
+<h3 align="center">
   <a href="examples/single-chords.typ">
     <img
       alt="Single Chord"
@@ -143,7 +265,39 @@ In a #chord[one-horse][A7][2] open #chord[sleigh,][D7][3] hey!
       style="max-width: 100%; width: 450pt;"
     >
   </a>
-</h2>
+</h3>
+
+#### Single Chords with automatic transpose
+
+```typ
+#import "@preview/chordx:0.8.0": single-chord
+
+#let chord = single-chord.with(
+  font: "PT Sans",
+  size: 12pt,
+  inner-gap: 0.2em,
+  outer-gap: 0.6em,
+  weight: "semibold",
+  background: silver,
+  accidental: "sharp",
+  sharp-symbol: "#",
+  transpose: 1,
+)
+
+#chord[Jingle][G][2] bells, jingle bells, jingle #chord[all][C][2] the #chord[way!][G][2] \
+#chord[Oh][C][] what fun it #chord[is][G][] to ride \
+In a #chord[one-horse][A7][2] open #chord[sleigh,][D7][3] hey!
+```
+
+<h3 align="center">
+  <a href="examples/single-chords-transpose.typ">
+    <img
+      alt="Single Chord"
+      src="examples/single-chords-transpose.svg"
+      style="max-width: 100%; width: 450pt;"
+    >
+  </a>
+</h3>
 
 ## Changelog
 

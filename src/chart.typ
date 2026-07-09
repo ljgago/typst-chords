@@ -362,7 +362,7 @@
   /// Shows the finger numbers. *Optional*.
   ///  - *n*, *x*, *o*: without finger,
   ///  - *number*: one finger
-  ///  #parbreak() Example: ```js "n32n1n"``` - (Fingers for guitar chord: C)
+  ///  #parbreak() Example: ```js "n32n1n"``` (Fingers for guitar chord: C)
   /// -> str
   fingers: "",
 
@@ -400,13 +400,13 @@
   /// -> color
   background: rgb(0, 0, 0, 0),
 
-  /// Sets the current transpose. *Optional*.
-  /// This works in conjuntion with `show-transpose`.
+  /// Sets the current transpose. *Optional*. \
+  /// (This works in conjuntion with `show-transpose`.)
   /// -> int
   for-transpose: 0,
 
-  /// Shows the transpose defined by `for-transpose`. *Optional*.
-  /// This works in conjuntion with `for-transpose`.
+  /// Shows the transpose defined by `for-transpose`. *Optional*. \
+  /// (This works in conjuntion with `for-transpose`.)
   /// -> int
   show-transpose: 0,
 

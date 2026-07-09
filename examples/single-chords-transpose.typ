@@ -11,6 +11,9 @@
   outer-gap: 0.6em,
   weight: "semibold",
   background: silver,
+  accidental: "sharp",
+  sharp-symbol: "#",
+  transpose: 1,
 )
 
 #rect(

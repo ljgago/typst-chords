@@ -10,7 +10,8 @@
   stroke: none,
   radius: 3pt,
   inset: (x: 10pt, y: 10pt),
-  fill: white, [
+  fill: white,
+  [
     #chart-chord-sharp(tabs: "x32o1o", fingers: "n32n1n")[C]
     #h(2em)
     #chart-chord-sharp(tabs: "ooo3", fingers: "ooo3")[C]
@@ -22,5 +23,5 @@
     #chart-chord-round(tabs: "xn332n", fingers: "o13421", fret: 3, capos: "115", background: silver)[Cm]
     #h(2em)
     #chart-chord-round(tabs: "onnn", fingers: "n111", capos: "313", background: silver)[Cm]
-  ]
+  ],
 )

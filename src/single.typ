@@ -84,11 +84,11 @@
   accidental: "sharp",
 
   /// Sets the sharp symbol. *Optional*.
-  /// str
+  /// -> str
   sharp-symbol: "#",
 
   /// Sets the flat symbol. *Optional*.
-  /// str
+  /// -> str
   flat-symbol: "b",
 
   /// Sets the number of semitones to transpose the chord. *Optional*.
