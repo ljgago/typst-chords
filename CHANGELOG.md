@@ -4,6 +4,14 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [v0.8.0](https://github.com/ljgago/typst-chords/compare/v0.7.0...v0.8.0) - 2026-07-09
+
+## Added
+
+- Support to show chords before the lyrics for `single-chord` using `position: 0`.
+- New automatic transpose for `single-chord`.
+- New manual transpose for `chart-chord` and `piano-chord`.
+
 ## [v0.7.0](https://github.com/ljgago/typst-chords/compare/v0.6.1...v0.7.0) - 2026-05-03
 
 ## Changed
