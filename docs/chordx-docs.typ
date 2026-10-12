@@ -311,7 +311,7 @@
   tidy.show-module(module, sort-functions: none)
 }
 
-==== Example:
+==== Example: <single-chord-example>
 
 ```typ-lang
 #import "@preview/chordx:0.8.0": single-chord
@@ -408,4 +408,211 @@ In a #chord[one-horse][A7][2] open #chord[sleigh,][D7][3] hey!
   [
     #chord[Lorem][G][0] ipsum dolor #chord[sit][C][] amet consectetur #chord[adipiscing][G][] elit. ~ #chord[~][G][] ~ #chord[~][C][] ~ #chord[~][G][]
   ]
+}
+
+#pagebreak()
+
+== Chorded Stanza
+
+#{
+  let module = tidy.parse-module(read("../src/stanza.typ"))
+  tidy.show-module(module, sort-functions: none)
+}
+
+==== Example
+Consider above example on printing "Jingle Bells" with chords (#ref(<single-chord-example>)).
+`stanza-chord` provides a more comfortable way of entering the song:
+
+```typ-lang
+#import "@preview/chordx:0.8.0": stanza-chord
+
+#let stanza = stanza-chord.with(
+  font: "PT Sans",
+  size: 10pt,
+  weight: "semibold",
+  background: silver,
+  preserve-linebreaks: true
+)
+
+#stanza("
+ G                                   C      G
+Jingle bells, jingle bells, jingle all the way!
+C              G
+Oh what fun it is to ride
+      A7              D7
+In a one-horse open sleigh, hey!
+")
+```
+
+#{
+  import "../src/stanza.typ": stanza-chord
+
+  let stanza = stanza-chord.with(
+    font: "PT Sans",
+    size: 10pt,
+    weight: "semibold",
+    background: silver,
+    preserve-linebreaks: true
+  )
+
+  stanza("
+   G                                   C      G
+  Jingle bells, jingle bells, jingle all the way!
+  C              G
+  Oh what fun it is to ride
+        A7              D7
+  In a one-horse open sleigh, hey!
+  ")
+}
+#linebreak()
+
+In any text-editor with a mono spaced font, you just enter
+the text with the cords in the line above. The `stanza-chord`
+function will automatically convert it into corresponding
+calls to the `single-chord` function.
+
+*Note*
+- The input has to be a pure String (hence the parantheses and quotation marks instead of square brackets) and consist of an even number of lines, where the odd numbered lines contain the chords and the even numbered lines the lyrics.
+- The input string may be any valid UTF-8 string. Multi-byte characters are counted correctly.
+- Automatically centering a chord on a word (as done in `single-chord` by leaving the position empty) is not possible this way, because the first character of the chord name is always exactly above one character of a lyric word.
+
+==== Custom chord typesetting
+If you want to print chord names with special typesets, e.g. 'C#sym.flat;5', that can't
+be input directly, you can provide a mapping between the input string
+and the desired out output string.
+
+```typ-lang
+#import "@preview/chordx:0.8.0": stanza-chord
+
+#let stanza = stanza-chord.with(
+  font: "PT Sans",
+  size: 10pt,
+  weight: "semibold",
+  background: silver,
+  preserve-linebreaks: false,
+  custom-typesets: (
+    "D9": [D#super[9]],
+    "C+": [C#super[+]],
+    "G#": [G#symbol.sharp]
+    )
+)
+
+#stanza("
+D9    C+          G#
+Lorem ipsum dolor sit amet,
+F9         E+         A#
+consetetur sadipscing elitr...
+")
+```
+
+#{
+  import "../src/stanza.typ": stanza-chord
+
+ let stanza = stanza-chord.with(
+  font: "PT Sans",
+  size: 10pt,
+  weight: "semibold",
+  background: silver,
+  preserve-linebreaks: false,
+  custom-typesets: (
+    "D9": [D#super[9]],
+    "C+": [C#super[+]],
+    "G#": [G#sym.sharp]
+    )
+)
+
+stanza("
+D9    C+          G#
+Lorem ipsum dolor sit amet,
+F9         E+         A#
+consetetur sadipscing elitr...
+")
+}
+#linebreak()
+
+*Note*
+- The difference in the rendering between the first and the second sets of chords is the usage of custom typeset mappings.
+- In this example, `preseve-linebreaks` has been disabled, so that the two input lines are rendered as one output line.
+- Custom typesets and automatic transposing are mutually exclusive.
+
+==== Special scenarios
+The `stanza-chord` function can handle a few special scenarios.
+While this section is mostly about the internal working of the
+`stanza-chord` function, it might be of relevance when you're
+applying more complex design features (e.g. automatically placing
+a frame around each individual word).
+#{
+  import "../src/single.typ": single-chord
+  import "../src/stanza.typ": stanza-chord
+
+  let chord = single-chord.with(
+    font: "PT Sans",
+    size: 10pt,
+    weight: "semibold",
+    background: silver
+  )
+  let stanza = stanza-chord.with(
+    font: "PT Sans",
+    size: 10pt,
+    weight: "semibold",
+    background: silver,
+    preserve-linebreaks: true
+  )
+  [
+    
+    *Merging words*: In a situation, where the name of a chord, is longer than the
+    word itself (such that it hangs over the next chord), the
+    two words will be merged into one. For example.:
+    ```typ-lang
+    #stanza("
+    Esus4
+    Oh what ...
+    ")
+    ```
+    will be merged into a single word that is handed to `single-chord`:
+    ```typ-lang
+    #chord[Oh what][Esus4][1] ...
+    ```
+    resulting in: #linebreak()
+  ]
+  chord[Oh what][Esus4][1];[ ...];linebreak()
+  [
+    #linebreak() This differs from the unmerged version:
+    ```typ-lang
+    #chord[Oh][Esus4][1] what ...
+    ```
+    which would result in an unnecessary long whitespace: #linebreak()
+  ]
+  chord[Oh][Esus4][1];[ what ...];linebreak()
+  [
+    You can avoid the merging of words, by increasing the spaces on the input:
+    ```typ-lang
+    #stanza("
+    Esus4
+    Oh   what ...
+    ")
+    ```
+  ]
+
+  [
+    *Splitting words*: If you have a word that is so long that it needs multiple chords above it,
+    it will be split automatically into multiple sub-words, which are passed 
+    to the `single-chord` function. Let's use the German word for DNA as
+    an example:
+    ```typ-lang
+    #stanza("
+    A     D   G      C
+    Desoxyribonukleinsäure
+    ")
+    ```
+    will be converted to:
+    ```typ-lang
+    #chord[Desoxy][A][1]#chord[ribo][D][1]#chord[nuklein][G][1]#chord[säure][C][1]
+    ```
+    and rendered like:
+  ]
+  stanza("
+    A     D   G      C9
+    Desoxyribonukleinsäure
+  ")
 }

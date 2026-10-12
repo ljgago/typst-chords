@@ -22,13 +22,11 @@
 
 // Transposes a chord using custom symbols and accidental preferences
 #let transpose-chord(name, transpose, accidental-prefer, sharp-symbol, flat-symbol) = {
-  let name = parse-content(name).join()
-
   if transpose == 0 {
     return name
   }
-
-  name.replace(
+  let name = parse-content(name).join()
+  [#name.replace(
     regex("([A-G])(#|b|" + sym.sharp + "|" + sym.flat + ")?"),
     match => {
       let note = match.captures.at(0)
@@ -55,7 +53,7 @@
 
       return match.text
     }
-  )
+  )]
 }
 
 /// The single chord a chord without diagram used to show the chord name over a word.
@@ -144,7 +142,7 @@
     )
 
     let pos = int(position.at("text")) - 1
-    let chord-char = name.at(0)
+    let chord-char = parse-content(name).at(0)
     let chord-char-width = measure(text(..text-params)[#chord-char]).width
     if (pos >= 0) {
       let min-pos = 0
