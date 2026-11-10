@@ -8,6 +8,9 @@ images:
 	typst compile examples/chart-chords-transpose.typ examples/chart-chords-transpose.svg -f svg --root .
 	typst compile examples/single-chords-transpose.typ examples/single-chords-transpose.svg -f svg --root .
 
+tests:
+	typst compile examples/tests.typ examples/tests.svg -f svg --root .
+
 # Generates full example
 example:
 	typst compile examples/jingle-bells.typ examples/jingle-bells.pdf --root .
@@ -19,5 +22,5 @@ docs:
 # Build all
 build: images example docs
 
-.PHONY: images example docs build
+.PHONY: images tests example docs build
 # =================================================================================================
