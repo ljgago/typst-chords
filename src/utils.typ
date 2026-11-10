@@ -12,7 +12,7 @@
 // Gets the string from a content data
 #let parse-content(content-data) = {
   if content-data.has("text") {
-    return content-data.at("text").codepoints()
+    return content-data.at("text").clusters()
   }
   if content-data.has("double") {
     return (content-data,)
@@ -130,4 +130,111 @@
     size: size,
     font: font
   )
+}
+
+// Note list with sharp and flat accidentals
+#let sharp-notes = ("C", "C#", "D", "D#", "E", "F", "F#", "G", "G#", "A", "A#", "B")
+#let flat-notes  = ("C", "Db", "D", "Eb", "E", "F", "Gb", "G", "Ab", "A", "Bb", "B")
+
+// A dictionary with the full notes and their indices
+#let full-notes-dict = (
+  "C":  0, "B#": 0,
+  "C#": 1, "Db": 1,
+  "D":  2,
+  "D#": 3, "Eb": 3,
+  "E":  4, "Fb": 4,
+  "F":  5, "E#": 5,
+  "F#": 6, "Gb": 6,
+  "G":  7,
+  "G#": 8, "Ab": 8,
+  "A":  9,
+  "A#": 10, "Bb": 10,
+  "B":  11, "Cb": 11,
+)
+
+// generate an array of characters of text fields preserving the order of other fields
+// [D#super("9")/C] == children: ([D], super(body: [9]), [/C])
+// return: ("D", super(body: [9]), "/", "C")
+#let parse-content-array(data) = {
+  if data.has("text") {
+    return data.at("text").clusters()
+  }
+  if data.has("body") {
+    return (data,)
+  }
+  if data.has("base") {
+    return (data,)
+  }
+  if data.has("equation") {
+    return (data,)
+  }
+  if data.has("children") {
+    for item in data.at("children") {
+      parse-content-array(item)
+    }
+  }
+}
+
+// the normal join does not
+#let join-strings(acc, item) = {
+  if type(item) == str and acc.len() > 0 and type(acc.last()) == str {
+    acc.slice(0, -1) + (acc.last() + item,)
+  } else {
+    acc + (item,)
+  }
+}
+
+#let transpose-note(name, amount, config) = {
+  name.replace(
+    regex("([A-G])(#|b|" + sym.sharp + "|" + sym.flat + ")?"),
+    match => {
+      let note = match.captures.at(0)
+      let accidental = match.captures.at(1)
+
+      if accidental == str(sym.sharp) { accidental = "#" }
+      if accidental == str(sym.flat) { accidental = "b" }
+      if accidental == none { accidental = "" }
+
+      let full-note = note + accidental
+
+      if full-note in full-notes-dict {
+        let current = full-notes-dict.at(full-note)
+        let new-value = calc.rem(current + amount + 12, 12)
+
+        if config.accidental-prefer == "sharp" {
+          return sharp-notes.at(new-value).replace("#", config.sharp-symbol)
+        } else {
+          return flat-notes.at(new-value).replace("b", config.flat-symbol)
+        }
+      }
+
+      return match.text
+    }
+  )
+}
+
+#let transpose-or-ignore(item, amount, config) = {
+  if type(item) == str {
+    text(transpose-note(item, amount, config))
+  } else {
+    item
+  }
+}
+
+// Transposes a chord using custom symbols and accidental preferences
+#let transpose-chord(name, amount, accidental-prefer, sharp-symbol, flat-symbol) = {
+  if amount == 0 {
+    return name
+  }
+
+  let config = (
+    accidental-prefer: accidental-prefer,
+    sharp-symbol: sharp-symbol,
+    flat-symbol: flat-symbol
+  )
+
+  parse-content-array(name)
+    .fold((), (acc, item) => join-strings(acc, item))
+    .map(item => transpose-or-ignore(item, amount, config))
+    .join()
 }
