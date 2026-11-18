@@ -1,4 +1,5 @@
-#import "./utils.typ": has-number, parse-content, size-to-scale, transpose-chord
+#import "./utils.typ": has-number, parse-content, size-to-scale
+#import "./transpose.typ": chord-transposition-state, transpose-chord
 
 /// The single chord a chord without diagram used to show the chord name over a word.
 /// -> content
@@ -37,6 +38,24 @@
   /// -> int
   transpose: 0,
 
+  /// Source key or scale for chord transposition (e.g. "C", "Am", "Nashville"). *Optional*.
+  /// If set to `auto`, falls back to document-wide transposition settings.
+  /// -> str | auto | none
+  from-key: auto,
+
+  /// Target key or scale for chord transposition (e.g. "G", "F\#m", "Nashville"). *Optional*.
+  /// If set to `auto`, falls back to document-wide transposition settings.
+  /// -> str | auto | none
+  to-key: auto,
+
+  /// Alias for `from-key`. *Optional*.
+  /// -> str | auto | none
+  from: auto,
+
+  /// Alias for `to-key`. *Optional*.
+  /// -> str | auto | none
+  to: auto,
+
   /// Is the word or words where the chord goes. *Required*.
   /// -> content
   body,
@@ -57,9 +76,61 @@
   assert.eq(type(background), color)
   assert(accidental in ("sharp", "flat"), message: "`accidental` must to be \"sharp\" or \"flat\"")
   assert.eq(type(transpose), int)
+  assert(from-key in (auto, none) or type(from-key) == str, message: "type of 'from-key' must to be 'str', 'auto', or 'none'")
+  assert(to-key in (auto, none) or type(to-key) == str, message: "type of 'to-key' must to be 'str', 'auto', or 'none'")
+  assert(from in (auto, none) or type(from) == str, message: "type of 'from' must to be 'str', 'auto', or 'none'")
+  assert(to in (auto, none) or type(to) == str, message: "type of 'to' must to be 'str', 'auto', or 'none'")
   assert.eq(type(body), content)
   assert.eq(type(name), content)
   assert.eq(type(position), content)
+
+  let state-trans = chord-transposition-state.get()
+
+  let eff-from = if from-key != auto and from-key != none {
+    from-key
+  } else if from != auto and from != none {
+    from
+  } else {
+    state-trans.from
+  }
+
+  let eff-to = if to-key != auto and to-key != none {
+    to-key
+  } else if to != auto and to != none {
+    to
+  } else {
+    state-trans.to
+  }
+
+  let eff-transpose = if transpose != 0 {
+    transpose
+  } else {
+    state-trans.amount
+  }
+
+  let eff-accidental = if accidental != "sharp" {
+    accidental
+  } else if state-trans.accidental != auto {
+    state-trans.accidental
+  } else {
+    "sharp"
+  }
+
+  let eff-sharp = if sharp-symbol != "#" {
+    sharp-symbol
+  } else if state-trans.sharp-symbol != auto {
+    state-trans.sharp-symbol
+  } else {
+    "#"
+  }
+
+  let eff-flat = if flat-symbol != "b" {
+    flat-symbol
+  } else if state-trans.flat-symbol != auto {
+    state-trans.flat-symbol
+  } else {
+    "b"
+  }
 
   let scale = 1
 
@@ -72,7 +143,15 @@
   let horizontal-preshift = 0pt
   let vertical-offset = 0em
   let anchor = center
-  let name = transpose-chord(name, transpose, accidental, sharp-symbol, flat-symbol)
+  let name = transpose-chord(
+    name,
+    from: eff-from,
+    to: eff-to,
+    amount: eff-transpose,
+    accidental: eff-accidental,
+    sharp-symbol: eff-sharp,
+    flat-symbol: eff-flat,
+  )
 
   let size = (:)
   size.body = measure(body)
