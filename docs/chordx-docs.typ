@@ -616,3 +616,181 @@ a frame around each individual word).
     Desoxyribonukleinsäure
   ")
 }
+
+#pagebreak()
+
+== Chord Transposition & Nashville Notation
+
+#{
+  let module = tidy.parse-module(read("../src/transpose.typ"))
+  tidy.show-module(module, sort-functions: none)
+}
+
+=== Overview
+
+`chordx` supports transposing chords between any musical keys (major and minor), using the Nashville Number System (NNS), or by semitone offsets.
+
+Features include:
+- *Normal chords*: `C`, `E`, `F`, etc.
+- *Complex chords*: `C#`, `Dm`, `E#m`, `E#m7b5`, `Bbmaj7`, `Asus4`, `Gdim7`, etc.
+- *Slash chords*: `C#/A`, `E#m/G`, `1/3`, `5/7`, etc.
+- *All basic scales*: all 15 major keys and all 15 natural minor keys with diatonic note spelling.
+- *Nashville Number System*: supported both as input (`1`, `2m`, `4`, `5`, `6m`, `1/3`, `5/7`, `b7`) and as output.
+- *Configurable*:
+  - Document-wide: via `#set-transpose(from: ..., to: ...)`
+  - Header / presets: via `.with(from: ..., to: ...)` on `single-chord` or `stanza-chord`
+  - Inline: per chord call.
+
+==== Example: Key-to-Key Transposition
+
+```typ-lang
+#import "@preview/chordx:0.8.0": stanza-chord
+
+// Transpose from C major to G major
+#let stanza-g = stanza-chord.with(
+  font: "PT Sans",
+  size: 10pt,
+  weight: "semibold",
+  background: silver,
+  from: "C",
+  to: "G",
+)
+
+#stanza-g("
+ C               Dm              G       C
+Amazing grace how sweet the sound that saved a wretch like me!
+ C               F       C/E     Dm      G       C
+I once was lost but now am found, was blind but now I see.
+")
+```
+
+#{
+  import "../lib.typ": stanza-chord
+
+  let stanza-g = stanza-chord.with(
+    font: "PT Sans",
+    size: 10pt,
+    weight: "semibold",
+    background: silver,
+    from: "C",
+    to: "G",
+  )
+
+  stanza-g("
+   C               Dm              G       C
+  Amazing grace how sweet the sound that saved a wretch like me!
+   C               F       C/E     Dm      G       C
+  I once was lost but now am found, was blind but now I see.
+  ")
+}
+
+==== Example: Nashville Number System as Input
+
+Write songs using scale degree numbers and render them in any target key:
+
+```typ-lang
+#import "@preview/chordx:0.8.0": stanza-chord
+
+// Enter chords in Nashville notation, render in D major
+#let stanza-d = stanza-chord.with(
+  font: "PT Sans",
+  size: 10pt,
+  weight: "semibold",
+  background: silver,
+  from: "Nashville",
+  to: "D",
+)
+
+#stanza-d("
+ 1               4               5       1
+Amazing grace how sweet the sound that saved a wretch like me!
+ 1/3     6m      4       5/7     2m      5       1       b7
+I once was lost but now am found, was blind but now I see.
+")
+```
+
+#{
+  import "../lib.typ": stanza-chord
+
+  let stanza-d = stanza-chord.with(
+    font: "PT Sans",
+    size: 10pt,
+    weight: "semibold",
+    background: silver,
+    from: "Nashville",
+    to: "D",
+  )
+
+  stanza-d("
+   1               4               5       1
+  Amazing grace how sweet the sound that saved a wretch like me!
+   1/3     6m      4       5/7     2m      5       1       b7
+  I once was lost but now am found, was blind but now I see.
+  ")
+}
+
+==== Example: Standard Chords to Nashville Notation
+
+Convert standard chords into Nashville Number System:
+
+```typ-lang
+#import "@preview/chordx:0.8.0": stanza-chord
+
+#let stanza-nns = stanza-chord.with(
+  font: "PT Sans",
+  size: 10pt,
+  weight: "semibold",
+  background: silver,
+  from: "G",
+  to: "Nashville",
+)
+
+#stanza-nns("
+ G               C               D       G
+Amazing grace how sweet the sound that saved a wretch like me!
+ G/B     Em      C       D/F#    Am      D       G
+I once was lost but now am found, was blind but now I see.
+")
+```
+
+#{
+  import "../lib.typ": stanza-chord
+
+  let stanza-nns = stanza-chord.with(
+    font: "PT Sans",
+    size: 10pt,
+    weight: "semibold",
+    background: silver,
+    from: "G",
+    to: "Nashville",
+  )
+
+  stanza-nns("
+   G               C               D       G
+  Amazing grace how sweet the sound that saved a wretch like me!
+   G/B     Em      C       D/F#    Am      D       G
+  I once was lost but now am found, was blind but now I see.
+  ")
+}
+
+==== Example: Document-Wide Transposition
+
+```typ-lang
+#import "@preview/chordx:0.8.0": set-transpose, stanza-chord
+
+// Set document-wide transposition
+#set-transpose(from: "C", to: "Eb")
+
+#let stanza = stanza-chord.with(
+  font: "PT Sans",
+  size: 10pt,
+  weight: "semibold",
+  background: silver,
+)
+
+// Automatically transposed from C to Eb!
+#stanza("
+ C               Dm              G       C
+Amazing grace how sweet the sound that saved a wretch like me!
+")
+```

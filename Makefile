@@ -7,6 +7,8 @@ images:
 	typst compile examples/piano-chords-transpose.typ examples/piano-chords-transpose.svg -f svg --root .
 	typst compile examples/chart-chords-transpose.typ examples/chart-chords-transpose.svg -f svg --root .
 	typst compile examples/single-chords-transpose.typ examples/single-chords-transpose.svg -f svg --root .
+	typst compile examples/key-transpose.typ examples/key-transpose.svg -f svg --root .
+	typst compile examples/nashville-notation.typ examples/nashville-notation.svg -f svg --root .
 
 tests:
 	typst compile examples/tests.typ examples/tests.svg -f svg --root .
