@@ -184,32 +184,24 @@
   }
 }
 
+#import "./transpose.typ": (
+  transpose-chord,
+  transpose-chord-string,
+  transpose-note-to-key,
+  parse-scale-key,
+  parse-chord-string,
+  set-transpose,
+  set-chord-transposition,
+  chord-transposition-state,
+)
+
 #let transpose-note(name, amount, config) = {
-  name.replace(
-    regex("([A-G])(#|b|" + sym.sharp + "|" + sym.flat + ")?"),
-    match => {
-      let note = match.captures.at(0)
-      let accidental = match.captures.at(1)
-
-      if accidental == str(sym.sharp) { accidental = "#" }
-      if accidental == str(sym.flat) { accidental = "b" }
-      if accidental == none { accidental = "" }
-
-      let full-note = note + accidental
-
-      if full-note in full-notes-dict {
-        let current = full-notes-dict.at(full-note)
-        let new-value = calc.rem(current + amount + 12, 12)
-
-        if config.accidental-prefer == "sharp" {
-          return sharp-notes.at(new-value).replace("#", config.sharp-symbol)
-        } else {
-          return flat-notes.at(new-value).replace("b", config.flat-symbol)
-        }
-      }
-
-      return match.text
-    }
+  transpose-chord-string(
+    name,
+    amount: amount,
+    accidental: if "accidental-prefer" in config { config.accidental-prefer } else { "sharp" },
+    sharp-symbol: if "sharp-symbol" in config { config.sharp-symbol } else { "#" },
+    flat-symbol: if "flat-symbol" in config { config.flat-symbol } else { "b" },
   )
 }
 
@@ -219,22 +211,4 @@
   } else {
     item
   }
-}
-
-// Transposes a chord using custom symbols and accidental preferences
-#let transpose-chord(name, amount, accidental-prefer, sharp-symbol, flat-symbol) = {
-  if amount == 0 {
-    return name
-  }
-
-  let config = (
-    accidental-prefer: accidental-prefer,
-    sharp-symbol: sharp-symbol,
-    flat-symbol: flat-symbol
-  )
-
-  parse-content-array(name)
-    .fold((), (acc, item) => join-strings(acc, item))
-    .map(item => transpose-or-ignore(item, amount, config))
-    .join()
 }
