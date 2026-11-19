@@ -13,6 +13,10 @@ A package to write song lyrics with chord diagrams in Typst.
   - [Chart Chords](#chart-chords)
   - [Piano Chords](#piano-chords)
   - [Single Chords](#single-chords)
+  - [Chord Transposition](#chord-transposition)
+    - [Key-to-Key Transposition](#key-to-key-transposition)
+    - [Nashville Number System](#nashville-number-system)
+    - [Document-Wide Transposition](#document-wide-transposition)
 - [Changelog](#changelog)
 - [License](#license)
 
@@ -24,11 +28,14 @@ With `chordx` you can easily generate song lyrics with chords for writing songbo
 
 ## Usage
 
-`chordx` exports 3 functions to generate diferents types fo charts:
+`chordx` exports the following functions:
 
 - `chart-chord`: used to generate chart chords for stringed instruments.
 - `piano-chord`: used to generate piano chords.
-- `single-chord`: used to show the chord name over a word.
+- `single-chord`: used to show the chord name over a word with automatic transposition.
+- `stanza-chord`: used to write full stanzas of lyrics with chords and transposition.
+- `set-transpose`: used to configure chord transposition document-wide or within a scope.
+- `transpose-chord`: utility function to transpose individual chord strings or content.
 
 ### Typst Packages
 
@@ -298,6 +305,124 @@ In a #chord[one-horse][A7][2] open #chord[sleigh,][D7][3] hey!
     >
   </a>
 </h3>
+
+### Chord Transposition
+
+`chordx` supports comprehensive chord transposition between any keys (all 15 major keys and 15 minor keys), with full support for:
+- **Normal chords**: `C`, `E`, `F`, etc.
+- **Complex chords**: `C#`, `Dm`, `E#m`, `E#m7b5`, `Bbmaj7`, `Asus4`, `Gdim7`, etc.
+- **Slash chords**: `C#/A`, `E#m/G`, `1/3`, `5/7`, etc.
+- **Nashville Number System (NNS)**: both as input (`1`, `2m`, `4`, `5`, `6m`, `1/3`, `5/7`, `b7`) and as output.
+- **Document-wide transposition**: set once with `#set-transpose(from: ..., to: ...)`.
+
+#### Key-to-Key Transposition
+
+Transpose a chord sheet between keys using `.with(from: ..., to: ...)`:
+
+```typ
+#import "@preview/chordx:0.8.0": stanza-chord
+
+#let stanza = stanza-chord.with(
+  font: "PT Sans",
+  size: 11pt,
+  weight: "semibold",
+  background: silver,
+  from: "C",
+  to: "G",
+)
+
+#stanza("
+ C               Dm              G       C
+Amazing grace how sweet the sound that saved a wretch like me!
+ C               F       C/E     Dm      G       C
+I once was lost but now am found, was blind but now I see.
+")
+```
+
+Complex chords and slash chords are transposed accurately:
+
+```typ
+#import "@preview/chordx:0.8.0": single-chord
+
+#let chord = single-chord.with(from: "C#", to: "D")
+
+// C# -> D, E#m -> F#m, E#m7b5 -> F#m7b5, C#/A -> F#/D, E#m/G -> F#m/G#
+#chord[Normal][C#][1] chord,
+#chord[minor][E#m][1] chord,
+#chord[half-diminished][E#m7b5][1] chord,
+#chord[slash][C#/A][1] chord, and
+#chord[slash minor][E#m/G][1] chord.
+```
+
+<h3 align="center">
+  <a href="examples/key-transpose.typ">
+    <img
+      alt="Key-to-Key Transposition"
+      src="examples/key-transpose.svg"
+      style="max-width: 100%; width: 550pt;"
+    >
+  </a>
+</h3>
+
+#### Nashville Number System
+
+Use Nashville notation numbers (`1`..`7`, `1/3`, `6m`, `b7`, etc.) as input and render them in any target key:
+
+```typ
+#import "@preview/chordx:0.8.0": stanza-chord
+
+// Write in Nashville notation, render in G major
+#let stanza-in-g = stanza-chord.with(
+  font: "PT Sans",
+  size: 11pt,
+  weight: "semibold",
+  background: silver,
+  from: "Nashville",
+  to: "G",
+)
+
+#stanza-in-g("
+ 1               4               5       1
+Amazing grace how sweet the sound that saved a wretch like me!
+ 1/3     6m      4       5/7     2m      5       1       b7
+I once was lost but now am found, was blind but now I see.
+")
+```
+
+Or convert standard chords into Nashville notation by specifying `to: "Nashville"`:
+
+```typ
+#let stanza-to-nash = stanza-chord.with(
+  from: "G",
+  to: "Nashville",
+)
+```
+
+<h3 align="center">
+  <a href="examples/nashville-notation.typ">
+    <img
+      alt="Nashville Number System Transposition"
+      src="examples/nashville-notation.svg"
+      style="max-width: 100%; width: 550pt;"
+    >
+  </a>
+</h3>
+
+#### Document-Wide Transposition
+
+Configure transposition globally across an entire document or book:
+
+```typ
+#import "@preview/chordx:0.8.0": set-transpose, stanza-chord
+
+#set-transpose(from: "C", to: "Eb")
+
+// All single-chord and stanza-chord calls automatically transpose from C to Eb
+#stanza("
+ C               Dm              G       C
+Amazing grace how sweet the sound that saved a wretch like me!
+")
+```
 
 ## Changelog
 

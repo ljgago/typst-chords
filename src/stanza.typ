@@ -1,4 +1,5 @@
 #import "./single.typ": single-chord
+#import "./transpose.typ": chord-transposition-state, transpose-chord
 
 // Lesson learned: Counting the bytes in a string, works only until
 // the first non-ASCII character appears. For example a German umlaut
@@ -60,6 +61,62 @@
 #let process-line-pair(..single-chord-params, custom-typesets, pair) = {
   assert.eq(type(custom-typesets), dictionary)
   let chord = single-chord.with(..single-chord-params)
+  let state-trans = chord-transposition-state.get()
+  let sc-named = single-chord-params.named()
+  let eff-from = if "from-key" in sc-named and sc-named.at("from-key") != auto {
+    sc-named.at("from-key")
+  } else if "from" in sc-named and sc-named.at("from") != auto {
+    sc-named.at("from")
+  } else {
+    state-trans.from
+  }
+  let eff-to = if "to-key" in sc-named and sc-named.at("to-key") != auto {
+    sc-named.at("to-key")
+  } else if "to" in sc-named and sc-named.at("to") != auto {
+    sc-named.at("to")
+  } else {
+    state-trans.to
+  }
+  let eff-amount = if "transpose" in sc-named and sc-named.at("transpose") != 0 {
+    sc-named.at("transpose")
+  } else {
+    state-trans.amount
+  }
+  let eff-acc = if "accidental" in sc-named {
+    sc-named.at("accidental")
+  } else {
+    state-trans.accidental
+  }
+  let eff-sharp = if "sharp-symbol" in sc-named {
+    sc-named.at("sharp-symbol")
+  } else {
+    state-trans.sharp-symbol
+  }
+  let eff-flat = if "flat-symbol" in sc-named {
+    sc-named.at("flat-symbol")
+  } else {
+    state-trans.flat-symbol
+  }
+
+  let get-chord-entry(word-text) = {
+    let tr-word = transpose-chord(
+      word-text,
+      from: eff-from,
+      to: eff-to,
+      amount: eff-amount,
+      accidental: eff-acc,
+      sharp-symbol: eff-sharp,
+      flat-symbol: eff-flat,
+    )
+    if type(tr-word) == str and tr-word in custom-typesets {
+      (content: custom-typesets.at(tr-word), tr-done: true)
+    } else if word-text in custom-typesets {
+      (content: custom-typesets.at(word-text), tr-done: false)
+    } else {
+      (content: [#word-text], tr-done: false)
+    }
+  }
+
   let line = []
   let chord-words = parse-line(pair.chords)
   let lyric-words = parse-line(pair.lyrics)
@@ -123,8 +180,12 @@
 
       // ========== Process Word ==============================================
       let chord-pos = [#str(chord-word.index - lyric-word.index + 1)]
-      // The weird casting of chord-pos should not be necessary. That's an issue with single-chord.
-      line = [#line;#chord[#lyric-word.text][#custom-typesets.at(chord-word.text, default: [#chord-word.text])][#chord-pos]]
+      let chord-entry = get-chord-entry(chord-word.text)
+      if chord-entry.tr-done {
+        line = [#line;#single-chord.with(..single-chord-params, from: none, to: none, from-key: none, to-key: none, transpose: 0)[#lyric-word.text][#chord-entry.content][#chord-pos]]
+      } else {
+        line = [#line;#chord[#lyric-word.text][#chord-entry.content][#chord-pos]]
+      }
       chord-index += 1 // One chord was used, increase index.
     } else {
       // No more chords, still need to print the rest of the words...
@@ -140,7 +201,12 @@
   // If there are any chords after the last lyric-word, this will display them:
   while chord-index < chord-words.len() {
     let chord-word = chord-words.at(chord-index)
-    line = [#line;~~#chord[~][#custom-typesets.at(chord-word.text, default: [#chord-word.text])][]]
+    let chord-entry = get-chord-entry(chord-word.text)
+    if chord-entry.tr-done {
+      line = [#line;~~#single-chord.with(..single-chord-params, from: none, to: none, from-key: none, to-key: none, transpose: 0)[~][#chord-entry.content][]]
+    } else {
+      line = [#line;~~#chord[~][#chord-entry.content][]]
+    }
     chord-index += 1
   }
 
